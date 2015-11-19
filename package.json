@@ -1,0 +1,43 @@
+{
+  "name": "bellerophon",
+  "productName": "Bellerophon",
+  "version": "0.0.0",
+  "description": "My badass app",
+  "license": "MIT",
+  "repository": "arminhammer/bellerophon",
+  "author": {
+    "name": "arminhammer",
+    "email": "arminhammer@gmail.com",
+    "url": "github.com/arminhammer/bellerophon"
+  },
+  "electronVersion": "0.35.0",
+  "scripts": {
+    "test": "xo",
+    "start": "electron .",
+    "build": "electron-packager . $npm_package_productName --out=dist --ignore='^/dist$' --prune --asar --all --version=$npm_package_electronVersion"
+  },
+  "files": [
+    "index.js",
+    "index.html",
+    "index.css"
+  ],
+  "keywords": [
+    "electron-app",
+    "electron"
+  ],
+  "dependencies": {
+    "electron-debug": "^0.5.0"
+  },
+  "devDependencies": {
+    "electron-packager": "^5.0.0",
+    "electron-prebuilt": "^0.35.0",
+    "xo": "^0.11.1"
+  },
+  "xo": {
+    "esnext": true,
+    "envs": [
+      "node",
+      "browser"
+    ]
+  }
+}
