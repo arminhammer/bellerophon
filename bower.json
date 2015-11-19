@@ -1,0 +1,26 @@
+{
+  "name": "bellerophon",
+  "description": "My badass app",
+  "main": "ui.js",
+  "authors": [
+    "[object Object]"
+  ],
+  "license": "Apache 2.0",
+  "keywords": [
+    "electron-app",
+    "electron"
+  ],
+  "homepage": "https://github.com/arminhammer/bellerophon",
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
