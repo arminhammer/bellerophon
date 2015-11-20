@@ -3,6 +3,12 @@
  */
 console.log('Loaded!');
 const P = require('bluebird');
+
+var $ = jQuery = require('jquery');
+window.$ = $;
+require('bootstrap');
+var m = require('mithril');
+
 //var ipcRenderer = P.promisifyAll(require('electron').ipcRenderer);
 
 console.log('Sending');
@@ -48,3 +54,22 @@ ipcRenderer
 		console.log(data);
 	});
 */
+
+var ui = {
+	controller: function() {
+		return {
+			//railPredictions: railPredictions
+		};
+	},
+	view: function(controller) {
+		return [
+			//m.component(Navbar, {}),
+			//m.component(DCMap, controller)
+			m('p', 'TESTTEST')
+		]
+	}
+};
+
+m.route(document.body, "/", {
+	"/": ui
+});

@@ -54,6 +54,7 @@ require('electron-debug')();
 
 // prevent window being garbage collected
 let mainWindow;
+//let sourceWindow;
 
 function onClosed() {
 	// dereference the window
@@ -63,8 +64,8 @@ function onClosed() {
 
 function createMainWindow() {
 	const win = new electron.BrowserWindow({
-		width: 600,
-		height: 400
+		width: 1200,
+		height: 800
 	});
 
 	win.loadURL(`file://${__dirname}/ui/index.html`);
@@ -74,17 +75,21 @@ function createMainWindow() {
 }
 
 app.on('window-all-closed', () => {
-	if (process.platform !== 'darwin') {
-		app.quit();
-	}
+	//if (process.platform !== 'darwin') {
+	//	app.quit();
+	//}
+	app.quit();
 });
 
 app.on('activate-with-no-open-windows', () => {
+	console.log('activate-with-no-open-windows');
 	if (!mainWindow) {
 		mainWindow = createMainWindow();
 	}
 });
 
 app.on('ready', () => {
+	console.log('Ready');
 	mainWindow = createMainWindow();
+	//sourceWindow = createMainWindow();
 });
