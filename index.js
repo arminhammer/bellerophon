@@ -11,15 +11,16 @@ var ec2 = P.promisifyAll(new AWS.EC2());
 console.log('ec2');
 
 const ipcMain = require('electron').ipcMain;
-ipcMain.on('asynchronous-message', function(event, arg) {
-	console.log(arg);  // prints "ping"
-	event.sender.send('asynchronous-reply', 'pong');
+
+ipcMain.on('vpc-request', function(event, arg) {
+	//console.log(arg);  // prints "ping"
+	event.sender.send('vpc-reply', 'vpc-data');
 });
 
-ipcMain.on('synchronous-message', function(event, arg) {
-	console.log(arg);  // prints "ping"
-	event.returnValue = 'pong';
-});
+//ipcMain.on('synchronous-message', function(event, arg) {
+	//console.log(arg);  // prints "ping"
+	//event.returnValue = 'pong';
+//});
 
 /*
 ipcMain
