@@ -13,8 +13,15 @@ console.log('ec2');
 const ipcMain = require('electron').ipcMain;
 
 ipcMain.on('vpc-request', function(event, arg) {
-	//console.log(arg);  // prints "ping"
-	event.sender.send('vpc-reply', 'vpc-data');
+	ec2
+		.describeVpcsAsync({})
+		.then(function(data) {
+			console.log('Sending data');
+			event.sender.send('vpc-reply', data);
+		})
+		.catch(function(e) {
+			console.log(e);
+		});
 });
 
 //ipcMain.on('synchronous-message', function(event, arg) {
@@ -34,15 +41,7 @@ ipcMain
 		"use strict";
 		console.log('VPC-E');
 		//console.log(e);
-		ec2
-			.describeVpcsAsync({})
-			.then(function(data) {
-				console.log('Sending data');
-				event.sender.send('vpc', data);
-			})
-			.catch(function(e) {
-				console.log(e);
-			});
+
 	});
 */
 

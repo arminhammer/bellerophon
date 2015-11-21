@@ -8,77 +8,59 @@ var $ = jQuery = require('jquery');
 window.$ = $;
 require('bootstrap');
 var m = require('mithril');
+var _ = require('lodash');
 
 //var ipcRenderer = P.promisifyAll(require('electron').ipcRenderer);
-
-console.log('Sending');
 
 // In renderer process (web page).
 var ipcRenderer = require('electron').ipcRenderer;
 //console.log(ipcRenderer.sendSync('synchronous-message', 'ping')); // prints "pong"
 
-ipcRenderer.on('asynchronous-reply', function(event, arg) {
-	console.log(arg); // prints "pong"
-});
-ipcRenderer.send('asynchronous-message', 'ping');
+var vpcs = m.prop([]);
 
-var vpcs = m.prop("Original");
+var Resource = function(name, body) {
+	this.name = name;
+	this.body = body;
+	this.inTemplate = m.prop(false);
+};
 
-ipcRenderer.on('vpc-reply', function(event, arg) {
+var resources = {
+	vpcs: []
+};
+
+console.log('Resources before');
+console.log(resources.vpcs);
+
+ipcRenderer.on('vpc-reply', function(event, res) {
 	m.startComputation();
-	console.log('vpc-reply');
-	console.log(arg);
-	vpcs(arg);
-	console.log('vpcs is now');
-	console.log(vpcs());
+	res.Vpcs.forEach(function(vpc) {
+		resources.vpcs.push(new Resource(vpc.VpcId, vpc));
+	});
 	m.endComputation();
 });
 
 ipcRenderer.send('vpc-request');
 
-
-/*
- ipcRenderer
- .sendAsync('vpc', 'get')
- .then(function(msg) {
- "use strict";
- console.log('MSG');
- console.log(msg);
- })
- .catch(function(e) {
- "use strict";
- console.log('MSG-E');
- console.log(e);
- });
-
- ipcRenderer
- .onAsync('vpc')
- .then(function(event, data) {
- "use strict";
- console.log('Event');
- console.log(event);
- console.log('Data');
- console.log(data);
-
- })
- .catch(function(e, data) {
- "use strict";
- console.log('ERROR');
- console.log(e);
- console.log('Data');
- console.log(data);
- });
- */
-
-
 var ui = {
 	controller: function() {
-		this.vpcs = vpcs;
+		this.resources = resources;
 	},
 	view: function(controller) {
 		return ('div', [
 			m('p', 'VPCs'),
-			m('p', controller.vpcs())
+			m('div', [
+				controller.resources.vpcs.map(function(vpc) {
+					console.log(vpc.name);
+					console.log(vpc.inTemplate());
+					//console.log(vpc);
+					return m('div', [
+						m('p', [
+							m("input[type=checkbox]", { checked: vpc.inTemplate(), name: vpc.name, onclick: m.withAttr("checked", vpc.inTemplate ) }),
+							vpc.name
+						])
+					])
+				})
+			])
 		])
 	}
 };
