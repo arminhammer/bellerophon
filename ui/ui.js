@@ -4,11 +4,16 @@
 console.log('Loaded!');
 var P = require('bluebird');
 
-var $ = jQuery = require('jquery');
-window.$ = $;
-require('bootstrap');
+//var $ = jQuery= require('jquery');
+//window.$ = $;
+//var bootstrap = require('bootstrap');
+
+//require('../node_modules/bootstrap/js/affix');
+//require('../node_modules/bootstrap/js/scrollspy');
+
 var m = require('mithril');
 var _ = require('lodash');
+
 
 //var ipcRenderer = P.promisifyAll(require('electron').ipcRenderer);
 
@@ -70,4 +75,4 @@ var ui = {
 	}
 };
 
-m.mount(document.body,ui);
+//m.mount(document.body,ui);
