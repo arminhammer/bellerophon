@@ -1,7 +1,8 @@
 .group {
 	/*background: yellow;*/
 	width: 600px;
-	height: 500px;
+	padding-left: 40px;
+	/*height: 1000px;*/
 }
 /*
 .group .subgroup {
