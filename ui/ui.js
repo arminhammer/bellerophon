@@ -19,9 +19,14 @@ var ipcRenderer = require('electron').ipcRenderer;
 var vpcs = m.prop([]);
 
 var Resource = function(name, body) {
-	this.name = name;
-	this.body = body;
-	this.inTemplate = m.prop(false);
+	var self = this;
+	self.name = name;
+	self.body = body;
+	self.inTemplate = m.prop(false);
+	self.toggleInTemplate = function(setting) {
+		console.log('toggled ' + setting);
+		self.inTemplate(setting);
+	}
 };
 
 var resources = {
@@ -55,7 +60,7 @@ var ui = {
 					//console.log(vpc);
 					return m('div', [
 						m('p', [
-							m("input[type=checkbox]", { checked: vpc.inTemplate(), name: vpc.name, onclick: m.withAttr("checked", vpc.inTemplate ) }),
+							m("input[type=checkbox]", { checked: vpc.inTemplate(), name: vpc.name, onclick: m.withAttr("checked", vpc.toggleInTemplate ) }),
 							vpc.name
 						])
 					])
