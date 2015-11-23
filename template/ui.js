@@ -2,7 +2,7 @@
  * Created by arminhammer on 11/18/15.
  */
 console.log('Loaded!');
-//var P = require('bluebird');
+var P = require('bluebird');
 
 //var $ = jQuery= require('jquery');
 //window.$ = $;
@@ -43,7 +43,7 @@ var resources = {
 		ScheduledAction: []
 	},
 	EC2: {
-
+		/*
 		CustomerGateway : [],
 		DHCPOptions : [],
 		EIP : [],
@@ -57,7 +57,7 @@ var resources = {
 		PlacementGroup : [],
 		Route : [],
 		RouteTable : [],
-
+		*/
 		SecurityGroup : [],
 		/*
 		SecurityGroupEgress : [],
@@ -95,21 +95,15 @@ ipcRenderer.on('vpc-reply', function(event, res) {
 		resources.EC2.VPC.push(new Resource(vpc.VpcId, vpc));
 	});
 	m.endComputation();
-	//console.log('Added VPCs!');
-	//console.log(resources.EC2.VPC);
+	console.log('Added VPCs!');
+	console.log(resources.EC2.VPC);
 });
 
 ipcRenderer.send('vpc-request');
 
-function openTemplateWindow() {
-	console.log('Clicked the button!');
-	ipcRenderer.send('open-template-window');
-}
-
 var ui = {
 	controller: function() {
 		this.resources = resources;
-		this.openTemplateWindow = openTemplateWindow;
 	},
 	view: function(controller) {
 		return m(".container", [
@@ -123,7 +117,6 @@ var ui = {
 			m(".row.MainContent", [
 				m("nav.col-xs-3.bs-docs-sidebar", [
 					m("ul.nav.nav-stacked.fixed[id='sidebar']", [
-						m("button.btn.btn-success#templateButton", { onclick: controller.openTemplateWindow }, "Show Template"),
 						_.map(controller.resources, function(resource, key) {
 							return m("li", [
 								m("a[href='#" + key + "']", key),
@@ -154,8 +147,26 @@ var ui = {
 						])
 					})
 				])
-			])
+			]),
+			"\n"
 		])
+		/*
+		 return ('div', [
+		 m('p', 'VPCs'),
+		 m('div', [
+		 controller.resources.vpcs.map(function(vpc) {
+		 console.log(vpc.name);
+		 console.log(vpc.inTemplate());
+		 //console.log(vpc);
+		 return m('div', [
+		 m('p', [
+		 m("input[type=checkbox]", { checked: vpc.inTemplate(), name: vpc.name, onclick: m.withAttr("checked", vpc.toggleInTemplate ) }),
+		 vpc.name
+		 ])
+		 ])
+		 })
+		 ])
+		 ])*/
 	}
 };
 

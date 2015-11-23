@@ -24,6 +24,13 @@ ipcMain.on('vpc-request', function(event, arg) {
 		});
 });
 
+ipcMain.on('open-template-window', function(event) {
+	console.log('Received request to open template window.');
+	if(!templateWindow) {
+		templateWindow = createTemplateWindow();
+	}
+});
+
 //ipcMain.on('synchronous-message', function(event, arg) {
 	//console.log(arg);  // prints "ping"
 	//event.returnValue = 'pong';
@@ -54,12 +61,14 @@ require('electron-debug')();
 
 // prevent window being garbage collected
 let mainWindow;
-//let sourceWindow;
+let templateWindow;
 
-function onClosed() {
-	// dereference the window
-	// for multiple windows store them in an array
+function onMainClosed() {
 	mainWindow = null;
+}
+
+function onTemplateClosed() {
+	templateWindow = null;
 }
 
 function createMainWindow() {
@@ -69,15 +78,22 @@ function createMainWindow() {
 	});
 
 	win.loadURL(`file://${__dirname}/ui/index.html`);
-	win.on('closed', onClosed);
+	win.on('closed', onMainClosed, 'main');
+	return win;
+}
 
+function createTemplateWindow() {
+	const win = new electron.BrowserWindow({
+		width: 1200,
+		height: 800
+	});
+
+	win.loadURL(`file://${__dirname}/template/index.html`);
+	win.on('closed', onTemplateClosed, 'template');
 	return win;
 }
 
 app.on('window-all-closed', () => {
-	//if (process.platform !== 'darwin') {
-	//	app.quit();
-	//}
 	app.quit();
 });
 
@@ -91,5 +107,4 @@ app.on('activate-with-no-open-windows', () => {
 app.on('ready', () => {
 	console.log('Ready');
 	mainWindow = createMainWindow();
-	//sourceWindow = createMainWindow();
 });
