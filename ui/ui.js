@@ -14,14 +14,11 @@ console.log('Loaded!');
 var m = require('mithril');
 var _ = require('lodash');
 
-
 //var ipcRenderer = P.promisifyAll(require('electron').ipcRenderer);
 
 // In renderer process (web page).
 var ipcRenderer = require('electron').ipcRenderer;
 //console.log(ipcRenderer.sendSync('synchronous-message', 'ping')); // prints "pong"
-
-var vpcs = m.prop([]);
 
 var Resource = function(name, body) {
 	var self = this;
@@ -60,28 +57,28 @@ var resources = {
 
 		SecurityGroup : [],
 		/*
-		SecurityGroupEgress : [],
-		SecurityGroupIngress : [],
-		SpotFleet : [],
-		*/
+		 SecurityGroupEgress : [],
+		 SecurityGroupIngress : [],
+		 SpotFleet : [],
+		 */
 		Subnet : [],
 		/*
-		SubnetNetworkAclAssociation : [],
-		SubnetRouteTableAssociation : [],
-		Volume : [],
-		VolumeAttachment : [],
-		*/
+		 SubnetNetworkAclAssociation : [],
+		 SubnetRouteTableAssociation : [],
+		 Volume : [],
+		 VolumeAttachment : [],
+		 */
 		VPC : []
 		/*
-		VPCDHCPOptionsAssociation : [],
-		VPCEndpoint : [],
-		VPCGatewayAttachment : [],
-		VPCPeeringConnection : [],
-		VPNConnection : [],
-		VPNConnectionRoute : [],
-		VPNGateway : [],
-		VPNGatewayRoutePropagation : []
-		*/
+		 VPCDHCPOptionsAssociation : [],
+		 VPCEndpoint : [],
+		 VPCGatewayAttachment : [],
+		 VPCPeeringConnection : [],
+		 VPNConnection : [],
+		 VPNConnectionRoute : [],
+		 VPNGateway : [],
+		 VPNGatewayRoutePropagation : []
+		 */
 	}
 	//vpcs: []
 };
@@ -106,30 +103,32 @@ function openTemplateWindow() {
 	ipcRenderer.send('open-template-window');
 }
 
-var ui = {
+var uiView = {
 	controller: function() {
 		this.resources = resources;
 		this.openTemplateWindow = openTemplateWindow;
 	},
 	view: function(controller) {
-		return m(".container", [
+		return m(".container-fluid", [
 			m(".navbar.navbar-fixed-top", [
 				m(".container", [
 					m(".navbar-header", [
-						m("a.navbar-brand[href='#']", "Bellerophon")
+						m("a.navbar-brand[href='#']", "Bellerophon"),
+						m("button.btn.btn-success.navbar-btn.navbar-right.pull-right#templateButton", { onclick: controller.openTemplateWindow }, "Show Template")
 					])
 				])
 			]),
 			m(".row.MainContent", [
 				m("nav.col-xs-3.bs-docs-sidebar", [
 					m("ul.nav.nav-stacked.fixed[id='sidebar']", [
-						m("button.btn.btn-success#templateButton", { onclick: controller.openTemplateWindow }, "Show Template"),
 						_.map(controller.resources, function(resource, key) {
 							return m("li", [
 								m("a[href='#" + key + "']", key),
 								m("ul.nav.nav-stacked", [
 									_.map(controller.resources[key], function(subResource, subKey) {
-										return m("li", [m("a[href='#" + key + subKey + "']", subKey)])
+										if(controller.resources[key][subKey].length > 0) {
+											return m("li", [m("a[href='#" + key + subKey + "']", subKey)])
+										}
 									})
 								])
 							])
@@ -141,15 +140,21 @@ var ui = {
 						return m("section.group[id='" + key + "']", [
 							m("h3", key),
 							_.map(controller.resources[key], function(subResource, subKey) {
-								return m(".subgroup[id='" + key + subKey + "']", [
-									m("h4", subKey),
-									_.map(controller.resources[key][subKey], function(resource) {
-										return m('div', [
-											m("input[type=checkbox]", { checked: resource.inTemplate(), name: resource.name, onclick: m.withAttr("checked", resource.toggleInTemplate ) }),
-											resource.name
-										])
-									})
-								])
+								if(controller.resources[key][subKey].length > 0) {
+									return m(".subgroup[id='" + key + subKey + "']", [
+										m("h4", subKey),
+										_.map(controller.resources[key][subKey], function (resource) {
+											return m('div', [
+												m("input[type=checkbox]", {
+													checked: resource.inTemplate(),
+													name: resource.name,
+													onclick: m.withAttr("checked", resource.toggleInTemplate)
+												}),
+												resource.name
+											])
+										})
+									])
+								}
 							})
 						])
 					})
@@ -159,4 +164,4 @@ var ui = {
 	}
 };
 
-m.mount(document.body,ui);
+m.mount(document.body,uiView);

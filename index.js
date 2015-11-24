@@ -12,6 +12,17 @@ console.log('ec2');
 
 const ipcMain = require('electron').ipcMain;
 
+var template = {
+	"AWSTemplateFormatVersion" : "version date",
+	"Description" : "",
+	"Metadata" : {},
+	"Parameters" : {},
+	"Mappings" : {},
+	"Conditions" : {},
+	"Resources" : {},
+	"Outputs" : {}
+};
+
 ipcMain.on('vpc-request', function(event, arg) {
 	ec2
 		.describeVpcsAsync({})
@@ -24,6 +35,11 @@ ipcMain.on('vpc-request', function(event, arg) {
 		});
 });
 
+ipcMain.on('get-template-request', function(event, arg) {
+	console.log('Received get template request');
+	event.sender.send('get-template-reply', template);
+});
+
 ipcMain.on('open-template-window', function(event) {
 	console.log('Received request to open template window.');
 	if(!templateWindow) {
@@ -32,25 +48,25 @@ ipcMain.on('open-template-window', function(event) {
 });
 
 //ipcMain.on('synchronous-message', function(event, arg) {
-	//console.log(arg);  // prints "ping"
-	//event.returnValue = 'pong';
+//console.log(arg);  // prints "ping"
+//event.returnValue = 'pong';
 //});
 
 /*
-ipcMain
-	.onAsync('vpc')
-	.then(function(data) {
-		console.log('VPC');
-		console.log(data);
-		event.sender.send('vpc', 'pong');
-	})
-	.catch(function(event) {
-		"use strict";
-		console.log('VPC-E');
-		//console.log(e);
+ ipcMain
+ .onAsync('vpc')
+ .then(function(data) {
+ console.log('VPC');
+ console.log(data);
+ event.sender.send('vpc', 'pong');
+ })
+ .catch(function(event) {
+ "use strict";
+ console.log('VPC-E');
+ //console.log(e);
 
-	});
-*/
+ });
+ */
 
 
 // report crashes to the Electron project
