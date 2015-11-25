@@ -14,6 +14,10 @@ console.log('Loaded!');
 var m = require('mithril');
 var _ = require('lodash');
 
+var Resource = new require('../resource')();
+console.log('Resource');
+console.log(Resource);
+
 //var ipcRenderer = P.promisifyAll(require('electron').ipcRenderer);
 
 // In renderer process (web page).
@@ -37,23 +41,7 @@ ipcRenderer.on('remove-from-template-reply', function(event, res) {
 });
 
 
-var Resource = function(name, body, block) {
-	var self = this;
-	self.id = name;
-	self.name = name + '-resource';
-	self.body = body;
-	self.inTemplate = m.prop(false);
-	self.block = block;
-	self.toggleInTemplate = function(setting) {
-		console.log('toggled ' + setting);
-		self.inTemplate(setting);
-		if(setting) {
-			addToTemplate(self);
-		} else {
-			removeFromTemplate(self);
-		}
-	}
-};
+
 
 var resources = {
 	Autoscaling: {
@@ -111,23 +99,24 @@ var resources = {
 //console.log(resources.vpcs);
 
 ipcRenderer.on('vpc-reply', function(event, res) {
-	var block = {
-		"Type" : "AWS::EC2::VPC",
-		"Properties" : {
-			"CidrBlock" : "String",
-			"EnableDnsSupport" : "Boolean",
-			"EnableDnsHostnames" : "Boolean",
-			"InstanceTenancy" : "String",
-			"Tags" : []
-		}
-	};
+console.log('Adding VPCs');
 	m.startComputation();
 	res.Vpcs.forEach(function(vpc) {
-		resources.EC2.VPC.push(new Resource(vpc.VpcId, vpc, block));
+		var newVPC = new Resource.VPC(vpc.VpcId, vpc);
+		newVPC.toggleInTemplate = function(setting) {
+			console.log('toggled ' + setting);
+			newVPC.inTemplate(setting);
+			if(setting) {
+				addToTemplate(newVPC);
+			} else {
+				removeFromTemplate(newVPC);
+			}
+		};
+		resources.EC2.VPC.push(newVPC);
 	});
 	m.endComputation();
-	//console.log('Added VPCs!');
-	//console.log(resources.EC2.VPC);
+	console.log('Added VPCs!');
+	console.log(resources.EC2.VPC);
 });
 
 ipcRenderer.send('vpc-request');
@@ -178,13 +167,15 @@ var uiView = {
 									return m(".subgroup[id='" + key + subKey + "']", [
 										m("h4", subKey),
 										_.map(controller.resources[key][subKey], function (resource) {
+											console.log('Looking');
+											console.log(resource);
 											return m('div', [
 												m("input[type=checkbox]", {
 													checked: resource.inTemplate(),
-													name: resource.name,
+													name: resource.id,
 													onclick: m.withAttr("checked", resource.toggleInTemplate)
 												}),
-												resource.name
+												resource.id
 											])
 										})
 									])

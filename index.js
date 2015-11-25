@@ -38,6 +38,12 @@ function addResource(resource) {
 	template.Resources[resource.name] = populateBlock(resource.block, resource.body);
 }
 
+function removeResource(resource) {
+	console.log('block');
+	console.log(resource.block);
+	delete template.Resources[resource.name];
+}
+
 ipcMain.on('vpc-request', function(event, arg) {
 	ec2
 		.describeVpcsAsync({})
@@ -71,6 +77,7 @@ ipcMain.on('add-to-template-request', function(event, res) {
 
 ipcMain.on('remove-from-template-request', function(event, res) {
 	console.log('Removed resource from template');
+	removeResource(res);
 	event.sender.send('remove-from-template-reply');
 });
 
