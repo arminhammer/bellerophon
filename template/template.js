@@ -99,11 +99,11 @@ var templateView = {
 				resizeEditor(editor);
 			});
 
-			/*editor.on('change', function(editor) {
-			 m.startComputation();
-			 template(JSON.parse(editor.getValue()));
-			 m.endComputation();
-			 });*/
+			//editor.on('change', function(editor) {
+			 //m.startComputation();
+			 //template(JSON.parse(editor.getValue()));
+			 //m.endComputation();
+			//});
 
 		}
 	},

@@ -4,6 +4,7 @@ const app = electron.app;
 const AWS = require('aws-sdk');
 AWS.config.region = 'us-east-1';
 const P = require('bluebird');
+const _ = require('lodash');
 
 //var ipcMain = P.promisifyAll(require('electron').ipcMain);
 
@@ -22,6 +23,20 @@ var template = {
 	"Resources" : {},
 	"Outputs" : {}
 };
+
+function populateBlock(block, body) {
+	block.Properties = _.reduce(block.Properties, function(result, n, key) {
+		result[key] = body[key];
+		return result;
+	}, {});
+	return block;
+}
+
+function addResource(resource) {
+	console.log('block');
+	console.log(resource.block);
+	template.Resources[resource.name] = populateBlock(resource.block, resource.body);
+}
 
 ipcMain.on('vpc-request', function(event, arg) {
 	ec2
@@ -45,6 +60,18 @@ ipcMain.on('open-template-window', function(event) {
 	if(!templateWindow) {
 		templateWindow = createTemplateWindow();
 	}
+});
+
+ipcMain.on('add-to-template-request', function(event, res) {
+	console.log('Added resource to template');
+	console.log(res);
+	addResource(res);
+	event.sender.send('add-to-template-reply');
+});
+
+ipcMain.on('remove-from-template-request', function(event, res) {
+	console.log('Removed resource from template');
+	event.sender.send('remove-from-template-reply');
 });
 
 //ipcMain.on('synchronous-message', function(event, arg) {

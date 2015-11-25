@@ -20,14 +20,38 @@ var _ = require('lodash');
 var ipcRenderer = require('electron').ipcRenderer;
 //console.log(ipcRenderer.sendSync('synchronous-message', 'ping')); // prints "pong"
 
-var Resource = function(name, body) {
+function addToTemplate(resource) {
+	ipcRenderer.send('add-to-template-request', resource);
+}
+
+ipcRenderer.on('add-to-template-reply', function(event, res) {
+	console.log('Added resource to template');
+});
+
+function removeFromTemplate(resource) {
+	ipcRenderer.send('remove-from-template-request', resource);
+}
+
+ipcRenderer.on('remove-from-template-reply', function(event, res) {
+	console.log('Removed resource from template');
+});
+
+
+var Resource = function(name, body, block) {
 	var self = this;
-	self.name = name;
+	self.id = name;
+	self.name = name + '-resource';
 	self.body = body;
 	self.inTemplate = m.prop(false);
+	self.block = block;
 	self.toggleInTemplate = function(setting) {
 		console.log('toggled ' + setting);
 		self.inTemplate(setting);
+		if(setting) {
+			addToTemplate(self);
+		} else {
+			removeFromTemplate(self);
+		}
 	}
 };
 
@@ -87,9 +111,19 @@ var resources = {
 //console.log(resources.vpcs);
 
 ipcRenderer.on('vpc-reply', function(event, res) {
+	var block = {
+		"Type" : "AWS::EC2::VPC",
+		"Properties" : {
+			"CidrBlock" : "String",
+			"EnableDnsSupport" : "Boolean",
+			"EnableDnsHostnames" : "Boolean",
+			"InstanceTenancy" : "String",
+			"Tags" : []
+		}
+	};
 	m.startComputation();
 	res.Vpcs.forEach(function(vpc) {
-		resources.EC2.VPC.push(new Resource(vpc.VpcId, vpc));
+		resources.EC2.VPC.push(new Resource(vpc.VpcId, vpc, block));
 	});
 	m.endComputation();
 	//console.log('Added VPCs!');
