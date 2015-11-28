@@ -60,7 +60,13 @@ function addResource(resource) {
 	console.log('Recursive rename');
 	recursiveReplace(template.Resources, '{ Ref: ' + resource.name + ' }', resource.id);
 	//console.log(resource.block);
-	template.Resources[resource.name] = populateBlock(resource.block, resource.body);
+	var newResource = populateBlock(resource.block, resource.body);
+	_.each(template.Resources, function(val, key) {
+		console.log('Checking ' + key);
+		console.log('Match: ' + key.replace('-resource',''));
+		recursiveReplace(newResource, '{ Ref: ' + key + ' }', key.replace('-resource',''))
+	});
+	template.Resources[resource.name] = newResource;
 }
 
 function removeResource(resource) {
