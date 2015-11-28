@@ -32,15 +32,41 @@ function populateBlock(block, body) {
 	return block;
 }
 
+function recursiveReplace(object, newPattern, oldPattern) {
+	_.forIn(object, function (val, key) {
+		console.log('Recursive Run');
+		if(val === oldPattern) {
+			console.log('Replacing at ' + val);
+			object[key] = newPattern
+		}
+		//console.log(key);
+		if (_.isArray(val)) {
+			console.log('Recursing on an array ' + val);
+			val.forEach(function(el) {
+				if (_.isObject(el)) {
+					recursiveReplace(el, newPattern, oldPattern);
+				}
+			});
+		}
+		if (_.isObject(object[key])) {
+			console.log('Recursing on an object ' + key);
+			recursiveReplace(object[key], newPattern, oldPattern);
+		}
+	});
+}
+
 function addResource(resource) {
 	console.log('block');
-	console.log(resource.block);
+	console.log('Recursive rename');
+	recursiveReplace(template.Resources, '{ Ref: ' + resource.name + ' }', resource.id);
+	//console.log(resource.block);
 	template.Resources[resource.name] = populateBlock(resource.block, resource.body);
 }
 
 function removeResource(resource) {
 	console.log('block');
 	console.log(resource.block);
+	recursiveReplace(template.Resources, resource.id, '{ Ref: ' + resource.name + ' }');
 	delete template.Resources[resource.name];
 }
 
@@ -60,7 +86,7 @@ ipcMain.on('get-resource-request', function(event, arg) {
 		.call
 		.then(function(data) {
 			console.log('Sending data');
-			console.log(data);
+			//console.log(data);
 			data.type = arg;
 			event.sender.send('get-resource-reply', data);
 		})
