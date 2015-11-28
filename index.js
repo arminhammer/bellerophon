@@ -44,18 +44,6 @@ function removeResource(resource) {
 	delete template.Resources[resource.name];
 }
 
-ipcMain.on('vpc-request', function(event, arg) {
-	ec2
-		.describeVpcsAsync({})
-		.then(function(data) {
-			console.log('Sending data');
-			event.sender.send('vpc-reply', data);
-		})
-		.catch(function(e) {
-			console.log(e);
-		});
-});
-
 ipcMain.on('get-resource-request', function(event, arg) {
 	console.log('Got resource request');
 	console.log(arg);
@@ -105,28 +93,6 @@ ipcMain.on('remove-from-template-request', function(event, res) {
 	removeResource(res);
 	event.sender.send('remove-from-template-reply');
 });
-
-//ipcMain.on('synchronous-message', function(event, arg) {
-//console.log(arg);  // prints "ping"
-//event.returnValue = 'pong';
-//});
-
-/*
- ipcMain
- .onAsync('vpc')
- .then(function(data) {
- console.log('VPC');
- console.log(data);
- event.sender.send('vpc', 'pong');
- })
- .catch(function(event) {
- "use strict";
- console.log('VPC-E');
- //console.log(e);
-
- });
- */
-
 
 // report crashes to the Electron project
 require('crash-reporter').start();

@@ -4,13 +4,6 @@
 console.log('Loaded!');
 //var P = require('bluebird');
 
-//var $ = jQuery= require('jquery');
-//window.$ = $;
-//var bootstrap = require('bootstrap');
-
-//require('../node_modules/bootstrap/js/affix');
-//require('../node_modules/bootstrap/js/scrollspy');
-
 var m = require('mithril');
 var _ = require('lodash');
 
@@ -94,29 +87,6 @@ var resources = {
 
 //console.log('Resources before');
 //console.log(resources.vpcs);
-
-ipcRenderer.on('vpc-reply', function(event, res) {
-console.log('Adding VPCs');
-	m.startComputation();
-	res.Vpcs.forEach(function(vpc) {
-		var newVPC = new Resource.AWS_EC2_VPC(vpc.VpcId, vpc);
-		newVPC.toggleInTemplate = function(setting) {
-			console.log('toggled ' + setting);
-			newVPC.inTemplate(setting);
-			if(setting) {
-				addToTemplate(newVPC);
-			} else {
-				removeFromTemplate(newVPC);
-			}
-		};
-		resources.EC2.VPC.push(newVPC);
-	});
-	m.endComputation();
-	console.log('Added VPCs!');
-	console.log(resources.EC2.VPC);
-});
-
-//ipcRenderer.send('vpc-request');
 
 ipcRenderer.on('get-resource-reply', function(event, res) {
 	console.log('Adding resources');
