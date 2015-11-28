@@ -56,6 +56,31 @@ ipcMain.on('vpc-request', function(event, arg) {
 		});
 });
 
+ipcMain.on('get-resource-request', function(event, arg) {
+	console.log('Got resource request');
+	console.log(arg);
+	var params = {};
+	switch(arg) {
+		case "AWS::EC2::VPC":
+			params = { call: ec2.describeVpcsAsync({}) };
+			break;
+		case "AWS::EC2::SUBNET":
+			params = { call: ec2.describeSubnetsAsync({}) };
+			break;
+	};
+	params
+		.call
+		.then(function(data) {
+			console.log('Sending data');
+			console.log(data);
+			data.type = arg;
+			event.sender.send('get-resource-reply', data);
+		})
+		.catch(function(e) {
+			console.log(e);
+		});
+});
+
 ipcMain.on('get-template-request', function(event, arg) {
 	console.log('Received get template request');
 	event.sender.send('get-template-reply', template);

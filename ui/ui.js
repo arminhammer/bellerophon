@@ -40,9 +40,6 @@ ipcRenderer.on('remove-from-template-reply', function(event, res) {
 	console.log('Removed resource from template');
 });
 
-
-
-
 var resources = {
 	Autoscaling: {
 		AutoScalingGroup: [],
@@ -102,7 +99,7 @@ ipcRenderer.on('vpc-reply', function(event, res) {
 console.log('Adding VPCs');
 	m.startComputation();
 	res.Vpcs.forEach(function(vpc) {
-		var newVPC = new Resource.VPC(vpc.VpcId, vpc);
+		var newVPC = new Resource.AWS_EC2_VPC(vpc.VpcId, vpc);
 		newVPC.toggleInTemplate = function(setting) {
 			console.log('toggled ' + setting);
 			newVPC.inTemplate(setting);
@@ -119,7 +116,41 @@ console.log('Adding VPCs');
 	console.log(resources.EC2.VPC);
 });
 
-ipcRenderer.send('vpc-request');
+//ipcRenderer.send('vpc-request');
+
+ipcRenderer.on('get-resource-reply', function(event, res) {
+	console.log('Adding resources');
+	m.startComputation();
+	var params = {};
+	switch(res.type) {
+		case "AWS::EC2::VPC":
+			params = { resBlock: res.Vpcs, constructor: Resource.AWS_EC2_VPC, name: "VpcId", targetBlock: resources.EC2.VPC };
+			break;
+		case "AWS::EC2::SUBNET":
+			params = { resBlock: res.Subnets, constructor: Resource.AWS_EC2_SUBNET, name: "SubnetId", targetBlock: resources.EC2.Subnet };
+			break;
+		default:
+			console.log('Resource type not found.');
+			break;
+	}
+	params.resBlock.forEach(function(r) {
+		var newResource = new params.constructor(r[params.name], r);
+		newResource.toggleInTemplate = function(setting) {
+			newResource.inTemplate(setting);
+			if(setting) {
+				addToTemplate(newResource);
+			} else {
+				removeFromTemplate(newResource);
+			}
+		};
+		params.targetBlock.push(newResource);
+	});
+	m.endComputation();
+	console.log('Added Resources!');
+});
+
+ipcRenderer.send('get-resource-request', "AWS::EC2::VPC");
+ipcRenderer.send('get-resource-request', "AWS::EC2::SUBNET");
 
 function openTemplateWindow() {
 	console.log('Clicked the button!');

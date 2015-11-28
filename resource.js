@@ -12,7 +12,7 @@ var Resource = function() {
 
 	};
 
-	var VPC = function(name, body) {
+	var AWS_EC2_VPC = function(name, body) {
 		ResourceBase.call(this);
 		var self = this;
 		self.id = name;
@@ -29,10 +29,32 @@ var Resource = function() {
 			}
 		};
 	};
-	VPC.prototype = Object.create(ResourceBase.prototype);
+	AWS_EC2_VPC.prototype = Object.create(ResourceBase.prototype);
+
+	var AWS_EC2_SUBNET = function(name, body) {
+		ResourceBase.call(this);
+		var self = this;
+		self.id = name;
+		self.name = name + '-resource';
+		self.body = body;
+		self.block = {
+			"Type" : "AWS::EC2::Subnet",
+			"Properties" : {
+				"AvailabilityZone": "String",
+				"CidrBlock": "String",
+				"MapPublicIpOnLaunch": "Boolean",
+				"Tags": [],
+				"VpcId": {"Ref": "String"}
+
+			}
+		};
+	};
+	AWS_EC2_SUBNET.prototype = Object.create(ResourceBase.prototype);
+
 
 	return {
-		VPC: VPC
+		AWS_EC2_VPC: AWS_EC2_VPC,
+		AWS_EC2_SUBNET: AWS_EC2_SUBNET
 	}
 
 };
