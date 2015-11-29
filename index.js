@@ -34,14 +34,14 @@ function populateBlock(block, body) {
 
 function recursiveReplace(object, newPattern, oldPattern) {
 	_.forIn(object, function (val, key) {
-		console.log('Recursive Run');
+		//console.log('Recursive Run');
 		if(val === oldPattern) {
-			console.log('Replacing at ' + val);
+			//console.log('Replacing at ' + val);
 			object[key] = newPattern
 		}
 		//console.log(key);
 		if (_.isArray(val)) {
-			console.log('Recursing on an array ' + val);
+			//console.log('Recursing on an array ' + val);
 			val.forEach(function(el) {
 				if (_.isObject(el)) {
 					recursiveReplace(el, newPattern, oldPattern);
@@ -49,7 +49,7 @@ function recursiveReplace(object, newPattern, oldPattern) {
 			});
 		}
 		if (_.isObject(object[key])) {
-			console.log('Recursing on an object ' + key);
+			//console.log('Recursing on an object ' + key);
 			recursiveReplace(object[key], newPattern, oldPattern);
 		}
 	});
@@ -86,6 +86,9 @@ ipcMain.on('get-resource-request', function(event, arg) {
 			break;
 		case "AWS::EC2::SUBNET":
 			params = { call: ec2.describeSubnetsAsync({}) };
+			break;
+		case "AWS::EC2::SECURITYGROUP":
+			params = { call: ec2.describeSecurityGroupsAsync({}) };
 			break;
 	};
 	params

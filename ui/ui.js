@@ -8,8 +8,8 @@ var m = require('mithril');
 var _ = require('lodash');
 
 var Resource = new require('../resource')();
-console.log('Resource');
-console.log(Resource);
+//console.log('Resource');
+//console.log(Resource);
 
 //var ipcRenderer = P.promisifyAll(require('electron').ipcRenderer);
 
@@ -89,7 +89,7 @@ var resources = {
 //console.log(resources.vpcs);
 
 ipcRenderer.on('get-resource-reply', function(event, res) {
-	console.log('Adding resources');
+	//console.log('Adding resources');
 	m.startComputation();
 	var params = {};
 	switch(res.type) {
@@ -98,6 +98,11 @@ ipcRenderer.on('get-resource-reply', function(event, res) {
 			break;
 		case "AWS::EC2::SUBNET":
 			params = { resBlock: res.Subnets, constructor: Resource.AWS_EC2_SUBNET, name: "SubnetId", targetBlock: resources.EC2.Subnet };
+			break;
+		case "AWS::EC2::SECURITYGROUP":
+			console.log('SEC GROUP');
+			console.log(res);
+			params = { resBlock: res.SecurityGroups, constructor: Resource.AWS_EC2_SECURITYGROUP, name: "GroupId", targetBlock: resources.EC2.SecurityGroup };
 			break;
 		default:
 			console.log('Resource type not found.');
@@ -116,14 +121,15 @@ ipcRenderer.on('get-resource-reply', function(event, res) {
 		params.targetBlock.push(newResource);
 	});
 	m.endComputation();
-	console.log('Added Resources!');
+	//console.log('Added Resources!');
 });
 
 ipcRenderer.send('get-resource-request', "AWS::EC2::VPC");
 ipcRenderer.send('get-resource-request', "AWS::EC2::SUBNET");
+ipcRenderer.send('get-resource-request', "AWS::EC2::SECURITYGROUP");
 
 function openTemplateWindow() {
-	console.log('Clicked the button!');
+	//console.log('Clicked the button!');
 	ipcRenderer.send('open-template-window');
 }
 
@@ -168,15 +174,22 @@ var uiView = {
 									return m(".subgroup[id='" + key + subKey + "']", [
 										m("h4", subKey),
 										_.map(controller.resources[key][subKey], function (resource) {
-											console.log('Looking');
-											console.log(resource);
+											//console.log('Looking');
+											//console.log(resource);
 											return m('div', [
-												m("input[type=checkbox]", {
-													checked: resource.inTemplate(),
-													name: resource.id,
-													onclick: m.withAttr("checked", resource.toggleInTemplate)
-												}),
-												resource.id
+												m('div', [
+													m("input[type=checkbox]", {
+														checked: resource.inTemplate(),
+														name: resource.id,
+														onclick: m.withAttr("checked", resource.toggleInTemplate)
+													}),
+													resource.id
+												]),
+												m('div', [
+													_.map(resource.body, function(bVal, bKey) {
+														return m('div', bKey + ': ' + bVal)
+													})
+												])
 											])
 										})
 									])

@@ -51,10 +51,29 @@ var Resource = function() {
 	};
 	AWS_EC2_SUBNET.prototype = Object.create(ResourceBase.prototype);
 
+	var AWS_EC2_SECURITYGROUP = function(name, body) {
+		ResourceBase.call(this);
+		var self = this;
+		self.id = name;
+		self.name = name + '-resource';
+		self.body = body;
+		self.block = {
+			"Type" : "AWS::EC2::SecurityGroup",
+			"Properties" : {
+				"GroupDescription" : "String",
+				"SecurityGroupEgress" : [],
+				"SecurityGroupIngress" : [],
+				"Tags" :  [],
+				"VpcId" : "String"
+			}
+		};
+	};
+	AWS_EC2_SECURITYGROUP.prototype = Object.create(ResourceBase.prototype);
 
 	return {
 		AWS_EC2_VPC: AWS_EC2_VPC,
-		AWS_EC2_SUBNET: AWS_EC2_SUBNET
+		AWS_EC2_SUBNET: AWS_EC2_SUBNET,
+		AWS_EC2_SECURITYGROUP: AWS_EC2_SECURITYGROUP
 	}
 
 };
