@@ -25,6 +25,10 @@ var log = function(msg, level, from) {
 	logger.log(level, from, msg);
 };
 
+// prevent window being garbage collected
+let mainWindow;
+let templateWindow;
+
 //var ipcMain = P.promisifyAll(require('electron').ipcMain);
 
 var ec2 = P.promisifyAll(new AWS.EC2());
@@ -88,6 +92,9 @@ function addResource(resource) {
 		recursiveReplace(newResource, '{ Ref: ' + key + ' }', key.replace('-resource',''))
 	});
 	template.Resources[resource.name] = newResource;
+	if(templateWindow) {
+		templateWindow.webContents.send('update-template', template);
+	}
 }
 
 function removeResource(resource) {
@@ -95,6 +102,9 @@ function removeResource(resource) {
 	console.log(resource.block);
 	recursiveReplace(template.Resources, resource.id, '{ Ref: ' + resource.name + ' }');
 	delete template.Resources[resource.name];
+	if(templateWindow) {
+		templateWindow.webContents.send('update-template', template);
+	}
 }
 
 ipcMain.on('send-log', function(event, arg) {
@@ -160,10 +170,6 @@ require('crash-reporter').start();
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
-
-// prevent window being garbage collected
-let mainWindow;
-let templateWindow;
 
 function onMainClosed() {
 	mainWindow = null;

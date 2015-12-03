@@ -41,8 +41,11 @@ ipcRenderer.on('get-template-reply', function(event, res) {
 
 ipcRenderer.send('get-template-request');
 
-ipcRenderer.on('update-template', function(event, message) {
-	console.log('Updating template!');
+ipcRenderer.on('update-template', function(event, res) {
+	m.startComputation();
+	log('Updating template!');
+	template(res);
+	m.endComputation();
 });
 
 /**
