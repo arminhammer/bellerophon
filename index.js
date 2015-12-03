@@ -7,6 +7,8 @@ const P = require('bluebird');
 const _ = require('lodash');
 const winston = require('winston');
 
+var Resource = new require('./resource')();
+
 var logger = new winston.Logger({
 	level: 'info',
 	transports: [
@@ -32,9 +34,7 @@ let templateWindow;
 //var ipcMain = P.promisifyAll(require('electron').ipcMain);
 
 var ec2 = P.promisifyAll(new AWS.EC2());
-log('ec2');
-log('INITIALIZING WINSTON');
-log('INITINIT');
+log('Initializing Main');
 
 const ipcMain = require('electron').ipcMain;
 
@@ -47,6 +47,57 @@ var template = {
 	"Conditions" : {},
 	"Resources" : {},
 	"Outputs" : {}
+};
+
+var availableResources = {
+	/*Autoscaling: {
+		AutoScalingGroup: [],
+		LaunchConfiguration: [],
+		LifecycleHook: [],
+		ScalingPolicy: [],
+		ScheduledAction: []
+	},*/
+	EC2: {
+		CustomerGateway : [],
+		DHCPOptions : [],
+		EIP : [],
+		EIPAssociation : [],
+		Instance : [],
+		InternetGateway : [],
+		NetworkAcl : [],
+		NetworkAclEntry : [],
+		NetworkInterface : [],
+		NetworkInterfaceAttachment : [],
+		PlacementGroup : [],
+		Route : [],
+		RouteTable : [],
+
+		SecurityGroup : [],
+		/*
+		 SecurityGroupEgress : [],
+		 SecurityGroupIngress : [],
+		 SpotFleet : [],
+		 */
+		Subnet : [],
+		/*
+		 SubnetNetworkAclAssociation : [],
+		 SubnetRouteTableAssociation : [],
+		 Volume : [],
+		 VolumeAttachment : [],
+		 */
+		VPC : []
+		/*
+		 VPCDHCPOptionsAssociation : [],
+		 VPCEndpoint : [],
+		 VPCGatewayAttachment : [],
+		 VPCPeeringConnection : [],
+		 VPNConnection : [],
+		 VPNConnectionRoute : [],
+		 VPNGateway : [],
+		 VPNGatewayRoutePropagation : []
+		 */
+	}
+	//vpcs: []
 };
 
 function populateBlock(block, body) {
@@ -106,6 +157,47 @@ function removeResource(resource) {
 		templateWindow.webContents.send('update-template', template);
 	}
 }
+
+ipcMain.on('update-resources', function(event, res) {
+	log('Got update-resources request');
+	var params = {};
+	switch(res) {
+		case "AWS::EC2::VPC":
+			params = { call: ec2.describeVpcsAsync({}), resBlock: 'Vpcs', constructor: Resource.AWS_EC2_VPC, name: "VpcId", targetBlock: availableResources.EC2.VPC };
+			break;
+		case "AWS::EC2::SUBNET":
+			params = { call: ec2.describeSubnetsAsync({}) };
+			break;
+		case "AWS::EC2::SECURITYGROUP":
+			params = { call: ec2.describeSecurityGroupsAsync({}) };
+			break;
+	};
+	params
+		.call
+		.then(function(data) {
+			log('Sending data');
+			log(data);
+
+			data[params.resBlock].forEach(function(r) {
+				var newResource = new params.constructor(r[params.name], r);
+				/*newResource.toggleInTemplate = function(setting) {
+					newResource.inTemplate(setting);
+					if(setting) {
+						addToTemplate(newResource);
+					} else {
+						removeFromTemplate(newResource);
+					}
+				};*/
+				params.targetBlock.push(newResource);
+			});
+
+			//data.type = arg;
+			event.sender.send('update-resources', availableResources);
+		})
+		.catch(function(e) {
+			console.log(e);
+		});
+});
 
 ipcMain.on('send-log', function(event, arg) {
 	console.log('Received log request');

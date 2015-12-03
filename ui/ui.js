@@ -1,13 +1,16 @@
 /**
  * Created by arminhammer on 11/18/15.
  */
+
+"use strict";
+
 console.log('Loaded!');
 //var P = require('bluebird');
 
 var m = require('mithril');
 var _ = require('lodash');
 
-var Resource = new require('../resource')();
+
 //console.log('Resource');
 //console.log(Resource);
 
@@ -26,73 +29,33 @@ var log = function(msg, level) {
 
 log('Initialized UI.');
 
-function addToTemplate(resource) {
-	ipcRenderer.send('add-to-template-request', resource);
+function addToTemplate(resourceReq) {
+	ipcRenderer.send('add-to-template-request', resourceReq);
 }
 
 ipcRenderer.on('add-to-template-reply', function(event, res) {
 	console.log('Added resource to template');
 });
 
-function removeFromTemplate(resource) {
-	ipcRenderer.send('remove-from-template-request', resource);
+function removeFromTemplate(resourceReq) {
+	ipcRenderer.send('remove-from-template-request', resourceReq);
 }
 
 ipcRenderer.on('remove-from-template-reply', function(event, res) {
 	console.log('Removed resource from template');
 });
 
-var resources = {
-	Autoscaling: {
-		AutoScalingGroup: [],
-		LaunchConfiguration: [],
-		LifecycleHook: [],
-		ScalingPolicy: [],
-		ScheduledAction: []
-	},
-	EC2: {
+var resources = m.prop({});
 
-		CustomerGateway : [],
-		DHCPOptions : [],
-		EIP : [],
-		EIPAssociation : [],
-		Instance : [],
-		InternetGateway : [],
-		NetworkAcl : [],
-		NetworkAclEntry : [],
-		NetworkInterface : [],
-		NetworkInterfaceAttachment : [],
-		PlacementGroup : [],
-		Route : [],
-		RouteTable : [],
+ipcRenderer.send('update-resources', 'AWS::EC2::VPC');
 
-		SecurityGroup : [],
-		/*
-		 SecurityGroupEgress : [],
-		 SecurityGroupIngress : [],
-		 SpotFleet : [],
-		 */
-		Subnet : [],
-		/*
-		 SubnetNetworkAclAssociation : [],
-		 SubnetRouteTableAssociation : [],
-		 Volume : [],
-		 VolumeAttachment : [],
-		 */
-		VPC : []
-		/*
-		 VPCDHCPOptionsAssociation : [],
-		 VPCEndpoint : [],
-		 VPCGatewayAttachment : [],
-		 VPCPeeringConnection : [],
-		 VPNConnection : [],
-		 VPNConnectionRoute : [],
-		 VPNGateway : [],
-		 VPNGatewayRoutePropagation : []
-		 */
-	}
-	//vpcs: []
-};
+ipcRenderer.on('update-resources', function(event, res) {
+    m.startComputation();
+	log('Updating resources');
+	resources(res);
+	//log(resources());
+	m.endComputation();
+});
 
 //console.log('Resources before');
 //console.log(resources.vpcs);
@@ -133,9 +96,9 @@ ipcRenderer.on('get-resource-reply', function(event, res) {
 	//console.log('Added Resources!');
 });
 
-ipcRenderer.send('get-resource-request', "AWS::EC2::VPC");
-ipcRenderer.send('get-resource-request', "AWS::EC2::SUBNET");
-ipcRenderer.send('get-resource-request', "AWS::EC2::SECURITYGROUP");
+//ipcRenderer.send('get-resource-request', "AWS::EC2::VPC");
+//ipcRenderer.send('get-resource-request', "AWS::EC2::SUBNET");
+//ipcRenderer.send('get-resource-request', "AWS::EC2::SECURITYGROUP");
 
 function openTemplateWindow() {
 	//console.log('Clicked the button!');
@@ -160,12 +123,12 @@ var uiView = {
 			m(".row.MainContent", [
 				m("nav.col-xs-3.bs-docs-sidebar", [
 					m("ul.nav.nav-stacked.fixed[id='sidebar']", [
-						_.map(controller.resources, function(resource, key) {
+						_.map(controller.resources(), function(resource, key) {
 							return m("li", [
 								m("a[href='#" + key + "']", key),
 								m("ul.nav.nav-stacked", [
-									_.map(controller.resources[key], function(subResource, subKey) {
-										if(controller.resources[key][subKey].length > 0) {
+									_.map(controller.resources()[key], function(subResource, subKey) {
+										if(controller.resources()[key][subKey].length > 0) {
 											return m("li", [m("a[href='#" + key + subKey + "']", subKey)])
 										}
 									})
@@ -175,28 +138,38 @@ var uiView = {
 					])
 				]),
 				m(".col-xs-9", [
-					_.map(controller.resources, function(group, key) {
+					_.map(controller.resources(), function(group, key) {
 						return m("section.group[id='" + key + "']", [
 							m("h3", key),
-							_.map(controller.resources[key], function(subResource, subKey) {
-								if(controller.resources[key][subKey].length > 0) {
+							_.map(controller.resources()[key], function(subResource, subKey) {
+								if(controller.resources()[key][subKey].length > 0) {
 									return m(".subgroup[id='" + key + subKey + "']", [
 										m("h4", subKey),
-										_.map(controller.resources[key][subKey], function (resource) {
+										_.map(controller.resources()[key][subKey], function (resource) {
 											//console.log('Looking');
 											//console.log(resource);
 											return m('div', [
 												m('div', [
 													m("input[type=checkbox]", {
-														checked: resource.inTemplate(),
+														checked: resource.inTemplate,
 														name: resource.id,
-														onclick: m.withAttr("checked", resource.toggleInTemplate)
+														onclick: m.withAttr("checked", function() {
+															log('Checked ' + resource);
+															if(resource.inTemplate) {
+																removeFromTemplate(resource);
+															} else {
+																addToTemplate({resource: resource, key: key, subKey: subKey});
+															}
+														})
 													}),
 													resource.id
 												]),
 												m('div', [
 													_.map(resource.body, function(bVal, bKey) {
-														return m('div', bKey + ': ' + bVal)
+														return m('div', [
+															m('b', bKey + ': '),
+															m('i', bVal)
+														])
 													})
 												])
 											])

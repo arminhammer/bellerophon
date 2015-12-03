@@ -2,14 +2,15 @@
  * Created by arminhammer on 11/24/15.
  */
 
+"use strict";
+
 var m = require('mithril');
 
 var Resource = function() {
 
 	var ResourceBase = function() {
 		var self = this;
-		self.inTemplate = m.prop(false);
-
+		self.inTemplate = false;
 	};
 
 	var AWS_EC2_VPC = function(name, body) {
@@ -28,6 +29,9 @@ var Resource = function() {
 				"Tags" : []
 			}
 		};
+		self.getFromAWS = function() {
+
+		}
 	};
 	AWS_EC2_VPC.prototype = Object.create(ResourceBase.prototype);
 
