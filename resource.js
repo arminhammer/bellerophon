@@ -4,8 +4,6 @@
 
 "use strict";
 
-var m = require('mithril');
-
 var Resource = function() {
 
 	var ResourceBase = function() {
@@ -29,9 +27,6 @@ var Resource = function() {
 				"Tags" : []
 			}
 		};
-		self.getFromAWS = function() {
-
-		}
 	};
 	AWS_EC2_VPC.prototype = Object.create(ResourceBase.prototype);
 

@@ -159,21 +159,41 @@ ipcMain.on('update-resources', function(event, res) {
 	log('Got update-resources request');
 	var params = {};
 	switch(res) {
-		case "AWS::EC2::VPC":
-			params = { call: ec2.describeVpcsAsync({}), resBlock: 'Vpcs', constructor: Resource.AWS_EC2_VPC, name: "VpcId", targetBlock: availableResources.EC2.VPC };
+		case "AWS_EC2_VPC":
+			params = {
+				call: ec2.describeVpcsAsync({}),
+				resBlock: 'Vpcs',
+				constructor: Resource.AWS_EC2_VPC,
+				name: "VpcId",
+				targetBlock: availableResources.EC2.VPC
+			};
 			break;
-		case "AWS::EC2::SUBNET":
-			params = { call: ec2.describeSubnetsAsync({}), resBlock: 'Subnets', constructor: Resource.AWS_EC2_SUBNET, name: "SubnetId", targetBlock: availableResources.EC2.Subnet };
+		case "AWS_EC2_SUBNET":
+			params = {
+				call: ec2.describeSubnetsAsync({}),
+				resBlock: 'Subnets',
+				constructor: Resource.AWS_EC2_SUBNET,
+				name: "SubnetId",
+				targetBlock: availableResources.EC2.Subnet
+			};
 			break;
-		case "AWS::EC2::SECURITYGROUP":
-			params = { call: ec2.describeSecurityGroupsAsync({}), resBlock: 'SecurityGroups', constructor: Resource.AWS_EC2_SECURITYGROUP, name: "GroupId", targetBlock: availableResources.EC2.SecurityGroup };
+		case "AWS_EC2_SECURITYGROUP":
+			params = {
+				call: ec2.describeSecurityGroupsAsync({}),
+				resBlock: 'SecurityGroups',
+				constructor: Resource.AWS_EC2_SECURITYGROUP,
+				name: "GroupId",
+				targetBlock: availableResources.EC2.SecurityGroup
+			};
 			break;
 	};
 	params
 		.call
 		.then(function(data) {
 			log('Sending data');
-			log(data);
+			//log(Resource);
+			console.log(res);
+			log(Resource[res].blockGroup);
 
 			data[params.resBlock].forEach(function(r) {
 				var newResource = new params.constructor(r[params.name], r);
@@ -191,6 +211,7 @@ ipcMain.on('send-log', function(event, arg) {
 	log(arg.msg, arg.level, arg.from);
 });
 
+/*
 ipcMain.on('get-resource-request', function(event, arg) {
 	console.log('Got resource request');
 	console.log(arg);
@@ -217,6 +238,7 @@ ipcMain.on('get-resource-request', function(event, arg) {
 			console.log(e);
 		});
 });
+*/
 
 ipcMain.on('get-template-request', function(event, arg) {
 	console.log('Received get template request');

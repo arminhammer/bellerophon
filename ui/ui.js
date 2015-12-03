@@ -32,9 +32,9 @@ function removeFromTemplate(resourceReq) {
 
 var resources = m.prop({});
 
-ipcRenderer.send('update-resources', 'AWS::EC2::VPC');
-ipcRenderer.send('update-resources', "AWS::EC2::SUBNET");
-ipcRenderer.send('update-resources', "AWS::EC2::SECURITYGROUP");
+ipcRenderer.send('update-resources', 'AWS_EC2_VPC');
+ipcRenderer.send('update-resources', "AWS_EC2_SUBNET");
+ipcRenderer.send('update-resources', "AWS_EC2_SECURITYGROUP");
 
 ipcRenderer.on('update-resources', function(event, res) {
     m.startComputation();
