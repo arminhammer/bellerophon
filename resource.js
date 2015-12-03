@@ -9,6 +9,7 @@ var Resource = function() {
 	var ResourceBase = function() {
 		var self = this;
 		self.inTemplate = false;
+		self.templateParams = {};
 	};
 
 	var AWS_EC2_VPC = function(name, body) {

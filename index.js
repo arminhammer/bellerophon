@@ -154,6 +154,36 @@ function removeResource(resource) {
 	}
 }
 
+function addParam(resource, pKey) {
+	if(template.Resources[resource.name]) {
+		if(template.Resources[resource.name].Properties[pKey]) {
+			var oldVal = template.Resources[resource.name].Properties[pKey];
+			var paramName = resource.name + '-' + pKey + '-param';
+			template.Resources[resource.name].Properties[pKey] = '{ Ref: ' + paramName + ' }';
+			template.Parameters[paramName] = {
+				"Type" : "String",
+				"Default" : oldVal
+			}
+		}
+	}
+	if(templateWindow) {
+		templateWindow.webContents.send('update-template', template);
+	}
+}
+
+function removeParam(resource, pKey) {
+	if(template.Resources[resource.name]) {
+		if(template.Resources[resource.name].Properties[pKey]) {
+			var paramName = resource.name + '-' + pKey + '-param';
+			template.Resources[resource.name].Properties[pKey] = template.Parameters[paramName].Default;
+			delete template.Parameters[paramName];
+		}
+	}
+	if(templateWindow) {
+		templateWindow.webContents.send('update-template', template);
+	}
+}
+
 
 ipcMain.on('update-resources', function(event, res) {
 	log('Got update-resources request');
@@ -250,6 +280,21 @@ ipcMain.on('open-template-window', function(event) {
 	if(!templateWindow) {
 		templateWindow = createTemplateWindow();
 	}
+});
+
+ipcMain.on('toggle-param', function(event, res) {
+	log('Toggling param in template');
+	if(availableResources[res.key][res.subKey][res.resource.id].templateParams[res.pKey]) {
+		availableResources[res.key][res.subKey][res.resource.id].templateParams[res.pKey] = false;
+		removeParam(res.resource, res.pKey);
+	} else {
+		availableResources[res.key][res.subKey][res.resource.id].templateParams[res.pKey] = true;
+		addParam(res.resource, res.pKey);
+	}
+	log('avail');
+	log(availableResources[res.key][res.subKey][res.resource.id].templateParams);
+	//addResource(res.resource);
+	event.sender.send('update-resources', availableResources);
 });
 
 ipcMain.on('add-to-template-request', function(event, res) {

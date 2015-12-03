@@ -30,6 +30,10 @@ function removeFromTemplate(resourceReq) {
 	ipcRenderer.send('remove-from-template-request', resourceReq);
 }
 
+function toggleParamInTemplate(paramReq) {
+	ipcRenderer.send('toggle-param', paramReq);
+}
+
 var resources = m.prop({});
 
 ipcRenderer.send('update-resources', 'AWS_EC2_VPC');
@@ -137,14 +141,27 @@ var uiView = {
 															}
 														})
 													}),
-													resource.id,
-													resource.inTemplate
+													m('div', resource.id),
+													m('div', resource.inTemplate),
+													m('div', resource.templateParams)
 												]),
 												m('div', [
-													_.map(resource.body, function(bVal, bKey) {
+													_.map(resource.body, function(pVal, pKey) {
 														return m('div', [
-															m('b', bKey + ': '),
-															m('i', bVal)
+															m("input[type=checkbox]", {
+																checked: resource.templateParams[pKey],
+																//name: resource.id,
+																onclick: m.withAttr("checked", function() {
+																	log('Checked ' + resource);
+																	toggleParamInTemplate({resource: resource, key: key, subKey: subKey, pKey: pKey });
+																	//if(resource.templateParams[pKey]) {} else {
+																	//	addParamToTemplate({resource: resource, key: key, subKey: subKey});
+																	//}
+																})
+															}),
+															m('b', pKey + ': '),
+															m('i', pVal),
+															m('b', resource.templateParams[pKey])
 														])
 													})
 												])
