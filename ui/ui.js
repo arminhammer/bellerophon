@@ -10,15 +10,8 @@ console.log('Loaded!');
 var m = require('mithril');
 var _ = require('lodash');
 
-
-//console.log('Resource');
-//console.log(Resource);
-
-//var ipcRenderer = P.promisifyAll(require('electron').ipcRenderer);
-
 // In renderer process (web page).
 var ipcRenderer = require('electron').ipcRenderer;
-//console.log(ipcRenderer.sendSync('synchronous-message', 'ping')); // prints "pong"
 
 var log = function(msg, level) {
 	if(!level) {
@@ -33,21 +26,9 @@ function addToTemplate(resourceReq) {
 	ipcRenderer.send('add-to-template-request', resourceReq);
 }
 
-/*
-ipcRenderer.on('add-to-template-reply', function(event, res) {
-	console.log('Added resource to template');
-});
-*/
-
 function removeFromTemplate(resourceReq) {
 	ipcRenderer.send('remove-from-template-request', resourceReq);
 }
-
-/*
-ipcRenderer.on('remove-from-template-reply', function(event, res) {
-	console.log('Removed resource from template');
-});
-*/
 
 var resources = m.prop({});
 
@@ -62,9 +43,6 @@ ipcRenderer.on('update-resources', function(event, res) {
 	m.endComputation();
 });
 
-//console.log('Resources before');
-//console.log(resources.vpcs);
-
 ipcRenderer.on('get-resource-reply', function(event, res) {
 	//console.log('Adding resources');
 	m.startComputation();
@@ -77,8 +55,6 @@ ipcRenderer.on('get-resource-reply', function(event, res) {
 			params = { resBlock: res.Subnets, constructor: Resource.AWS_EC2_SUBNET, name: "SubnetId", targetBlock: resources.EC2.Subnet };
 			break;
 		case "AWS::EC2::SECURITYGROUP":
-			//console.log('SEC GROUP');
-			//console.log(res);
 			params = { resBlock: res.SecurityGroups, constructor: Resource.AWS_EC2_SECURITYGROUP, name: "GroupId", targetBlock: resources.EC2.SecurityGroup };
 			break;
 		default:
@@ -98,7 +74,6 @@ ipcRenderer.on('get-resource-reply', function(event, res) {
 		params.targetBlock.push(newResource);
 	});
 	m.endComputation();
-	//console.log('Added Resources!');
 });
 
 //ipcRenderer.send('get-resource-request', "AWS::EC2::VPC");
@@ -106,7 +81,6 @@ ipcRenderer.on('get-resource-reply', function(event, res) {
 //ipcRenderer.send('get-resource-request', "AWS::EC2::SECURITYGROUP");
 
 function openTemplateWindow() {
-	//console.log('Clicked the button!');
 	ipcRenderer.send('open-template-window');
 }
 
@@ -144,21 +118,13 @@ var uiView = {
 				]),
 				m(".col-xs-9", [
 					_.map(controller.resources(), function(group, key) {
-						//console.log('prime');
-						//console.log(group);
-						//console.log(key);
-						//console.log(controller.resources()[key]);
 						return m("section.group[id='" + key + "']", [
 							m("h3", key),
 							_.map(controller.resources()[key], function(subResource, subKey) {
-								//console.log('sub');
-								//console.log(Object.keys(controller.resources()[key][subKey]).length);
 								if(Object.keys(controller.resources()[key][subKey]).length > 0) {
 									return m(".subgroup[id='" + key + subKey + "']", [
 										m("h4", subKey),
 										_.map(controller.resources()[key][subKey], function (resource) {
-											//console.log('Looking');
-											//console.log(resource);
 											return m('div', [
 												m('div', [
 													m("input[type=checkbox]", {

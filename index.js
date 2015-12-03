@@ -31,8 +31,6 @@ var log = function(msg, level, from) {
 let mainWindow;
 let templateWindow;
 
-//var ipcMain = P.promisifyAll(require('electron').ipcMain);
-
 var ec2 = P.promisifyAll(new AWS.EC2());
 log('Initializing Main');
 
@@ -141,7 +139,6 @@ function addResource(resource) {
 	console.log('block');
 	console.log('Recursive rename');
 	recursiveReplace(template.Resources, '{ Ref: ' + resource.name + ' }', resource.id);
-	//console.log(resource.block);
 	var newResource = populateBlock(resource.block, resource.body);
 	_.each(template.Resources, function(val, key) {
 		console.log('Checking ' + key);
@@ -187,20 +184,8 @@ ipcMain.on('update-resources', function(event, res) {
 
 			data[params.resBlock].forEach(function(r) {
 				var newResource = new params.constructor(r[params.name], r);
-				/*newResource.toggleInTemplate = function(setting) {
-					newResource.inTemplate(setting);
-					if(setting) {
-						addToTemplate(newResource);
-					} else {
-						removeFromTemplate(newResource);
-					}
-				};*/
 				params.targetBlock[newResource.id] = newResource;
 			});
-
-			//data.type = arg;
-			//log('AVAILABLE');
-			//log(availableResources);
 			event.sender.send('update-resources', availableResources);
 		})
 		.catch(function(e) {
@@ -232,8 +217,7 @@ ipcMain.on('get-resource-request', function(event, arg) {
 		.call
 		.then(function(data) {
 			console.log('Sending data');
-			//console.log(data);
-			data.type = arg;
+			//data.type = arg;
 			event.sender.send('get-resource-reply', data);
 		})
 		.catch(function(e) {
@@ -255,9 +239,6 @@ ipcMain.on('open-template-window', function(event) {
 
 ipcMain.on('add-to-template-request', function(event, res) {
 	log('Adding resource to template');
-	//log(res.key);
-	//log(res.subKey);
-	//log(availableResources[res.key][res.subKey][res.resource.id]);
 	availableResources[res.key][res.subKey][res.resource.id].inTemplate = true;
 	log('avail');
 	log(availableResources);
