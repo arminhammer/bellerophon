@@ -33,6 +33,8 @@ function removeFromTemplate(resourceReq) {
 var resources = m.prop({});
 
 ipcRenderer.send('update-resources', 'AWS::EC2::VPC');
+ipcRenderer.send('update-resources', "AWS::EC2::SUBNET");
+ipcRenderer.send('update-resources', "AWS::EC2::SECURITYGROUP");
 
 ipcRenderer.on('update-resources', function(event, res) {
     m.startComputation();
@@ -75,10 +77,6 @@ ipcRenderer.on('get-resource-reply', function(event, res) {
 	});
 	m.endComputation();
 });
-
-//ipcRenderer.send('get-resource-request', "AWS::EC2::VPC");
-//ipcRenderer.send('get-resource-request', "AWS::EC2::SUBNET");
-//ipcRenderer.send('get-resource-request', "AWS::EC2::SECURITYGROUP");
 
 function openTemplateWindow() {
 	ipcRenderer.send('open-template-window');

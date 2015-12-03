@@ -47,7 +47,7 @@ var template = {
 	"Outputs" : {}
 };
 
-var availableResources1 = {
+var availableResources = {
 	/*Autoscaling: {
 		AutoScalingGroup: [],
 		LaunchConfiguration: [],
@@ -56,51 +56,44 @@ var availableResources1 = {
 		ScheduledAction: []
 	},*/
 	EC2: {
-		CustomerGateway : [],
-		DHCPOptions : [],
-		EIP : [],
-		EIPAssociation : [],
-		Instance : [],
-		InternetGateway : [],
-		NetworkAcl : [],
-		NetworkAclEntry : [],
-		NetworkInterface : [],
-		NetworkInterfaceAttachment : [],
-		PlacementGroup : [],
-		Route : [],
-		RouteTable : [],
+		CustomerGateway : {},
+		DHCPOptions : {},
+		EIP : {},
+		EIPAssociation : {},
+		Instance : {},
+		InternetGateway : {},
+		NetworkAcl : {},
+		NetworkAclEntry : {},
+		NetworkInterface : {},
+		NetworkInterfaceAttachment : {},
+		PlacementGroup : {},
+		Route : {},
+		RouteTable : {},
 
-		SecurityGroup : [],
+		SecurityGroup : {},
 		/*
-		 SecurityGroupEgress : [],
-		 SecurityGroupIngress : [],
-		 SpotFleet : [],
+		 SecurityGroupEgress : {},
+		 SecurityGroupIngress : {},
+		 SpotFleet : {},
 		 */
-		Subnet : [],
+		Subnet : {},
 		/*
-		 SubnetNetworkAclAssociation : [],
-		 SubnetRouteTableAssociation : [],
-		 Volume : [],
-		 VolumeAttachment : [],
+		 SubnetNetworkAclAssociation : {},
+		 SubnetRouteTableAssociation : {},
+		 Volume : {},
+		 VolumeAttachment : {},
 		 */
-		VPC : []
-		/*
-		 VPCDHCPOptionsAssociation : [],
-		 VPCEndpoint : [],
-		 VPCGatewayAttachment : [],
-		 VPCPeeringConnection : [],
-		 VPNConnection : [],
-		 VPNConnectionRoute : [],
-		 VPNGateway : [],
-		 VPNGatewayRoutePropagation : []
-		 */
-	}
-	//vpcs: []
-};
-
-var availableResources = {
-	EC2: {
 		VPC : {}
+		/*
+		 VPCDHCPOptionsAssociation : {},
+		 VPCEndpoint : {},
+		 VPCGatewayAttachment : {},
+		 VPCPeeringConnection : {},
+		 VPNConnection : {},
+		 VPNConnectionRoute : {},
+		 VPNGateway : {},
+		 VPNGatewayRoutePropagation : {}
+		 */
 	}
 };
 
@@ -170,10 +163,10 @@ ipcMain.on('update-resources', function(event, res) {
 			params = { call: ec2.describeVpcsAsync({}), resBlock: 'Vpcs', constructor: Resource.AWS_EC2_VPC, name: "VpcId", targetBlock: availableResources.EC2.VPC };
 			break;
 		case "AWS::EC2::SUBNET":
-			params = { call: ec2.describeSubnetsAsync({}) };
+			params = { call: ec2.describeSubnetsAsync({}), resBlock: 'Subnets', constructor: Resource.AWS_EC2_SUBNET, name: "SubnetId", targetBlock: availableResources.EC2.Subnet };
 			break;
 		case "AWS::EC2::SECURITYGROUP":
-			params = { call: ec2.describeSecurityGroupsAsync({}) };
+			params = { call: ec2.describeSecurityGroupsAsync({}), resBlock: 'SecurityGroups', constructor: Resource.AWS_EC2_SECURITYGROUP, name: "GroupId", targetBlock: availableResources.EC2.SecurityGroup };
 			break;
 	};
 	params
@@ -269,7 +262,7 @@ function onTemplateClosed() {
 
 function createMainWindow() {
 	const win = new electron.BrowserWindow({
-		width: 1200,
+		width: 600,
 		height: 800
 	});
 
@@ -280,7 +273,7 @@ function createMainWindow() {
 
 function createTemplateWindow() {
 	const win = new electron.BrowserWindow({
-		width: 1200,
+		width: 600,
 		height: 800
 	});
 
