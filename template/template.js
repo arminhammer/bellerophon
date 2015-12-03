@@ -20,6 +20,15 @@ var _ = require('lodash');
 var ipcRenderer = require('electron').ipcRenderer;
 //console.log(ipcRenderer.sendSync('synchronous-message', 'ping')); // prints "pong"
 
+var log = function(msg, level) {
+	if(!level) {
+		level = 'info';
+	}
+	ipcRenderer.send('send-log', { from: 'TEMPLATE:', level: level, msg: msg });
+};
+
+log('Initializing template');
+
 var template = m.prop({});
 
 ipcRenderer.on('get-template-reply', function(event, res) {
@@ -31,6 +40,10 @@ ipcRenderer.on('get-template-reply', function(event, res) {
 });
 
 ipcRenderer.send('get-template-request');
+
+ipcRenderer.on('update-template', function(event, message) {
+	console.log('Updating template!');
+});
 
 /**
  * Created by arminhammer on 7/9/15.

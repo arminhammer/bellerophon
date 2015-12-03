@@ -17,6 +17,15 @@ var Resource = new require('../resource')();
 var ipcRenderer = require('electron').ipcRenderer;
 //console.log(ipcRenderer.sendSync('synchronous-message', 'ping')); // prints "pong"
 
+var log = function(msg, level) {
+	if(!level) {
+		level = 'info';
+	}
+	ipcRenderer.send('send-log', { from: 'UI:', level: level, msg: msg });
+};
+
+log('Initialized UI.');
+
 function addToTemplate(resource) {
 	ipcRenderer.send('add-to-template-request', resource);
 }

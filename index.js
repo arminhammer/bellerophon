@@ -5,11 +5,32 @@ const AWS = require('aws-sdk');
 AWS.config.region = 'us-east-1';
 const P = require('bluebird');
 const _ = require('lodash');
+const winston = require('winston');
+
+var logger = new winston.Logger({
+	level: 'info',
+	transports: [
+		new (winston.transports.Console)(),
+		new (winston.transports.File)({ filename: 'bellerophon.log' })
+	]
+});
+
+var log = function(msg, level, from) {
+	if(!level) {
+		level = 'info';
+	}
+	if(!from) {
+		from = 'SERVER:'
+	}
+	logger.log(level, from, msg);
+};
 
 //var ipcMain = P.promisifyAll(require('electron').ipcMain);
 
 var ec2 = P.promisifyAll(new AWS.EC2());
-console.log('ec2');
+log('ec2');
+log('INITIALIZING WINSTON');
+log('INITINIT');
 
 const ipcMain = require('electron').ipcMain;
 
@@ -75,6 +96,11 @@ function removeResource(resource) {
 	recursiveReplace(template.Resources, resource.id, '{ Ref: ' + resource.name + ' }');
 	delete template.Resources[resource.name];
 }
+
+ipcMain.on('send-log', function(event, arg) {
+	console.log('Received log request');
+	log(arg.msg, arg.level, arg.from);
+});
 
 ipcMain.on('get-resource-request', function(event, arg) {
 	console.log('Got resource request');
