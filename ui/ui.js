@@ -33,17 +33,21 @@ function addToTemplate(resourceReq) {
 	ipcRenderer.send('add-to-template-request', resourceReq);
 }
 
+/*
 ipcRenderer.on('add-to-template-reply', function(event, res) {
 	console.log('Added resource to template');
 });
+*/
 
 function removeFromTemplate(resourceReq) {
 	ipcRenderer.send('remove-from-template-request', resourceReq);
 }
 
+/*
 ipcRenderer.on('remove-from-template-reply', function(event, res) {
 	console.log('Removed resource from template');
 });
+*/
 
 var resources = m.prop({});
 
@@ -53,7 +57,8 @@ ipcRenderer.on('update-resources', function(event, res) {
     m.startComputation();
 	log('Updating resources');
 	resources(res);
-	//log(resources());
+	console.log('Updating resources');
+	console.log(resources());
 	m.endComputation();
 });
 
@@ -72,8 +77,8 @@ ipcRenderer.on('get-resource-reply', function(event, res) {
 			params = { resBlock: res.Subnets, constructor: Resource.AWS_EC2_SUBNET, name: "SubnetId", targetBlock: resources.EC2.Subnet };
 			break;
 		case "AWS::EC2::SECURITYGROUP":
-			console.log('SEC GROUP');
-			console.log(res);
+			//console.log('SEC GROUP');
+			//console.log(res);
 			params = { resBlock: res.SecurityGroups, constructor: Resource.AWS_EC2_SECURITYGROUP, name: "GroupId", targetBlock: resources.EC2.SecurityGroup };
 			break;
 		default:
@@ -139,10 +144,16 @@ var uiView = {
 				]),
 				m(".col-xs-9", [
 					_.map(controller.resources(), function(group, key) {
+						//console.log('prime');
+						//console.log(group);
+						//console.log(key);
+						//console.log(controller.resources()[key]);
 						return m("section.group[id='" + key + "']", [
 							m("h3", key),
 							_.map(controller.resources()[key], function(subResource, subKey) {
-								if(controller.resources()[key][subKey].length > 0) {
+								//console.log('sub');
+								//console.log(Object.keys(controller.resources()[key][subKey]).length);
+								if(Object.keys(controller.resources()[key][subKey]).length > 0) {
 									return m(".subgroup[id='" + key + subKey + "']", [
 										m("h4", subKey),
 										_.map(controller.resources()[key][subKey], function (resource) {
@@ -156,13 +167,14 @@ var uiView = {
 														onclick: m.withAttr("checked", function() {
 															log('Checked ' + resource);
 															if(resource.inTemplate) {
-																removeFromTemplate(resource);
+																removeFromTemplate({resource: resource, key: key, subKey: subKey});
 															} else {
 																addToTemplate({resource: resource, key: key, subKey: subKey});
 															}
 														})
 													}),
-													resource.id
+													resource.id,
+													resource.inTemplate
 												]),
 												m('div', [
 													_.map(resource.body, function(bVal, bKey) {

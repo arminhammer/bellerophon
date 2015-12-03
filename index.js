@@ -49,7 +49,7 @@ var template = {
 	"Outputs" : {}
 };
 
-var availableResources = {
+var availableResources1 = {
 	/*Autoscaling: {
 		AutoScalingGroup: [],
 		LaunchConfiguration: [],
@@ -98,6 +98,12 @@ var availableResources = {
 		 */
 	}
 	//vpcs: []
+};
+
+var availableResources = {
+	EC2: {
+		VPC : {}
+	}
 };
 
 function populateBlock(block, body) {
@@ -158,6 +164,7 @@ function removeResource(resource) {
 	}
 }
 
+
 ipcMain.on('update-resources', function(event, res) {
 	log('Got update-resources request');
 	var params = {};
@@ -188,10 +195,12 @@ ipcMain.on('update-resources', function(event, res) {
 						removeFromTemplate(newResource);
 					}
 				};*/
-				params.targetBlock.push(newResource);
+				params.targetBlock[newResource.id] = newResource;
 			});
 
 			//data.type = arg;
+			//log('AVAILABLE');
+			//log(availableResources);
 			event.sender.send('update-resources', availableResources);
 		})
 		.catch(function(e) {
@@ -245,16 +254,22 @@ ipcMain.on('open-template-window', function(event) {
 });
 
 ipcMain.on('add-to-template-request', function(event, res) {
-	console.log('Added resource to template');
-	console.log(res);
-	addResource(res);
-	event.sender.send('add-to-template-reply');
+	log('Adding resource to template');
+	//log(res.key);
+	//log(res.subKey);
+	//log(availableResources[res.key][res.subKey][res.resource.id]);
+	availableResources[res.key][res.subKey][res.resource.id].inTemplate = true;
+	log('avail');
+	log(availableResources);
+	addResource(res.resource);
+	event.sender.send('update-resources', availableResources);
 });
 
 ipcMain.on('remove-from-template-request', function(event, res) {
 	console.log('Removed resource from template');
-	removeResource(res);
-	event.sender.send('remove-from-template-reply');
+	availableResources[res.key][res.subKey][res.resource.id].inTemplate = false;
+	removeResource(res.resource);
+	event.sender.send('update-resources', availableResources);
 });
 
 // report crashes to the Electron project
