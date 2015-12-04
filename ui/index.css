@@ -1,15 +1,20 @@
+.navbar {
+	background: white;
+}
+
 .group {
 	/*background: yellow;*/
-	width: 600px;
-	padding-left: 40px;
+	/*width: 400px;
+	padding-left: 30px;*/
 	/*height: 1000px;*/
 }
+
 /*
 .group .subgroup {
-	background: orange;
-	width: 150px;
+	width: 500px;
 	height: 200px;
-}*/
+}
+*/
 .fixed {
 	position: fixed;
 }
@@ -45,7 +50,7 @@
 	color: #563d7c;
 	text-decoration: none;
 	background-color: transparent;
-	border-left-color: #563d7c;
+	/*border-left-color: #563d7c;*/
 }
 /* all active links */
 .bs-docs-sidebar .nav>.active>a,
