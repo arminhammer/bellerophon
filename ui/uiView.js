@@ -41,7 +41,7 @@ ipcRenderer.send('update-resources', "AWS_EC2_SUBNET");
 ipcRenderer.send('update-resources', "AWS_EC2_SECURITYGROUP");
 
 ipcRenderer.on('update-resources', function(event, res) {
-    m.startComputation();
+	m.startComputation();
 	log('Updating resources');
 	resources(res);
 	console.log('Updating resources');
@@ -129,42 +129,96 @@ var uiView = {
 										_.map(controller.resources()[key][subKey], function (resource) {
 											return m('div', [
 												m('div', [
-													m("input[type=checkbox]", {
-														checked: resource.inTemplate,
-														name: resource.id,
-														onclick: m.withAttr("checked", function() {
-															log('Checked ' + resource);
-															if(resource.inTemplate) {
-																removeFromTemplate({resource: resource, key: key, subKey: subKey});
-															} else {
-																addToTemplate({resource: resource, key: key, subKey: subKey});
-															}
-														})
-													}),
-													m('div', resource.id),
-													m('div', resource.inTemplate),
-													m('div', resource.templateParams)
-												]),
-												m('div', [
-													_.map(resource.body, function(pVal, pKey) {
-														return m('div', [
-															m("input[type=checkbox]", {
-																checked: resource.templateParams[pKey],
-																//name: resource.id,
-																onclick: m.withAttr("checked", function() {
-																	log('Checked ' + resource);
-																	toggleParamInTemplate({resource: resource, key: key, subKey: subKey, pKey: pKey });
-																	//if(resource.templateParams[pKey]) {} else {
-																	//	addParamToTemplate({resource: resource, key: key, subKey: subKey});
-																	//}
+													[m(".panel.panel-warning", [
+														m(".panel-heading", [
+															m("h3.panel-title", [
+																m("input[type=checkbox]", {
+																	checked: resource.inTemplate,
+																	name: resource.id,
+																	onclick: m.withAttr("checked", function() {
+																		log('Checked ' + resource);
+																		if(resource.inTemplate) {
+																			removeFromTemplate({resource: resource, key: key, subKey: subKey});
+																		} else {
+																			addToTemplate({resource: resource, key: key, subKey: subKey});
+																		}
+																	})
+																}),
+																resource.id
+															])
+														]),
+														m(".panel-body", [
+															m('table.table', [
+																m('tr', [
+																	m('th', 'Param.'),
+																	m('th', 'Name'),
+																	m('th', 'Value')
+																]),
+																_.map(resource.body, function(pVal, pKey) {
+																	return m('tr', [
+																		m('td', [
+																			m("input[type=checkbox]", {
+																				checked: resource.templateParams[pKey],
+																				//name: resource.id,
+																				onclick: m.withAttr("checked", function() {
+																					log('Checked ' + resource);
+																					toggleParamInTemplate({resource: resource, key: key, subKey: subKey, pKey: pKey });
+																					//if(resource.templateParams[pKey]) {} else {
+																					//	addParamToTemplate({resource: resource, key: key, subKey: subKey});
+																					//}
+																				})
+																			})
+																		]),
+																		m('td', [
+																			m('b', pKey)
+																		]),
+																		m('td', [
+																			m('i', pVal)
+																		])
+																	])
 																})
-															}),
-															m('b', pKey + ': '),
-															m('i', pVal),
-															m('b', resource.templateParams[pKey])
+															])
 														])
-													})
-												])
+													])]
+												]),
+												/*
+												 m('div', [
+												 m("input[type=checkbox]", {
+												 checked: resource.inTemplate,
+												 name: resource.id,
+												 onclick: m.withAttr("checked", function() {
+												 log('Checked ' + resource);
+												 if(resource.inTemplate) {
+												 removeFromTemplate({resource: resource, key: key, subKey: subKey});
+												 } else {
+												 addToTemplate({resource: resource, key: key, subKey: subKey});
+												 }
+												 })
+												 }),
+												 m('div', resource.id),
+												 m('div', resource.inTemplate),
+												 m('div', resource.templateParams)
+												 ]),
+												 m('div', [
+												 _.map(resource.body, function(pVal, pKey) {
+												 return m('div', [
+												 m("input[type=checkbox]", {
+												 checked: resource.templateParams[pKey],
+												 //name: resource.id,
+												 onclick: m.withAttr("checked", function() {
+												 log('Checked ' + resource);
+												 toggleParamInTemplate({resource: resource, key: key, subKey: subKey, pKey: pKey });
+												 //if(resource.templateParams[pKey]) {} else {
+												 //	addParamToTemplate({resource: resource, key: key, subKey: subKey});
+												 //}
+												 })
+												 }),
+												 m('b', pKey + ': '),
+												 m('i', pVal),
+												 m('b', resource.templateParams[pKey])
+												 ])
+												 })
+												 ])*/
 											])
 										})
 									])
