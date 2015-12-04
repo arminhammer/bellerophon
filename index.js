@@ -6,7 +6,7 @@ AWS.config.region = 'us-east-1';
 const P = require('bluebird');
 const _ = require('lodash');
 const winston = require('winston');
-
+const Template = require('./template');
 var Resource = new require('./resource')();
 
 var logger = new winston.Logger({
@@ -36,16 +36,15 @@ log('Initializing Main');
 
 const ipcMain = require('electron').ipcMain;
 
+var template = new Template();
+
+/*
 var template = {
-	"AWSTemplateFormatVersion" : "version date",
-	"Description" : "",
-	"Metadata" : {},
+	"AWSTemplateFormatVersion" : "2010-09-09",
 	"Parameters" : {},
-	"Mappings" : {},
-	"Conditions" : {},
 	"Resources" : {},
-	"Outputs" : {}
 };
+*/
 
 var availableResources = {
 	/*Autoscaling: {
@@ -131,56 +130,56 @@ function recursiveReplace(object, newPattern, oldPattern) {
 function addResource(resource) {
 	console.log('block');
 	console.log('Recursive rename');
-	recursiveReplace(template.Resources, '{ Ref: ' + resource.name + ' }', resource.id);
+	recursiveReplace(template.body.Resources, '{ Ref: ' + resource.name + ' }', resource.id);
 	var newResource = populateBlock(resource.block, resource.body);
-	_.each(template.Resources, function(val, key) {
+	_.each(template.body.Resources, function(val, key) {
 		console.log('Checking ' + key);
 		console.log('Match: ' + key.replace('-resource',''));
 		recursiveReplace(newResource, '{ Ref: ' + key + ' }', key.replace('-resource',''))
 	});
-	template.Resources[resource.name] = newResource;
+	template.body.Resources[resource.name] = newResource;
 	if(templateWindow) {
-		templateWindow.webContents.send('update-template', template);
+		templateWindow.webContents.send('update-template', template.body);
 	}
 }
 
 function removeResource(resource) {
 	console.log('block');
 	console.log(resource.block);
-	recursiveReplace(template.Resources, resource.id, '{ Ref: ' + resource.name + ' }');
-	delete template.Resources[resource.name];
+	recursiveReplace(template.body.Resources, resource.id, '{ Ref: ' + resource.name + ' }');
+	delete template.body.Resources[resource.name];
 	if(templateWindow) {
-		templateWindow.webContents.send('update-template', template);
+		templateWindow.webContents.send('update-template', template.body);
 	}
 }
 
 function addParam(resource, pKey) {
-	if(template.Resources[resource.name]) {
-		if(template.Resources[resource.name].Properties[pKey]) {
-			var oldVal = template.Resources[resource.name].Properties[pKey];
+	if(template.body.Resources[resource.name]) {
+		if(template.body.Resources[resource.name].Properties[pKey]) {
+			var oldVal = template.body.Resources[resource.name].Properties[pKey];
 			var paramName = resource.name + '-' + pKey + '-param';
-			template.Resources[resource.name].Properties[pKey] = '{ Ref: ' + paramName + ' }';
-			template.Parameters[paramName] = {
+			template.body.Resources[resource.name].Properties[pKey] = '{ Ref: ' + paramName + ' }';
+			template.body.Parameters[paramName] = {
 				"Type" : "String",
 				"Default" : oldVal
 			}
 		}
 	}
 	if(templateWindow) {
-		templateWindow.webContents.send('update-template', template);
+		templateWindow.webContents.send('update-template', template.body);
 	}
 }
 
 function removeParam(resource, pKey) {
-	if(template.Resources[resource.name]) {
-		if(template.Resources[resource.name].Properties[pKey]) {
+	if(template.body.Resources[resource.name]) {
+		if(template.body.Resources[resource.name].Properties[pKey]) {
 			var paramName = resource.name + '-' + pKey + '-param';
-			template.Resources[resource.name].Properties[pKey] = template.Parameters[paramName].Default;
-			delete template.Parameters[paramName];
+			template.body.Resources[resource.name].Properties[pKey] = template.body.Parameters[paramName].Default;
+			delete template.body.Parameters[paramName];
 		}
 	}
 	if(templateWindow) {
-		templateWindow.webContents.send('update-template', template);
+		templateWindow.webContents.send('update-template', template.body);
 	}
 }
 
@@ -272,7 +271,7 @@ ipcMain.on('get-resource-request', function(event, arg) {
 
 ipcMain.on('get-template-request', function(event, arg) {
 	console.log('Received get template request');
-	event.sender.send('get-template-reply', template);
+	event.sender.send('get-template-reply', template.body);
 });
 
 ipcMain.on('open-template-window', function(event) {
