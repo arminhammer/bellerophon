@@ -1,6 +1,8 @@
 'use strict';
 const electron = require('electron');
 const app = electron.app;
+const Menu = electron.Menu;
+const Tray = electron.Tray;
 const AWS = require('aws-sdk');
 AWS.config.region = 'us-east-1';
 const P = require('bluebird');
@@ -378,8 +380,11 @@ function onTemplateClosed() {
 
 function createMainWindow() {
 	const win = new electron.BrowserWindow({
-		width: 600,
-		height: 800
+		width: 700,
+		height: 800,
+		minWidth: 600,
+		minHeight: 500,
+		title: 'Bellerophon'
 	});
 
 	win.loadURL(`file://${__dirname}/ui/index.html`);
@@ -390,7 +395,8 @@ function createMainWindow() {
 function createTemplateWindow() {
 	const win = new electron.BrowserWindow({
 		width: 600,
-		height: 800
+		height: 800,
+		title: 'Bellerophon Template'
 	});
 
 	win.loadURL(`file://${__dirname}/template/index.html`);
@@ -409,7 +415,129 @@ app.on('activate-with-no-open-windows', () => {
 	}
 });
 
+var appIcon = null;
+var menu = null;
+
 app.on('ready', () => {
 	console.log('Ready');
+
+	var menuTemplate = [
+		{
+			label: 'View',
+			submenu: [
+				{
+					label: 'Reload',
+					accelerator: 'CmdOrCtrl+R',
+					click: function(item, focusedWindow) {
+						if (focusedWindow)
+							focusedWindow.reload();
+					}
+				},
+				{
+					label: 'Toggle Full Screen',
+					accelerator: (function() {
+						if (process.platform == 'darwin')
+							return 'Ctrl+Command+F';
+						else
+							return 'F11';
+					})(),
+					click: function(item, focusedWindow) {
+						if (focusedWindow)
+							focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
+					}
+				},
+				{
+					label: 'Toggle Developer Tools',
+					accelerator: (function() {
+						if (process.platform == 'darwin')
+							return 'Alt+Command+I';
+						else
+							return 'Ctrl+Shift+I';
+					})(),
+					click: function(item, focusedWindow) {
+						if (focusedWindow)
+							focusedWindow.toggleDevTools();
+					}
+				},
+			]
+		},
+		{
+			label: 'Window',
+			role: 'window',
+			submenu: [
+				{
+					label: 'Minimize',
+					accelerator: 'CmdOrCtrl+M',
+					role: 'minimize'
+				},
+				{
+					label: 'Close',
+					accelerator: 'CmdOrCtrl+W',
+					role: 'close'
+				},
+			]
+		},
+		{
+			label: 'Help',
+			role: 'help',
+			submenu: [
+				{
+					label: 'Learn More',
+					click: function() { require('electron').shell.openExternal('http://github.com/arminhammer/bellerophon') }
+				},
+			]
+		},
+	];
+
+	if (process.platform == 'darwin') {
+		var name = require('electron').app.getName();
+		menuTemplate.unshift({
+			label: name,
+			submenu: [
+				{
+					label: 'About ' + name,
+					role: 'about'
+				},
+				{
+					type: 'separator'
+				},
+				{
+					label: 'Show Template',
+					accelerator: 'Command + T',
+					click: function() {
+						if(!templateWindow) {
+							templateWindow = createTemplateWindow();
+						}
+					}
+				},
+				{
+					label: 'Save Template',
+					accelerator: 'Command + S',
+					role: 'hide'
+				},
+				{
+					type: 'separator'
+				},
+				{
+					label: 'Quit',
+					accelerator: 'Command+Q',
+					click: function() { app.quit(); }
+				},
+			]
+		});
+		menuTemplate[3].submenu.push(
+			{
+				type: 'separator'
+			},
+			{
+				label: 'Bring All to Front',
+				role: 'front'
+			}
+		);
+	}
+
+	menu = Menu.buildFromTemplate(menuTemplate);
+	Menu.setApplicationMenu(menu);
+
 	mainWindow = createMainWindow();
 });

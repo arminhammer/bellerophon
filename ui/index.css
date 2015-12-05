@@ -6,6 +6,11 @@
 	word-break:break-all;
 }
 
+/*.panel-body table tr td {
+	padding-right: 0px;
+	padding-left: 0px;
+}*/
+
 .navbar {
 	background: white;
 }
@@ -84,7 +89,7 @@
 
 /*Header formatting */
 .MainContent {
-	margin-top: 50px;
+	margin-top: 0px;
 }
 .group, .subgroup {
 	padding-top: 50px;

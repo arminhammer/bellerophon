@@ -22,8 +22,8 @@
     "index.css"
   ],
   "keywords": [
-    "electron-app",
-    "electron"
+    "bellerophon-app",
+    "bellerophon"
   ],
   "dependencies": {
     "aws-sdk": "^2.2.17",

@@ -135,14 +135,14 @@ var uiView = {
 	},
 	view: function(controller) {
 		return m(".container-fluid", [
-			m(".navbar.navbar-fixed-top", [
+			/*m(".navbar.navbar-fixed-top", [
 				m(".container", [
 					m(".navbar-header", [
 						m("a.navbar-brand[href='#']", "Bellerophon"),
 						m("button.btn.btn-success.navbar-btn.navbar-right.pull-right#templateButton", { onclick: controller.openTemplateWindow }, "Show Template")
 					])
 				])
-			]),
+			]),*/
 			m(".row.MainContent", [
 				m("nav.col-xs-3.bs-docs-sidebar", [
 					m("ul.nav.nav-stacked.fixed[id='sidebar']", [
@@ -166,14 +166,20 @@ var uiView = {
 							m(".group[id='" + key + "']", [
 								m("h3", key),
 								_.map(controller.resources()[key], function(subResource, subKey) {
-									if(Object.keys(controller.resources()[key][subKey]).length > 0) {
+									var subKeySize = Object.keys(controller.resources()[key][subKey]).length;
+									if(subKeySize > 0) {
 										return m('.row', [
 											m(".col-xs-12", [
 												m(".subgroup[id='" + key + subKey + "']", [
 													m("h4", subKey),
 													_.map(controller.resources()[key][subKey], function (resource) {
+														var colSizes = { xs: 12, md: 6, lg: 4};
+														if(subKeySize === 1 || subKeySize === 2) {
+															colSizes = { xs: 12, md: 6, lg: 6}
+														}
+														var colSizeString = 'col-xs-' + colSizes.xs + ' col-md-' + colSizes.md + ' col-lg-' + colSizes.lg;
 														return m('div', [
-															m(".col-xs-12.col-md-6.col-lg-4", [
+															m("div", { class: colSizeString },[
 																m('div', [
 																	[m(".panel.panel-warning", [
 																		m(".panel-heading", [
@@ -196,13 +202,13 @@ var uiView = {
 																		m(".panel-body", [
 																			m('table.table', [
 																				m('tr', [
-																					m('th', 'Param.'),
-																					m('th', 'Name'),
-																					m('th', 'Value')
+																					m('th.col-xs-2', 'Param.'),
+																					m('th.col-xs-3', 'Name'),
+																					m('th.col-xs-7', 'Value')
 																				]),
 																				_.map(resource.body, function(pVal, pKey) {
 																					return m('tr', [
-																						m('td', [
+																						m('td.col-xs-2', [
 																							m("input[type=checkbox]", {
 																								checked: resource.templateParams[pKey],
 																								//name: resource.id,
@@ -215,10 +221,10 @@ var uiView = {
 																								})
 																							})
 																						]),
-																						m('td', [
+																						m('td.col-xs-3', [
 																							m('b', {title: pKey, config: controller.addTooltip }, _.trunc(pKey,15))
 																						]),
-																						m('td', [
+																						m('td.col-xs-7', [
 																							m("i[data-toggle='tooltip'][data-placement='top']", {title: pVal, config: controller.addTooltip }, _.trunc(pVal,30))
 																						])
 																					])
