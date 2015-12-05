@@ -3,13 +3,14 @@
 }
 
 .panel-body {
-	word-break:break-all;
+	/*(word-break:break-all;*/
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
-/*.panel-body table tr td {
-	padding-right: 0px;
-	padding-left: 0px;
-}*/
+.panel-body table tr td {
+}
 
 .navbar {
 	background: white;

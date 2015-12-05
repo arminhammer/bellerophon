@@ -171,12 +171,12 @@ var uiView = {
 										return m('.row', [
 											m(".col-xs-12", [
 												m(".subgroup[id='" + key + subKey + "']", [
-													m("h4", subKey),
+													m("h4", subKey + 's'),
 													_.map(controller.resources()[key][subKey], function (resource) {
 														var colSizes = { xs: 12, md: 6, lg: 4};
-														if(subKeySize === 1 || subKeySize === 2) {
+														/*if(subKeySize === 1 || subKeySize === 2) {
 															colSizes = { xs: 12, md: 6, lg: 6}
-														}
+														}*/
 														var colSizeString = 'col-xs-' + colSizes.xs + ' col-md-' + colSizes.md + ' col-lg-' + colSizes.lg;
 														return m('div', [
 															m("div", { class: colSizeString },[
@@ -200,34 +200,39 @@ var uiView = {
 																			])
 																		]),
 																		m(".panel-body", [
-																			m('table.table', [
+																			m('table.table.table-condensed', [
 																				m('tr', [
-																					m('th.col-xs-2', 'Param.'),
+																					m('th.col-xs-1', 'Param.'),
 																					m('th.col-xs-3', 'Name'),
-																					m('th.col-xs-7', 'Value')
+																					m('th.col-xs-8', 'Value')
 																				]),
 																				_.map(resource.body, function(pVal, pKey) {
-																					return m('tr', [
-																						m('td.col-xs-2', [
-																							m("input[type=checkbox]", {
-																								checked: resource.templateParams[pKey],
-																								//name: resource.id,
-																								onclick: m.withAttr("checked", function() {
-																									log('Checked ' + resource);
-																									toggleParamInTemplate({resource: resource, key: key, subKey: subKey, pKey: pKey });
-																									//if(resource.templateParams[pKey]) {} else {
-																									//	addParamToTemplate({resource: resource, key: key, subKey: subKey});
-																									//}
+																					if(_.isObject(pVal)) {
+																						pVal = JSON.stringify(pVal, null, 2);
+																					}
+																					if(pVal != '') {
+																						return m('tr', [
+																							m('td.col-xs-1', [
+																								m("input[type=checkbox]", {
+																									checked: resource.templateParams[pKey],
+																									//name: resource.id,
+																									onclick: m.withAttr("checked", function() {
+																										log('Checked ' + resource);
+																										toggleParamInTemplate({resource: resource, key: key, subKey: subKey, pKey: pKey });
+																										//if(resource.templateParams[pKey]) {} else {
+																										//	addParamToTemplate({resource: resource, key: key, subKey: subKey});
+																										//}
+																									})
 																								})
-																							})
-																						]),
-																						m('td.col-xs-3', [
-																							m('b', {title: pKey, config: controller.addTooltip }, _.trunc(pKey,15))
-																						]),
-																						m('td.col-xs-7', [
-																							m("i[data-toggle='tooltip'][data-placement='top']", {title: pVal, config: controller.addTooltip }, _.trunc(pVal,30))
+																							]),
+																							m('td.col-xs-3', [
+																								m('b', {title: pKey, config: controller.addTooltip }, _.trunc(pKey,15))
+																							]),
+																							m('td.col-xs-8', [
+																								m("i[data-toggle='tooltip'][data-placement='top']", {title: pVal, config: controller.addTooltip }, _.trunc(pVal,20))
+																							])
 																						])
-																					])
+																					}
 																				})
 																			])
 																		])
