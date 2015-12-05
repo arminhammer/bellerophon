@@ -6,12 +6,8 @@
 	<!--<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">-->
 	<link rel="stylesheet" href="../node_modules/bootswatch/paper/bootstrap.css">
 	<link rel="stylesheet" href="./index.css">
-
 </head>
 <body>
-
-
-
 <script src="../node_modules/jquery/dist/jquery.js"></script>
 <script type="application/javascript">
 	if (typeof module === 'object' && typeof module.exports !== 'undefined') {
@@ -19,6 +15,7 @@
 	}
 </script>
 <script src='../node_modules/bootstrap/dist/js/bootstrap.js'></script>
+<script src='../node_modules/bootstrap/js/tooltip.js'></script>
 <script src='../node_modules/bootstrap/js/affix.js'></script>
 <script src='../node_modules/bootstrap/js/scrollspy.js'></script>
 <script type="application/javascript">
@@ -31,8 +28,11 @@
 			top: 60
 		}
 	});
+	$(function () {
+		console.log('INITIALIZING TOOLTIPS');
+		$('[data-toggle="tooltip"]').tooltip()
+	})
 </script>
-
 <script>require('./uiView.js')</script>
 </body>
 </html>

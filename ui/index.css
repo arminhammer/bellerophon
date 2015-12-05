@@ -1,3 +1,11 @@
+.panel {
+	/*min-width: 40em;*/
+}
+
+.panel-body {
+	word-break:break-all;
+}
+
 .navbar {
 	background: white;
 }

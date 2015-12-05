@@ -36,9 +36,45 @@ function toggleParamInTemplate(paramReq) {
 
 var resources = m.prop({});
 
+ipcRenderer.send('update-resources', 'AWS_AutoScaling_AutoScalingGroup');
+//ipcRenderer.send('update-resources', 'AWS_AUTOSCALING_LAUNCHCONFIGURATION');
+//ipcRenderer.send('update-resources', 'AWS_AUTOSCALING_LIFECYCLEHOOK');
+//ipcRenderer.send('update-resources', 'AWS_AUTOSCALING_SCALINGPOLICY');
+//ipcRenderer.send('update-resources', 'AWS_AUTOSCALING_SCHEDULINGACTION');
 ipcRenderer.send('update-resources', 'AWS_EC2_VPC');
 ipcRenderer.send('update-resources', "AWS_EC2_SUBNET");
 ipcRenderer.send('update-resources', "AWS_EC2_SECURITYGROUP");
+
+/*
+ AWS::EC2::CustomerGateway
+ AWS::EC2::DHCPOptions
+ AWS::EC2::EIP
+ AWS::EC2::EIPAssociation
+ AWS::EC2::Instance
+ AWS::EC2::InternetGateway
+ AWS::EC2::NetworkAcl
+ AWS::EC2::NetworkAclEntry
+ AWS::EC2::NetworkInterface
+ AWS::EC2::NetworkInterfaceAttachment
+ AWS::EC2::PlacementGroup
+ AWS::EC2::Route
+ AWS::EC2::RouteTable
+ AWS::EC2::SecurityGroupEgress
+ AWS::EC2::SecurityGroupIngress
+ AWS::EC2::SpotFleet
+ AWS::EC2::SubnetNetworkAclAssociation
+ AWS::EC2::SubnetRouteTableAssociation
+ AWS::EC2::Volume
+ AWS::EC2::VolumeAttachment
+ AWS::EC2::VPCDHCPOptionsAssociation
+ AWS::EC2::VPCEndpoint
+ AWS::EC2::VPCGatewayAttachment
+ AWS::EC2::VPCPeeringConnection
+ AWS::EC2::VPNConnection
+ AWS::EC2::VPNConnectionRoute
+ AWS::EC2::VPNGateway
+ AWS::EC2::VPNGatewayRoutePropagation
+ */
 
 ipcRenderer.on('update-resources', function(event, res) {
 	m.startComputation();
@@ -90,6 +126,12 @@ var uiView = {
 	controller: function() {
 		this.resources = resources;
 		this.openTemplateWindow = openTemplateWindow;
+		this.addTooltip = function(element, isInitialized, context) {
+			if(isInitialized) {
+				return;
+			}
+			$(element).tooltip();
+		}
 	},
 	view: function(controller) {
 		return m(".container-fluid", [
@@ -174,10 +216,10 @@ var uiView = {
 																							})
 																						]),
 																						m('td', [
-																							m('b', pKey)
+																							m('b', {title: pKey, config: controller.addTooltip }, _.trunc(pKey,15))
 																						]),
 																						m('td', [
-																							m('i', pVal)
+																							m("i[data-toggle='tooltip'][data-placement='top']", {title: pVal, config: controller.addTooltip }, _.trunc(pVal,30))
 																						])
 																					])
 																				})

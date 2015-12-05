@@ -32,6 +32,7 @@ let mainWindow;
 let templateWindow;
 
 var ec2 = P.promisifyAll(new AWS.EC2());
+var ASG = P.promisifyAll(new AWS.AutoScaling());
 log('Initializing Main');
 
 const ipcMain = require('electron').ipcMain;
@@ -39,21 +40,21 @@ const ipcMain = require('electron').ipcMain;
 var template = new Template();
 
 /*
-var template = {
-	"AWSTemplateFormatVersion" : "2010-09-09",
-	"Parameters" : {},
-	"Resources" : {},
-};
-*/
+ var template = {
+ "AWSTemplateFormatVersion" : "2010-09-09",
+ "Parameters" : {},
+ "Resources" : {},
+ };
+ */
 
 var availableResources = {
-	/*Autoscaling: {
-		AutoScalingGroup: [],
-		LaunchConfiguration: [],
-		LifecycleHook: [],
-		ScalingPolicy: [],
-		ScheduledAction: []
-	},*/
+	AutoScaling: {
+	 AutoScalingGroup: {},
+	 LaunchConfiguration: {},
+	 LifecycleHook: {},
+	 ScalingPolicy: {},
+	 ScheduledAction: {}
+	 },
 	EC2: {
 		CustomerGateway : {},
 		DHCPOptions : {},
@@ -188,6 +189,52 @@ ipcMain.on('update-resources', function(event, res) {
 	log('Got update-resources request');
 	var params = {};
 	switch(res) {
+		case "AWS_AutoScaling_AutoScalingGroup":
+			params = {
+				call: ASG.describeAutoScalingGroupsAsync({}),
+				resBlock: 'AutoScalingGroups',
+				constructor: Resource.AWS_AutoScaling_AutoScalingGroup,
+				name: "AutoScalingGroupName",
+				targetBlock: availableResources.AutoScaling.AutoScalingGroup
+			};
+			break;
+		/*case "AWS__AUTOSCALING_LaunchConfiguration":
+			params = {
+				call: ASG.describeAsync({}),
+				resBlock: '',
+				constructor: Resource.AWS_AUTOSCALING_,
+				name: "",
+				targetBlock: availableResources._AUTOSCALING.
+			};
+			break;
+		case "AWS_AUTOSCALING_LifecycleHook":
+			params = {
+				call: ASG.describeAsync({}),
+				resBlock: '',
+				constructor: Resource.AWS_AUTOSCALING_,
+				name: "",
+				targetBlock: availableResources._AUTOSCALING.
+			};
+			break;
+		case "AWS_AUTOSCALING_ScalingPolicy":
+			params = {
+				call: ASG.describeAsync({}),
+				resBlock: '',
+				constructor: Resource.AWS_AUTOSCALING_,
+				name: "",
+				targetBlock: availableResources._AUTOSCALING.
+			};
+			break;
+		case "AWS_AUTOSCALING_ScheduledAction":
+			params = {
+				call: ASG.describeAsync({}),
+				resBlock: '',
+				constructor: Resource.AWS_AUTOSCALING_,
+				name: "",
+				targetBlock: availableResources._AUTOSCALING.
+			};
+			break;
+		*/
 		case "AWS_EC2_VPC":
 			params = {
 				call: ec2.describeVpcsAsync({}),
@@ -215,13 +262,45 @@ ipcMain.on('update-resources', function(event, res) {
 				targetBlock: availableResources.EC2.SecurityGroup
 			};
 			break;
+
+		/*
+		 AWS_EC2_CustomerGateway
+		 AWS_EC2_DHCPOptions
+		 AWS_EC2_EIP
+		 AWS_EC2_EIPAssociation
+		 AWS_EC2_Instance
+		 AWS_EC2_InternetGateway
+		 AWS_EC2_NetworkAcl
+		 AWS_EC2_NetworkAclEntry
+		 AWS_EC2_NetworkInterface
+		 AWS_EC2_NetworkInterfaceAttachment
+		 AWS_EC2_PlacementGroup
+		 AWS_EC2_Route
+		 AWS_EC2_RouteTable
+		 AWS_EC2_SecurityGroupEgress
+		 AWS_EC2_SecurityGroupIngress
+		 AWS_EC2_SpotFleet
+		 AWS_EC2_SubnetNetworkAclAssociation
+		 AWS_EC2_SubnetRouteTableAssociation
+		 AWS_EC2_Volume
+		 AWS_EC2_VolumeAttachment
+		 AWS_EC2_VPCDHCPOptionsAssociation
+		 AWS_EC2_VPCEndpoint
+		 AWS_EC2_VPCGatewayAttachment
+		 AWS_EC2_VPCPeeringConnection
+		 AWS_EC2_VPNConnection
+		 AWS_EC2_VPNConnectionRoute
+		 AWS_EC2_VPNGateway
+		 AWS_EC2_VPNGatewayRoutePropagation
+		 */
 	};
 	params
 		.call
 		.then(function(data) {
 			log('Sending data');
 			//log(Resource);
-			console.log(res);
+			log(res);
+			log(data);
 			log(Resource[res].blockGroup);
 
 			data[params.resBlock].forEach(function(r) {
@@ -239,35 +318,6 @@ ipcMain.on('send-log', function(event, arg) {
 	console.log('Received log request');
 	log(arg.msg, arg.level, arg.from);
 });
-
-/*
-ipcMain.on('get-resource-request', function(event, arg) {
-	console.log('Got resource request');
-	console.log(arg);
-	var params = {};
-	switch(arg) {
-		case "AWS::EC2::VPC":
-			params = { call: ec2.describeVpcsAsync({}) };
-			break;
-		case "AWS::EC2::SUBNET":
-			params = { call: ec2.describeSubnetsAsync({}) };
-			break;
-		case "AWS::EC2::SECURITYGROUP":
-			params = { call: ec2.describeSecurityGroupsAsync({}) };
-			break;
-	};
-	params
-		.call
-		.then(function(data) {
-			console.log('Sending data');
-			//data.type = arg;
-			event.sender.send('get-resource-reply', data);
-		})
-		.catch(function(e) {
-			console.log(e);
-		});
-});
-*/
 
 ipcMain.on('get-template-request', function(event, arg) {
 	console.log('Received get template request');

@@ -12,6 +12,73 @@ var Resource = function() {
 		self.templateParams = {};
 	};
 
+	var AWS_AutoScaling_AutoScalingGroup = function(name, body) {
+		ResourceBase.call(this);
+		var self = this;
+		self.id = name;
+		self.name = name + '-resource';
+		self.body = body;
+		self.block = {
+			"Type" : "AWS::AutoScaling::AutoScalingGroup",
+			"Properties" : {
+				"AvailabilityZones" : [],
+				"Cooldown" : "String",
+				"DesiredCapacity" : "String",
+				"HealthCheckGracePeriod" : "Integer",
+				"HealthCheckType" : "String",
+				"InstanceId" : "String",
+				"LaunchConfigurationName" : "String",
+				"LoadBalancerNames" : [],
+				"MaxSize" : "String",
+				"MetricsCollection" : [],
+				"MinSize" : "String",
+				"NotificationConfigurations" : [],
+				"PlacementGroup" : "String",
+				"Tags" : [],
+				"TerminationPolicies" : [],
+				"VPCZoneIdentifier" : []
+			}
+		};
+	};
+	AWS_AutoScaling_AutoScalingGroup.prototype = Object.create(ResourceBase.prototype);
+
+
+	/*
+
+	 AWS_AutoScaling_LaunchConfiguration
+	 AWS_AutoScaling_LifecycleHook
+	 AWS_AutoScaling_ScalingPolicy
+	 AWS_AutoScaling_ScheduledAction
+	 AWS_EC2_CustomerGateway
+	 AWS_EC2_DHCPOptions
+	 AWS_EC2_EIP
+	 AWS_EC2_EIPAssociation
+	 AWS_EC2_Instance
+	 AWS_EC2_InternetGateway
+	 AWS_EC2_NetworkAcl
+	 AWS_EC2_NetworkAclEntry
+	 AWS_EC2_NetworkInterface
+	 AWS_EC2_NetworkInterfaceAttachment
+	 AWS_EC2_PlacementGroup
+	 AWS_EC2_Route
+	 AWS_EC2_RouteTable
+	 AWS_EC2_SecurityGroupEgress
+	 AWS_EC2_SecurityGroupIngress
+	 AWS_EC2_SpotFleet
+	 AWS_EC2_SubnetNetworkAclAssociation
+	 AWS_EC2_SubnetRouteTableAssociation
+	 AWS_EC2_Volume
+	 AWS_EC2_VolumeAttachment
+	 AWS_EC2_VPCDHCPOptionsAssociation
+	 AWS_EC2_VPCEndpoint
+	 AWS_EC2_VPCGatewayAttachment
+	 AWS_EC2_VPCPeeringConnection
+	 AWS_EC2_VPNConnection
+	 AWS_EC2_VPNConnectionRoute
+	 AWS_EC2_VPNGateway
+	 AWS_EC2_VPNGatewayRoutePropagation
+	 */
+
 	var AWS_EC2_VPC = function(name, body) {
 		ResourceBase.call(this);
 		var self = this;
@@ -71,6 +138,7 @@ var Resource = function() {
 	AWS_EC2_SECURITYGROUP.prototype = Object.create(ResourceBase.prototype);
 
 	return {
+		AWS_AutoScaling_AutoScalingGroup: AWS_AutoScaling_AutoScalingGroup,
 		AWS_EC2_VPC: AWS_EC2_VPC,
 		AWS_EC2_SUBNET: AWS_EC2_SUBNET,
 		AWS_EC2_SECURITYGROUP: AWS_EC2_SECURITYGROUP
