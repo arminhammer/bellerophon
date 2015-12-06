@@ -13,40 +13,28 @@
   "electronVersion": "0.35.0",
   "scripts": {
     "test": "xo",
-    "start": "electron --debug .",
+    "start": "electron --debug src",
     "build": "electron-packager . $npm_package_productName --out=dist --ignore='^/dist$' --prune --asar --all --version=$npm_package_electronVersion"
   },
   "files": [
-    "index.js",
-    "index.html",
-    "index.css"
+    "index.js"
   ],
   "keywords": [
     "bellerophon-app",
     "bellerophon"
   ],
-  "dependencies": {
-    "aws-sdk": "^2.2.17",
-    "bootstrap": "^3.3.5",
-    "bootswatch": "^3.3.6",
-    "codemirror": "^5.8.0",
-    "electron-debug": "^0.5.0",
-    "jquery": "^2.1.4",
-    "jsonlint": "^1.6.2",
-    "mithril": "^0.2.0",
-    "winston": "^2.1.1"
-  },
   "devDependencies": {
     "electron-packager": "^5.0.0",
     "electron-prebuilt": "^0.35.0",
-    "xo": "^0.11.1",
     "gulp": "^3.6.0",
+    "gulp-electron": "0.0.9",
     "gulp-eslint": "^1.0.0",
     "gulp-exclude-gitignore": "^1.0.0",
     "gulp-istanbul": "^0.9.0",
     "gulp-mocha": "^2.0.0",
+    "gulp-nsp": "^2.1.0",
     "gulp-plumber": "^1.0.0",
-    "gulp-nsp": "^2.1.0"
+    "xo": "^0.11.1"
   },
   "xo": {
     "esnext": true,

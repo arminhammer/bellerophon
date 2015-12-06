@@ -1,21 +1,22 @@
 'use strict';
-const electron = require('electron');
-const app = electron.app;
-const Menu = electron.Menu;
-const Tray = electron.Tray;
-const AWS = require('aws-sdk');
+var electron = require('electron');
+var app = electron.app;
+var Menu = electron.Menu;
+var Tray = electron.Tray;
+var AWS = require('aws-sdk');
 AWS.config.region = 'us-east-1';
-const P = require('bluebird');
-const _ = require('lodash');
-const winston = require('winston');
-const Template = require('./template');
+var P = require('bluebird');
+var _ = require('lodash');
+var winston = require('winston');
+var Template = require('./template');
 var Resource = new require('./resource')();
+var os = require('os');
 
 var logger = new winston.Logger({
 	level: 'info',
 	transports: [
 		new (winston.transports.Console)(),
-		new (winston.transports.File)({ filename: 'bellerophon.log' })
+		new (winston.transports.File)({ filename: os.homedir() + '/.bellerophon.log' })
 	]
 });
 
@@ -30,14 +31,14 @@ var log = function(msg, level, from) {
 };
 
 // prevent window being garbage collected
-let mainWindow;
-let templateWindow;
+var mainWindow;
+var templateWindow;
 
 var ec2 = P.promisifyAll(new AWS.EC2());
 var ASG = P.promisifyAll(new AWS.AutoScaling());
 log('Initializing Main');
 
-const ipcMain = require('electron').ipcMain;
+var ipcMain = require('electron').ipcMain;
 
 var template = new Template();
 
@@ -379,7 +380,7 @@ function onTemplateClosed() {
 }
 
 function createMainWindow() {
-	const win = new electron.BrowserWindow({
+	var win = new electron.BrowserWindow({
 		width: 700,
 		height: 800,
 		minWidth: 600,
@@ -387,28 +388,28 @@ function createMainWindow() {
 		title: 'Bellerophon'
 	});
 
-	win.loadURL(`file://${__dirname}/ui/index.html`);
+	win.loadURL('file://' + __dirname + '/ui/index.html');
 	win.on('closed', onMainClosed, 'main');
 	return win;
 }
 
 function createTemplateWindow() {
-	const win = new electron.BrowserWindow({
+	var win = new electron.BrowserWindow({
 		width: 600,
 		height: 800,
 		title: 'Bellerophon Template'
 	});
 
-	win.loadURL(`file://${__dirname}/template/index.html`);
+	win.loadURL('file://' + __dirname + '/template/index.html');
 	win.on('closed', onTemplateClosed, 'template');
 	return win;
 }
 
-app.on('window-all-closed', () => {
+app.on('window-all-closed', function() {
 	app.quit();
 });
 
-app.on('activate-with-no-open-windows', () => {
+app.on('activate-with-no-open-windows', function() {
 	console.log('activate-with-no-open-windows');
 	if (!mainWindow) {
 		mainWindow = createMainWindow();
@@ -418,7 +419,7 @@ app.on('activate-with-no-open-windows', () => {
 var appIcon = null;
 var menu = null;
 
-app.on('ready', () => {
+app.on('ready', function() {
 	console.log('Ready');
 
 	var menuTemplate = [
