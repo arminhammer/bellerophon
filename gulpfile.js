@@ -7,11 +7,9 @@ var mocha = require('gulp-mocha');
 var istanbul = require('gulp-istanbul');
 var nsp = require('gulp-nsp');
 var plumber = require('gulp-plumber');
-var electron = require('gulp-electron');
-var packageJson = require('./src/package.json');
 
 gulp.task('static', function () {
-  return gulp.src(['lib/**/*.js','./index.js'])
+  return gulp.src(['src/**/*.js','!src/node_modules/**/*.js'])
     .pipe(excludeGitignore())
     .pipe(eslint())
     .pipe(eslint.format())
@@ -23,7 +21,7 @@ gulp.task('nsp', function (cb) {
 });
 
 gulp.task('pre-test', function () {
-  return gulp.src(['lib/**/*.js','./index.js'])
+  return gulp.src(['src/**/*.js','!src/node_modules/**/*.js'])
     .pipe(istanbul({
       includeUntested: true
     }))
