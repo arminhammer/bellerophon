@@ -113,16 +113,16 @@ ipcMain.on('update-resources', function(event, res) {
 				targetBlock: availableResources.AutoScaling.AutoScalingGroup
 			};
 			break;
-		/*case "AWS__AUTOSCALING_LaunchConfiguration":
+		case "AWS_AutoScaling_LaunchConfiguration":
 			params = {
-				call: ASG.describeAsync({}),
-				resBlock: '',
-				constructor: Resource.AWS_AUTOSCALING_,
-				name: "",
-				targetBlock: availableResources._AUTOSCALING.
+				call: ASG.describeLaunchConfigurationsAsync({}),
+				resBlock: 'LaunchConfigurations',
+				constructor: Resource.AWS_AutoScaling_LaunchConfiguration,
+				name: 'LaunchConfigurationName',
+				targetBlock: availableResources.AutoScaling.LaunchConfiguration
 			};
 			break;
-		case "AWS_AUTOSCALING_LifecycleHook":
+		/*case "AWS_AUTOSCALING_LifecycleHook":
 			params = {
 				call: ASG.describeAsync({}),
 				resBlock: '',
@@ -302,9 +302,9 @@ function onTemplateClosed() {
 
 function createMainWindow() {
 	var win = new electron.BrowserWindow({
-		width: 700,
+		width: 850,
 		height: 800,
-		minWidth: 600,
+		minWidth: 850,
 		minHeight: 500,
 		title: 'Bellerophon'
 	});

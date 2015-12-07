@@ -37,10 +37,10 @@ function toggleParamInTemplate(paramReq) {
 var resources = m.prop({});
 
 ipcRenderer.send('update-resources', 'AWS_AutoScaling_AutoScalingGroup');
-//ipcRenderer.send('update-resources', 'AWS_AUTOSCALING_LAUNCHCONFIGURATION');
-//ipcRenderer.send('update-resources', 'AWS_AUTOSCALING_LIFECYCLEHOOK');
-//ipcRenderer.send('update-resources', 'AWS_AUTOSCALING_SCALINGPOLICY');
-//ipcRenderer.send('update-resources', 'AWS_AUTOSCALING_SCHEDULINGACTION');
+ipcRenderer.send('update-resources', 'AWS_AutoScaling_LaunchConfiguration');
+//ipcRenderer.send('update-resources', 'AWS_AutoScaling_LifecycleHook');
+//ipcRenderer.send('update-resources', 'AWS_AutoScaling_ScalingPolicy');
+//ipcRenderer.send('update-resources', 'AWS_AutoScaling_SchedulingAction');
 ipcRenderer.send('update-resources', 'AWS_EC2_VPC');
 ipcRenderer.send('update-resources', "AWS_EC2_SUBNET");
 ipcRenderer.send('update-resources', "AWS_EC2_SECURITYGROUP");

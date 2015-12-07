@@ -42,13 +42,82 @@ var Resource = function() {
 	};
 	AWS_AutoScaling_AutoScalingGroup.prototype = Object.create(ResourceBase.prototype);
 
+	var AWS_AutoScaling_LaunchConfiguration = function(name, body) {
+		ResourceBase.call(this);
+		var self = this;
+		self.id = name;
+		self.name = name + '-resource';
+		self.body = body;
+		self.block = {
+			"Type" : "AWS::AutoScaling::LaunchConfiguration",
+			"Properties" : {
+				"AssociatePublicIpAddress" : "Boolean",
+				"BlockDeviceMappings" : [],
+				"ClassicLinkVPCId" : "String",
+				"ClassicLinkVPCSecurityGroups" : [],
+				"EbsOptimized" : "Boolean",
+				"IamInstanceProfile" : "String",
+				"ImageId" : "String",
+				"InstanceId" : "String",
+				"InstanceMonitoring" : "Boolean",
+				"InstanceType" : "String",
+				"KernelId" : "String",
+				"KeyName" : "String",
+				"PlacementTenancy" : "String",
+				"RamDiskId" : "String",
+				"SecurityGroups" : [],
+				"SpotPrice" : "String",
+				"UserData" : "String"
+			}
+		}
+
+	};
+	AWS_AutoScaling_LaunchConfiguration.prototype = Object.create(ResourceBase.prototype);
+
+	var AWS_AutoScaling_LifecycleHook = function(name, body) {
+		ResourceBase.call(this);
+		var self = this;
+		self.id = name;
+		self.name = name + '-resource';
+		self.body = body;
+		self.block = {}
+	};
+	AWS_AutoScaling_LifecycleHook.prototype = Object.create(ResourceBase.prototype);
+
+	var AWS_AutoScaling_ScalingPolicy = function(name, body) {
+		ResourceBase.call(this);
+		var self = this;
+		self.id = name;
+		self.name = name + '-resource';
+		self.body = body;
+		self.block = {}
+	};
+	AWS_AutoScaling_ScalingPolicy.prototype = Object.create(ResourceBase.prototype);
+
+	var AWS_AutoScaling_ScheduledAction = function(name, body) {
+		ResourceBase.call(this);
+		var self = this;
+		self.id = name;
+		self.name = name + '-resource';
+		self.body = body;
+		self.block = {}
+	};
+	AWS_AutoScaling_ScheduledAction.prototype = Object.create(ResourceBase.prototype);
+
 
 	/*
 
-	 AWS_AutoScaling_LaunchConfiguration
-	 AWS_AutoScaling_LifecycleHook
-	 AWS_AutoScaling_ScalingPolicy
-	 AWS_AutoScaling_ScheduledAction
+	 var  = function(name, body) {
+	 ResourceBase.call(this);
+	 var self = this;
+	 self.id = name;
+	 self.name = name + '-resource';
+	 self.body = body;
+	 self.block = {}
+	 };
+	 };
+	 .prototype = Object.create(ResourceBase.prototype);
+
 	 AWS_EC2_CustomerGateway
 	 AWS_EC2_DHCPOptions
 	 AWS_EC2_EIP
@@ -139,6 +208,10 @@ var Resource = function() {
 
 	return {
 		AWS_AutoScaling_AutoScalingGroup: AWS_AutoScaling_AutoScalingGroup,
+		AWS_AutoScaling_LaunchConfiguration: AWS_AutoScaling_LaunchConfiguration,
+		AWS_AutoScaling_LifecycleHook: AWS_AutoScaling_LifecycleHook,
+		AWS_AutoScaling_ScalingPolicy: AWS_AutoScaling_ScalingPolicy,
+		AWS_AutoScaling_ScheduledAction: AWS_AutoScaling_ScheduledAction,
 		AWS_EC2_VPC: AWS_EC2_VPC,
 		AWS_EC2_SUBNET: AWS_EC2_SUBNET,
 		AWS_EC2_SECURITYGROUP: AWS_EC2_SECURITYGROUP
