@@ -4,14 +4,91 @@
 
 "use strict";
 
+var _ = require('lodash');
+
 var Template = function() {
 
 	var self = this;
 
+	function recursiveReplace(object, newPattern, oldPattern) {
+		_.forIn(object, function (val, key) {
+			//console.log('Recursive Run');
+			if(val === oldPattern) {
+				//console.log('Replacing at ' + val);
+				object[key] = newPattern
+			}
+			//console.log(key);
+			if (_.isArray(val)) {
+				//console.log('Recursing on an array ' + val);
+				val.forEach(function(el) {
+					if (_.isObject(el)) {
+						recursiveReplace(el, newPattern, oldPattern);
+					}
+				});
+			}
+			if (_.isObject(object[key])) {
+				//console.log('Recursing on an object ' + key);
+				recursiveReplace(object[key], newPattern, oldPattern);
+			}
+		});
+	};
+
+	function populateBlock(block, body) {
+		block.Properties = _.reduce(block.Properties, function(result, n, key) {
+			result[key] = body[key];
+			return result;
+		}, {});
+		return block;
+	};
+
+	self.addResource = function(resource) {
+		console.log('block');
+		console.log('Recursive rename');
+		recursiveReplace(self.body.Resources, '{ Ref: ' + resource.name + ' }', resource.id);
+		var newResource = populateBlock(resource.block, resource.body);
+		_.each(self.body.Resources, function(val, key) {
+			console.log('Checking ' + key);
+			console.log('Match: ' + key.replace('-resource',''));
+			recursiveReplace(newResource, '{ Ref: ' + key + ' }', key.replace('-resource',''))
+		});
+		self.body.Resources[resource.name] = newResource;
+	};
+
+	self.removeResource = function(resource) {
+		console.log('block');
+		console.log(resource.block);
+		recursiveReplace(self.body.Resources, resource.id, '{ Ref: ' + resource.name + ' }');
+		delete self.body.Resources[resource.name];
+	};
+
+	self.addParam = function(resource, pKey) {
+		if(self.body.Resources[resource.name]) {
+			if(self.body.Resources[resource.name].Properties[pKey]) {
+				var oldVal = self.body.Resources[resource.name].Properties[pKey];
+				var paramName = resource.name + '-' + pKey + '-param';
+				self.body.Resources[resource.name].Properties[pKey] = '{ Ref: ' + paramName + ' }';
+				self.body.Parameters[paramName] = {
+					"Type" : "String",
+					"Default" : oldVal
+				}
+			}
+		}
+	};
+
+	self.removeParam = function(resource, pKey) {
+		if(self.body.Resources[resource.name]) {
+			if(self.body.Resources[resource.name].Properties[pKey]) {
+				var paramName = resource.name + '-' + pKey + '-param';
+				self.body.Resources[resource.name].Properties[pKey] = self.body.Parameters[paramName].Default;
+				delete self.body.Parameters[paramName];
+			}
+		}
+	};
+
 	self.body = {
 		"AWSTemplateFormatVersion" : "2010-09-09",
 		"Parameters" : {},
-		"Resources" : {},
+		"Resources" : {}
 	};
 
 };

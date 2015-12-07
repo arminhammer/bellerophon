@@ -6,7 +6,7 @@ var Tray = electron.Tray;
 var AWS = require('aws-sdk');
 AWS.config.region = 'us-east-1';
 var P = require('bluebird');
-var _ = require('lodash');
+
 var winston = require('winston');
 var Template = require('./template');
 var Resource = new require('./resource')();
@@ -40,7 +40,7 @@ log('Initializing Main');
 
 var ipcMain = require('electron').ipcMain;
 
-var template = new Template();
+var template = new Template(templateWindow);
 
 /*
  var template = {
@@ -99,94 +99,6 @@ var availableResources = {
 		 */
 	}
 };
-
-function populateBlock(block, body) {
-	block.Properties = _.reduce(block.Properties, function(result, n, key) {
-		result[key] = body[key];
-		return result;
-	}, {});
-	return block;
-}
-
-function recursiveReplace(object, newPattern, oldPattern) {
-	_.forIn(object, function (val, key) {
-		//console.log('Recursive Run');
-		if(val === oldPattern) {
-			//console.log('Replacing at ' + val);
-			object[key] = newPattern
-		}
-		//console.log(key);
-		if (_.isArray(val)) {
-			//console.log('Recursing on an array ' + val);
-			val.forEach(function(el) {
-				if (_.isObject(el)) {
-					recursiveReplace(el, newPattern, oldPattern);
-				}
-			});
-		}
-		if (_.isObject(object[key])) {
-			//console.log('Recursing on an object ' + key);
-			recursiveReplace(object[key], newPattern, oldPattern);
-		}
-	});
-}
-
-function addResource(resource) {
-	console.log('block');
-	console.log('Recursive rename');
-	recursiveReplace(template.body.Resources, '{ Ref: ' + resource.name + ' }', resource.id);
-	var newResource = populateBlock(resource.block, resource.body);
-	_.each(template.body.Resources, function(val, key) {
-		console.log('Checking ' + key);
-		console.log('Match: ' + key.replace('-resource',''));
-		recursiveReplace(newResource, '{ Ref: ' + key + ' }', key.replace('-resource',''))
-	});
-	template.body.Resources[resource.name] = newResource;
-	if(templateWindow) {
-		templateWindow.webContents.send('update-template', template.body);
-	}
-}
-
-function removeResource(resource) {
-	console.log('block');
-	console.log(resource.block);
-	recursiveReplace(template.body.Resources, resource.id, '{ Ref: ' + resource.name + ' }');
-	delete template.body.Resources[resource.name];
-	if(templateWindow) {
-		templateWindow.webContents.send('update-template', template.body);
-	}
-}
-
-function addParam(resource, pKey) {
-	if(template.body.Resources[resource.name]) {
-		if(template.body.Resources[resource.name].Properties[pKey]) {
-			var oldVal = template.body.Resources[resource.name].Properties[pKey];
-			var paramName = resource.name + '-' + pKey + '-param';
-			template.body.Resources[resource.name].Properties[pKey] = '{ Ref: ' + paramName + ' }';
-			template.body.Parameters[paramName] = {
-				"Type" : "String",
-				"Default" : oldVal
-			}
-		}
-	}
-	if(templateWindow) {
-		templateWindow.webContents.send('update-template', template.body);
-	}
-}
-
-function removeParam(resource, pKey) {
-	if(template.body.Resources[resource.name]) {
-		if(template.body.Resources[resource.name].Properties[pKey]) {
-			var paramName = resource.name + '-' + pKey + '-param';
-			template.body.Resources[resource.name].Properties[pKey] = template.body.Parameters[paramName].Default;
-			delete template.body.Parameters[paramName];
-		}
-	}
-	if(templateWindow) {
-		templateWindow.webContents.send('update-template', template.body);
-	}
-}
-
 
 ipcMain.on('update-resources', function(event, res) {
 	log('Got update-resources request');
@@ -338,14 +250,17 @@ ipcMain.on('toggle-param', function(event, res) {
 	log('Toggling param in template');
 	if(availableResources[res.key][res.subKey][res.resource.id].templateParams[res.pKey]) {
 		availableResources[res.key][res.subKey][res.resource.id].templateParams[res.pKey] = false;
-		removeParam(res.resource, res.pKey);
+		template.removeParam(res.resource, res.pKey);
 	} else {
 		availableResources[res.key][res.subKey][res.resource.id].templateParams[res.pKey] = true;
-		addParam(res.resource, res.pKey);
+		template.addParam(res.resource, res.pKey);
 	}
 	log('avail');
 	log(availableResources[res.key][res.subKey][res.resource.id].templateParams);
 	//addResource(res.resource);
+	if(templateWindow) {
+		templateWindow.webContents.send('update-template', template.body);
+	}
 	event.sender.send('update-resources', availableResources);
 });
 
@@ -354,14 +269,20 @@ ipcMain.on('add-to-template-request', function(event, res) {
 	availableResources[res.key][res.subKey][res.resource.id].inTemplate = true;
 	log('avail');
 	log(availableResources);
-	addResource(res.resource);
+	template.addResource(res.resource);
+	if(templateWindow) {
+		templateWindow.webContents.send('update-template', template.body);
+	}
 	event.sender.send('update-resources', availableResources);
 });
 
 ipcMain.on('remove-from-template-request', function(event, res) {
 	console.log('Removed resource from template');
 	availableResources[res.key][res.subKey][res.resource.id].inTemplate = false;
-	removeResource(res.resource);
+	template.removeResource(res.resource);
+	if(templateWindow) {
+		templateWindow.webContents.send('update-template', template.body);
+	}
 	event.sender.send('update-resources', availableResources);
 });
 
