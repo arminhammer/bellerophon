@@ -139,8 +139,7 @@ var uiView = {
 				m(".container", [
 					m(".navbar-header", [
 						m("a.navbar-brand[href='#']", "Bellerophon"),
-						m("button.btn.btn-success.navbar-btn.navbar-right.pull-right#templateButton", { onclick: controller.openTemplateWindow }, "Show Template")
-					])
+						])
 				])
 			]),*/
 			m(".row.MainContent", [
@@ -157,7 +156,10 @@ var uiView = {
 									})
 								])
 							])
-						})
+						}),
+						m('li', [
+							m("button.btn.btn-warning.navbar-btn.navbar-right.pull-right#templateButton", { onclick: controller.openTemplateWindow }, "Show Template")
+						])
 					])
 				]),
 				m(".col-xs-9", [
@@ -210,20 +212,24 @@ var uiView = {
 																					if(_.isObject(pVal)) {
 																						pVal = JSON.stringify(pVal, null, 2);
 																					}
+																					var paramCheckbox = m("input[type=checkbox]", {
+																						checked: resource.templateParams[pKey],
+																						//name: resource.id,
+																						onclick: m.withAttr("checked", function() {
+																							log('Checked ' + resource);
+																							toggleParamInTemplate({resource: resource, key: key, subKey: subKey, pKey: pKey });
+																							//if(resource.templateParams[pKey]) {} else {
+																							//	addParamToTemplate({resource: resource, key: key, subKey: subKey});
+																							//}
+																						})
+																					});
+																					if((resource.block.Properties[pKey]) != 'String') {
+																						paramCheckbox = m('div')
+																					}
 																					if(pVal != '') {
 																						return m('tr', [
 																							m('td.col-xs-1', [
-																								m("input[type=checkbox]", {
-																									checked: resource.templateParams[pKey],
-																									//name: resource.id,
-																									onclick: m.withAttr("checked", function() {
-																										log('Checked ' + resource);
-																										toggleParamInTemplate({resource: resource, key: key, subKey: subKey, pKey: pKey });
-																										//if(resource.templateParams[pKey]) {} else {
-																										//	addParamToTemplate({resource: resource, key: key, subKey: subKey});
-																										//}
-																									})
-																								})
+																								paramCheckbox
 																							]),
 																							m('td.col-xs-3', [
 																								m('b', {title: pKey, config: controller.addTooltip }, _.trunc(pKey,15))

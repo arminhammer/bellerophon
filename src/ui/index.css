@@ -61,7 +61,7 @@
 .bs-docs-sidebar .nav>.active>a,
 .bs-docs-sidebar .nav>li>a:hover,
 .bs-docs-sidebar .nav>li>a:focus {
-	color: #563d7c;
+	color: #000000;
 	text-decoration: none;
 	background-color: transparent;
 	/*border-left-color: #563d7c;*/
