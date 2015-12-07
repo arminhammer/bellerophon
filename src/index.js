@@ -40,7 +40,7 @@ log('Initializing Main');
 
 var ipcMain = require('electron').ipcMain;
 
-var template = new Template(templateWindow);
+var template = new Template();
 
 /*
  var template = {

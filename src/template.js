@@ -12,14 +12,10 @@ var Template = function() {
 
 	function recursiveReplace(object, newPattern, oldPattern) {
 		_.forIn(object, function (val, key) {
-			//console.log('Recursive Run');
 			if(val === oldPattern) {
-				//console.log('Replacing at ' + val);
 				object[key] = newPattern
 			}
-			//console.log(key);
 			if (_.isArray(val)) {
-				//console.log('Recursing on an array ' + val);
 				val.forEach(function(el) {
 					if (_.isObject(el)) {
 						recursiveReplace(el, newPattern, oldPattern);
@@ -27,7 +23,6 @@ var Template = function() {
 				});
 			}
 			if (_.isObject(object[key])) {
-				//console.log('Recursing on an object ' + key);
 				recursiveReplace(object[key], newPattern, oldPattern);
 			}
 		});
@@ -42,21 +37,15 @@ var Template = function() {
 	};
 
 	self.addResource = function(resource) {
-		console.log('block');
-		console.log('Recursive rename');
 		recursiveReplace(self.body.Resources, '{ Ref: ' + resource.name + ' }', resource.id);
 		var newResource = populateBlock(resource.block, resource.body);
 		_.each(self.body.Resources, function(val, key) {
-			console.log('Checking ' + key);
-			console.log('Match: ' + key.replace('-resource',''));
 			recursiveReplace(newResource, '{ Ref: ' + key + ' }', key.replace('-resource',''))
 		});
 		self.body.Resources[resource.name] = newResource;
 	};
 
 	self.removeResource = function(resource) {
-		console.log('block');
-		console.log(resource.block);
 		recursiveReplace(self.body.Resources, resource.id, '{ Ref: ' + resource.name + ' }');
 		delete self.body.Resources[resource.name];
 	};

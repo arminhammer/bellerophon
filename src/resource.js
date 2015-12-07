@@ -207,6 +207,7 @@ var Resource = function() {
 	AWS_EC2_SECURITYGROUP.prototype = Object.create(ResourceBase.prototype);
 
 	return {
+		ResourceBase: ResourceBase,
 		AWS_AutoScaling_AutoScalingGroup: AWS_AutoScaling_AutoScalingGroup,
 		AWS_AutoScaling_LaunchConfiguration: AWS_AutoScaling_LaunchConfiguration,
 		AWS_AutoScaling_LifecycleHook: AWS_AutoScaling_LifecycleHook,
