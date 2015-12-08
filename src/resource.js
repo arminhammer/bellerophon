@@ -90,7 +90,20 @@ var Resource = function() {
 		self.id = name;
 		self.name = name + '-resource';
 		self.body = body;
-		self.block = {}
+		self.block = {
+			"Type" : "AWS::AutoScaling::ScalingPolicy",
+			"Properties" : {
+				"AdjustmentType" : "String",
+				"AutoScalingGroupName" : "String",
+				"Cooldown" : "String",
+				"EstimatedInstanceWarmup" : "Integer",
+				"MetricAggregationType" : "String",
+				"MinAdjustmentMagnitude" : "Integer",
+				"PolicyType" : "String",
+				"ScalingAdjustment" : "String",
+				"StepAdjustments" : []
+			}
+		}
 	};
 	AWS_AutoScaling_ScalingPolicy.prototype = Object.create(ResourceBase.prototype);
 
@@ -100,7 +113,18 @@ var Resource = function() {
 		self.id = name;
 		self.name = name + '-resource';
 		self.body = body;
-		self.block = {}
+		self.block = {
+			"Type" : "AWS::AutoScaling::ScheduledAction",
+			"Properties" : {
+				"AutoScalingGroupName" : "String",
+				"DesiredCapacity" : "Integer",
+				"EndTime" : "Time stamp",
+				"MaxSize" : "Integer",
+				"MinSize" : "Integer",
+				"Recurrence" : "String",
+				"StartTime" : "Time stamp"
+			}
+		}
 	};
 	AWS_AutoScaling_ScheduledAction.prototype = Object.create(ResourceBase.prototype);
 

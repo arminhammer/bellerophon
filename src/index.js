@@ -122,34 +122,33 @@ ipcMain.on('update-resources', function(event, res) {
 				targetBlock: availableResources.AutoScaling.LaunchConfiguration
 			};
 			break;
-		/*case "AWS_AUTOSCALING_LifecycleHook":
+		case "AWS_AutoScaling_LifecycleHook":
 			params = {
-				call: ASG.describeAsync({}),
-				resBlock: '',
-				constructor: Resource.AWS_AUTOSCALING_,
-				name: "",
-				targetBlock: availableResources._AUTOSCALING.
+				call: ASG.describeLifecycleHooksAsync({}),
+				resBlock: 'LifecycleHooks',
+				constructor: Resource.AWS_AutoScaling_LifecycleHook,
+				name: 'LifecycleHookName',
+				targetBlock: availableResources.AutoScaling.LifecycleHook
 			};
 			break;
-		case "AWS_AUTOSCALING_ScalingPolicy":
+		case "AWS_AutoScaling_ScalingPolicy":
 			params = {
-				call: ASG.describeAsync({}),
-				resBlock: '',
-				constructor: Resource.AWS_AUTOSCALING_,
-				name: "",
-				targetBlock: availableResources._AUTOSCALING.
+				call: ASG.describePoliciesAsync({}),
+				resBlock: 'ScalingPolicies',
+				constructor: Resource.AWS_AutoScaling_ScalingPolicy,
+				name: 'PolicyName',
+				targetBlock: availableResources.AutoScaling.ScalingPolicy
 			};
 			break;
-		case "AWS_AUTOSCALING_ScheduledAction":
+		case "AWS_AutoScaling_ScheduledAction":
 			params = {
-				call: ASG.describeAsync({}),
-				resBlock: '',
-				constructor: Resource.AWS_AUTOSCALING_,
-				name: "",
-				targetBlock: availableResources._AUTOSCALING.
+				call: ASG.describeScheduledActionsAsync({}),
+				resBlock: 'ScheduledUpdateGroupActions',
+				constructor: Resource.AWS_AutoScaling_ScheduledAction,
+				name: 'ScheduledActionName',
+				targetBlock: availableResources.AutoScaling.ScheduledAction
 			};
 			break;
-		*/
 		case "AWS_EC2_VPC":
 			params = {
 				call: ec2.describeVpcsAsync({}),
