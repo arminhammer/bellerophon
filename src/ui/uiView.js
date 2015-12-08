@@ -136,12 +136,12 @@ var uiView = {
 	view: function(controller) {
 		return m(".container-fluid", [
 			/*m(".navbar.navbar-fixed-top", [
-				m(".container", [
-					m(".navbar-header", [
-						m("a.navbar-brand[href='#']", "Bellerophon"),
-						])
-				])
-			]),*/
+			 m(".container", [
+			 m(".navbar-header", [
+			 m("a.navbar-brand[href='#']", "Bellerophon"),
+			 ])
+			 ])
+			 ]),*/
 			m(".row.MainContent", [
 				m("nav.col-xs-3.bs-docs-sidebar", [
 					m("ul.nav.nav-stacked.fixed[id='sidebar']", [
@@ -157,9 +157,7 @@ var uiView = {
 								])
 							])
 						}),
-						m('li', [
-							m("button.btn.btn-warning.navbar-btn.navbar-right.pull-right#templateButton", { onclick: controller.openTemplateWindow }, "Show Template")
-						])
+						m("button.btn.btn-warning#templateButton", { onclick: controller.openTemplateWindow }, "Show Template")
 					])
 				]),
 				m(".col-xs-9", [
@@ -177,8 +175,8 @@ var uiView = {
 													_.map(controller.resources()[key][subKey], function (resource) {
 														var colSizes = { xs: 12, md: 6, lg: 4};
 														/*if(subKeySize === 1 || subKeySize === 2) {
-															colSizes = { xs: 12, md: 6, lg: 6}
-														}*/
+														 colSizes = { xs: 12, md: 6, lg: 6}
+														 }*/
 														var colSizeString = 'col-xs-' + colSizes.xs + ' col-md-' + colSizes.md + ' col-lg-' + colSizes.lg;
 														return m('div', [
 															m("div", { class: colSizeString },[
@@ -198,7 +196,7 @@ var uiView = {
 																						}
 																					})
 																				}),
-																				resource.id
+																				_.trunc(resource.id,50)
 																			])
 																		]),
 																		m(".panel-body", [
