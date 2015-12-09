@@ -9,7 +9,7 @@ var P = require('bluebird');
 
 var winston = require('winston');
 var Template = require('./template');
-var Resource = new require('./resource')();
+var Resource = require('./resource');
 var os = require('os');
 
 var logger = new winston.Logger({
@@ -101,6 +101,34 @@ var availableResources = {
 };
 
 ipcMain.on('update-resources', function(event, res) {
+	log('Got update-resources request');
+	log(res.primary);
+	log(res.secondary);
+	log(Resource[res.primary][res.secondary]);
+	var resource = Resource[res.primary][res.secondary];
+	log(resource);
+	resource
+		.call
+		.then(function(data) {
+			log('Sending data');
+			//log(Resource);
+			log(res);
+			log(data);
+			log(resource.blockGroup);
+
+			data[resource.resBlock].forEach(function(r) {
+				var newResource = new resource.construct(r[resource.rName], r);
+				availableResources[res.primary][res.secondary][newResource.id] = newResource;
+			});
+			event.sender.send('update-resources', availableResources);
+		})
+		.catch(function(e) {
+			console.log(e);
+		});
+
+});
+
+ipcMain.on('1update-resources', function(event, res) {
 	log('Got update-resources request');
 	var params = {};
 	switch(res) {

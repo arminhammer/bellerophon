@@ -3,8 +3,43 @@
  */
 
 "use strict";
+var AWS = require('aws-sdk');
+AWS.config.region = 'us-east-1';
 
-var Resource = function() {
+var P = require('bluebird');
+
+var ec2 = P.promisifyAll(new AWS.EC2());
+//var ASG = P.promisifyAll(new AWS.AutoScaling());
+
+var Resource = {
+	EC2: {
+		VPC:{
+			call: ec2.describeVpcsAsync({}),
+			resBlock: 'Vpcs',
+			rName: "VpcId",
+			construct: function(name, body) {
+				var self = this;
+				self.inTemplate = false;
+				self.templateParams = {};
+				self.id = name;
+				self.name = name + '-resource';
+				self.body = body;
+				self.block = {
+					"Type" : "AWS::EC2::VPC",
+					"Properties" : {
+						"CidrBlock" : "String",
+						"EnableDnsSupport" : "Boolean",
+						"EnableDnsHostnames" : "Boolean",
+						"InstanceTenancy" : "String",
+						"Tags" : []
+					}
+				};
+			}
+		}
+	}
+};
+
+var ResourceOld = function() {
 
 	var ResourceBase = function() {
 		var self = this;
