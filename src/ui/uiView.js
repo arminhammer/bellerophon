@@ -36,18 +36,16 @@ function toggleParamInTemplate(paramReq) {
 
 var resources = m.prop({});
 
-/*
-ipcRenderer.send('update-resources', 'AWS_AutoScaling_AutoScalingGroup');
-ipcRenderer.send('update-resources', 'AWS_AutoScaling_LaunchConfiguration');
-*/
-//ipcRenderer.send('update-resources', 'AWS_AutoScaling_LifecycleHook');
+ipcRenderer.send('update-resources', { primary: 'AutoScaling', secondary: 'AutoScalingGroup'});
+ipcRenderer.send('update-resources', { primary: 'AutoScaling', secondary: 'LaunchConfiguration'});
+ipcRenderer.send('update-resources', { primary: 'AutoScaling', secondary: 'ScalingPolicy'});
+ipcRenderer.send('update-resources', { primary: 'AutoScaling', secondary: 'ScheduledAction'});
+//ipcRenderer.send('update-resources', { primary: 'AutoScaling', secondary: 'LifecycleHook'});
+
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'VPC'});
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'SecurityGroup'});
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'Subnet'});
 /*
-ipcRenderer.send('update-resources', 'AWS_AutoScaling_ScalingPolicy');
-ipcRenderer.send('update-resources', 'AWS_AutoScaling_ScheduledAction');
-ipcRenderer.send('update-resources', "AWS_EC2_SUBNET");
 */
 
 /*
@@ -87,39 +85,6 @@ ipcRenderer.on('update-resources', function(event, res) {
 	resources(res);
 	console.log('Updating resources');
 	console.log(resources());
-	m.endComputation();
-});
-
-ipcRenderer.on('get-resource-reply', function(event, res) {
-	//console.log('Adding resources');
-	m.startComputation();
-	var params = {};
-	switch(res.type) {
-		case "AWS::EC2::VPC":
-			params = { resBlock: res.Vpcs, constructor: Resource.AWS_EC2_VPC, name: "VpcId", targetBlock: resources.EC2.VPC };
-			break;
-		case "AWS::EC2::SUBNET":
-			params = { resBlock: res.Subnets, constructor: Resource.AWS_EC2_SUBNET, name: "SubnetId", targetBlock: resources.EC2.Subnet };
-			break;
-		case "AWS::EC2::SECURITYGROUP":
-			params = { resBlock: res.SecurityGroups, constructor: Resource.AWS_EC2_SECURITYGROUP, name: "GroupId", targetBlock: resources.EC2.SecurityGroup };
-			break;
-		default:
-			console.log('Resource type not found.');
-			break;
-	}
-	params.resBlock.forEach(function(r) {
-		var newResource = new params.constructor(r[params.name], r);
-		newResource.toggleInTemplate = function(setting) {
-			newResource.inTemplate(setting);
-			if(setting) {
-				addToTemplate(newResource);
-			} else {
-				removeFromTemplate(newResource);
-			}
-		};
-		params.targetBlock.push(newResource);
-	});
 	m.endComputation();
 });
 

@@ -9,9 +9,141 @@ AWS.config.region = 'us-east-1';
 var P = require('bluebird');
 
 var ec2 = P.promisifyAll(new AWS.EC2());
-//var ASG = P.promisifyAll(new AWS.AutoScaling());
+var ASG = P.promisifyAll(new AWS.AutoScaling());
 
 var Resource = {
+	AutoScaling: {
+		AutoScalingGroup: {
+			call: ASG.describeAutoScalingGroupsAsync({}),
+			resBlock: 'AutoScalingGroups',
+			rName: "AutoScalingGroupName",
+			construct: function (name, body) {
+				this.inTemplate = false;
+				this.templateParams = {};
+				this.id = name;
+				this.name = name + '-resource';
+				this.body = body;
+				this.block = {
+					"Type": "AWS::AutoScaling::AutoScalingGroup",
+					"Properties": {
+						"AvailabilityZones": [],
+						"Cooldown": "String",
+						"DesiredCapacity": "String",
+						"HealthCheckGracePeriod": "Integer",
+						"HealthCheckType": "String",
+						"InstanceId": "String",
+						"LaunchConfigurationName": "String",
+						"LoadBalancerNames": [],
+						"MaxSize": "String",
+						"MetricsCollection": [],
+						"MinSize": "String",
+						"NotificationConfigurations": [],
+						"PlacementGroup": "String",
+						"Tags": [],
+						"TerminationPolicies": [],
+						"VPCZoneIdentifier": []
+					}
+				};
+			}
+		},
+		LaunchConfiguration: {
+			call: ASG.describeLaunchConfigurationsAsync({}),
+			resBlock: 'LaunchConfigurations',
+			name: 'LaunchConfigurationName',
+			construct: function(name, body) {
+				this.inTemplate = false;
+				this.templateParams = {};
+				this.id = name;
+				this.name = name + '-resource';
+				this.body = body;
+				this.block = {
+					"Type" : "AWS::AutoScaling::LaunchConfiguration",
+					"Properties" : {
+						"AssociatePublicIpAddress" : "Boolean",
+						"BlockDeviceMappings" : [],
+						"ClassicLinkVPCId" : "String",
+						"ClassicLinkVPCSecurityGroups" : [],
+						"EbsOptimized" : "Boolean",
+						"IamInstanceProfile" : "String",
+						"ImageId" : "String",
+						"InstanceId" : "String",
+						"InstanceMonitoring" : "Boolean",
+						"InstanceType" : "String",
+						"KernelId" : "String",
+						"KeyName" : "String",
+						"PlacementTenancy" : "String",
+						"RamDiskId" : "String",
+						"SecurityGroups" : [],
+						"SpotPrice" : "String",
+						"UserData" : "String"
+					}
+				}
+			}
+		},
+		/*LifecycleHook: {
+		 call: ASG.describeLifecycleHooksAsync({}),
+		 resBlock: 'LifecycleHooks',
+		 name: 'LifecycleHookName',
+		 construct: function(name, body) {
+		 this.inTemplate = false;
+		 this.templateParams = {};
+		 this.id = name;
+		 this.name = name + '-resource';
+		 this.body = body;
+		 this.block = {}
+		 }
+		 },*/
+		ScalingPolicy: {
+			call: ASG.describePoliciesAsync({}),
+			resBlock: 'ScalingPolicies',
+			name: 'PolicyName',
+			construct: function(name, body) {
+				this.inTemplate = false;
+				this.templateParams = {};
+				this.id = name;
+				this.name = name + '-resource';
+				this.body = body;
+				this.block = {
+					"Type" : "AWS::AutoScaling::ScalingPolicy",
+					"Properties" : {
+						"AdjustmentType" : "String",
+						"AutoScalingGroupName" : "String",
+						"Cooldown" : "String",
+						"EstimatedInstanceWarmup" : "Integer",
+						"MetricAggregationType" : "String",
+						"MinAdjustmentMagnitude" : "Integer",
+						"PolicyType" : "String",
+						"ScalingAdjustment" : "String",
+						"StepAdjustments" : []
+					}
+				}
+			}
+		},
+		ScheduledAction: {
+			call: ASG.describeScheduledActionsAsync({}),
+			resBlock: 'ScheduledUpdateGroupActions',
+			name: 'ScheduledActionName',
+			construct: function(name, body) {
+				this.inTemplate = false;
+				this.templateParams = {};
+				this.id = name;
+				this.name = name + '-resource';
+				this.body = body;
+				this.block = {
+					"Type" : "AWS::AutoScaling::ScheduledAction",
+					"Properties" : {
+						"AutoScalingGroupName" : "String",
+						"DesiredCapacity" : "Integer",
+						"EndTime" : "Time stamp",
+						"MaxSize" : "Integer",
+						"MinSize" : "Integer",
+						"Recurrence" : "String",
+						"StartTime" : "Time stamp"
+					}
+				}
+			}
+		}
+	},
 	EC2: {
 		VPC:{
 			call: ec2.describeVpcsAsync({}),
@@ -80,131 +212,12 @@ var Resource = {
 				};
 			}
 		}
-}
+	}
 };
 
 var ResourceOld = function() {
 
-	var ResourceBase = function() {
-		this.inTemplate = false;
-		this.templateParams = {};
-	};
 
-	var AWS_AutoScaling_AutoScalingGroup = function(name, body) {
-		this.inTemplate = false;
-		this.templateParams = {};
-		this.id = name;
-		this.name = name + '-resource';
-		this.body = body;
-		this.block = {
-			"Type" : "AWS::AutoScaling::AutoScalingGroup",
-			"Properties" : {
-				"AvailabilityZones" : [],
-				"Cooldown" : "String",
-				"DesiredCapacity" : "String",
-				"HealthCheckGracePeriod" : "Integer",
-				"HealthCheckType" : "String",
-				"InstanceId" : "String",
-				"LaunchConfigurationName" : "String",
-				"LoadBalancerNames" : [],
-				"MaxSize" : "String",
-				"MetricsCollection" : [],
-				"MinSize" : "String",
-				"NotificationConfigurations" : [],
-				"PlacementGroup" : "String",
-				"Tags" : [],
-				"TerminationPolicies" : [],
-				"VPCZoneIdentifier" : []
-			}
-		};
-	};
-	AWS_AutoScaling_AutoScalingGroup.prototype = Object.create(ResourceBase.prototype);
-
-	var AWS_AutoScaling_LaunchConfiguration = function(name, body) {
-		this.inTemplate = false;
-		this.templateParams = {};
-		this.id = name;
-		this.name = name + '-resource';
-		this.body = body;
-		this.block = {
-			"Type" : "AWS::AutoScaling::LaunchConfiguration",
-			"Properties" : {
-				"AssociatePublicIpAddress" : "Boolean",
-				"BlockDeviceMappings" : [],
-				"ClassicLinkVPCId" : "String",
-				"ClassicLinkVPCSecurityGroups" : [],
-				"EbsOptimized" : "Boolean",
-				"IamInstanceProfile" : "String",
-				"ImageId" : "String",
-				"InstanceId" : "String",
-				"InstanceMonitoring" : "Boolean",
-				"InstanceType" : "String",
-				"KernelId" : "String",
-				"KeyName" : "String",
-				"PlacementTenancy" : "String",
-				"RamDiskId" : "String",
-				"SecurityGroups" : [],
-				"SpotPrice" : "String",
-				"UserData" : "String"
-			}
-		}
-
-	};
-	AWS_AutoScaling_LaunchConfiguration.prototype = Object.create(ResourceBase.prototype);
-
-	var AWS_AutoScaling_LifecycleHook = function(name, body) {
-		this.inTemplate = false;
-		this.templateParams = {};
-		this.id = name;
-		this.name = name + '-resource';
-		this.body = body;
-		this.block = {}
-	};
-	AWS_AutoScaling_LifecycleHook.prototype = Object.create(ResourceBase.prototype);
-
-	var AWS_AutoScaling_ScalingPolicy = function(name, body) {
-		this.inTemplate = false;
-		this.templateParams = {};
-		this.id = name;
-		this.name = name + '-resource';
-		this.body = body;
-		this.block = {
-			"Type" : "AWS::AutoScaling::ScalingPolicy",
-			"Properties" : {
-				"AdjustmentType" : "String",
-				"AutoScalingGroupName" : "String",
-				"Cooldown" : "String",
-				"EstimatedInstanceWarmup" : "Integer",
-				"MetricAggregationType" : "String",
-				"MinAdjustmentMagnitude" : "Integer",
-				"PolicyType" : "String",
-				"ScalingAdjustment" : "String",
-				"StepAdjustments" : []
-			}
-		}
-	};
-	AWS_AutoScaling_ScalingPolicy.prototype = Object.create(ResourceBase.prototype);
-
-	var AWS_AutoScaling_ScheduledAction = function(name, body) {
-		this.inTemplate = false;
-		this.templateParams = {};
-		this.id = name;
-		this.name = name + '-resource';
-		this.body = body;
-		this.block = {
-			"Type" : "AWS::AutoScaling::ScheduledAction",
-			"Properties" : {
-				"AutoScalingGroupName" : "String",
-				"DesiredCapacity" : "Integer",
-				"EndTime" : "Time stamp",
-				"MaxSize" : "Integer",
-				"MinSize" : "Integer",
-				"Recurrence" : "String",
-				"StartTime" : "Time stamp"
-			}
-		}
-	};
-	AWS_AutoScaling_ScheduledAction.prototype = Object.create(ResourceBase.prototype);
 
 
 	/*
@@ -249,16 +262,6 @@ var ResourceOld = function() {
 	 AWS_EC2_VPNGateway
 	 AWS_EC2_VPNGatewayRoutePropagation
 	 */
-
-
-	return {
-		ResourceBase: ResourceBase,
-		AWS_AutoScaling_AutoScalingGroup: AWS_AutoScaling_AutoScalingGroup,
-		AWS_AutoScaling_LaunchConfiguration: AWS_AutoScaling_LaunchConfiguration,
-		AWS_AutoScaling_LifecycleHook: AWS_AutoScaling_LifecycleHook,
-		AWS_AutoScaling_ScalingPolicy: AWS_AutoScaling_ScalingPolicy,
-		AWS_AutoScaling_ScheduledAction: AWS_AutoScaling_ScheduledAction,
-	}
 
 };
 

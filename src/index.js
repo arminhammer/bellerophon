@@ -128,55 +128,6 @@ ipcMain.on('update-resources', function(event, res) {
 
 });
 
-ipcMain.on('1update-resources', function(event, res) {
-	log('Got update-resources request');
-	var params = {};
-	switch(res) {
-		case "AWS_AutoScaling_AutoScalingGroup":
-			params = {
-				call: ASG.describeAutoScalingGroupsAsync({}),
-				resBlock: 'AutoScalingGroups',
-				constructor: Resource.AWS_AutoScaling_AutoScalingGroup,
-				name: "AutoScalingGroupName",
-				targetBlock: availableResources.AutoScaling.AutoScalingGroup
-			};
-			break;
-		case "AWS_AutoScaling_LaunchConfiguration":
-			params = {
-				call: ASG.describeLaunchConfigurationsAsync({}),
-				resBlock: 'LaunchConfigurations',
-				constructor: Resource.AWS_AutoScaling_LaunchConfiguration,
-				name: 'LaunchConfigurationName',
-				targetBlock: availableResources.AutoScaling.LaunchConfiguration
-			};
-			break;
-		case "AWS_AutoScaling_LifecycleHook":
-			params = {
-				call: ASG.describeLifecycleHooksAsync({}),
-				resBlock: 'LifecycleHooks',
-				constructor: Resource.AWS_AutoScaling_LifecycleHook,
-				name: 'LifecycleHookName',
-				targetBlock: availableResources.AutoScaling.LifecycleHook
-			};
-			break;
-		case "AWS_AutoScaling_ScalingPolicy":
-			params = {
-				call: ASG.describePoliciesAsync({}),
-				resBlock: 'ScalingPolicies',
-				constructor: Resource.AWS_AutoScaling_ScalingPolicy,
-				name: 'PolicyName',
-				targetBlock: availableResources.AutoScaling.ScalingPolicy
-			};
-			break;
-		case "AWS_AutoScaling_ScheduledAction":
-			params = {
-				call: ASG.describeScheduledActionsAsync({}),
-				resBlock: 'ScheduledUpdateGroupActions',
-				constructor: Resource.AWS_AutoScaling_ScheduledAction,
-				name: 'ScheduledActionName',
-				targetBlock: availableResources.AutoScaling.ScheduledAction
-			};
-			break;
 		/*
 		 AWS_EC2_CustomerGateway
 		 AWS_EC2_DHCPOptions
@@ -207,26 +158,6 @@ ipcMain.on('1update-resources', function(event, res) {
 		 AWS_EC2_VPNGateway
 		 AWS_EC2_VPNGatewayRoutePropagation
 		 */
-	};
-	params
-		.call
-		.then(function(data) {
-			log('Sending data');
-			//log(Resource);
-			log(res);
-			log(data);
-			log(Resource[res].blockGroup);
-
-			data[params.resBlock].forEach(function(r) {
-				var newResource = new params.constructor(r[params.name], r);
-				params.targetBlock[newResource.id] = newResource;
-			});
-			event.sender.send('update-resources', availableResources);
-		})
-		.catch(function(e) {
-			console.log(e);
-		});
-});
 
 ipcMain.on('send-log', function(event, arg) {
 	console.log('Received log request');
