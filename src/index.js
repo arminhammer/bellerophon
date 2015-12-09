@@ -177,34 +177,6 @@ ipcMain.on('1update-resources', function(event, res) {
 				targetBlock: availableResources.AutoScaling.ScheduledAction
 			};
 			break;
-		case "AWS_EC2_VPC":
-			params = {
-				call: ec2.describeVpcsAsync({}),
-				resBlock: 'Vpcs',
-				constructor: Resource.AWS_EC2_VPC,
-				name: "VpcId",
-				targetBlock: availableResources.EC2.VPC
-			};
-			break;
-		case "AWS_EC2_SUBNET":
-			params = {
-				call: ec2.describeSubnetsAsync({}),
-				resBlock: 'Subnets',
-				constructor: Resource.AWS_EC2_SUBNET,
-				name: "SubnetId",
-				targetBlock: availableResources.EC2.Subnet
-			};
-			break;
-		case "AWS_EC2_SECURITYGROUP":
-			params = {
-				call: ec2.describeSecurityGroupsAsync({}),
-				resBlock: 'SecurityGroups',
-				constructor: Resource.AWS_EC2_SECURITYGROUP,
-				name: "GroupId",
-				targetBlock: availableResources.EC2.SecurityGroup
-			};
-			break;
-
 		/*
 		 AWS_EC2_CustomerGateway
 		 AWS_EC2_DHCPOptions

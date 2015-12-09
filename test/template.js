@@ -2,12 +2,11 @@
 
 var assert = require('assert');
 var Template = require('../src/template');
-var Resource = new require('../src/resource')();
+var Resource = require('../src/resource');
 
 var template = new Template();
 
 var MockResource = function(name, body) {
-	Resource.ResourceBase.call(this);
 	var self = this;
 	self.id = name;
 	self.name = name + '-resource';
@@ -22,7 +21,6 @@ var MockResource = function(name, body) {
 		}
 	};
 };
-MockResource.prototype = Object.create(Resource.ResourceBase.prototype);
 
 var mockResource = new MockResource('mock', {
 	Description: "Mock Resource",

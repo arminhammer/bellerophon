@@ -42,11 +42,12 @@ ipcRenderer.send('update-resources', 'AWS_AutoScaling_LaunchConfiguration');
 */
 //ipcRenderer.send('update-resources', 'AWS_AutoScaling_LifecycleHook');
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'VPC'});
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'SecurityGroup'});
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'Subnet'});
 /*
 ipcRenderer.send('update-resources', 'AWS_AutoScaling_ScalingPolicy');
 ipcRenderer.send('update-resources', 'AWS_AutoScaling_ScheduledAction');
 ipcRenderer.send('update-resources', "AWS_EC2_SUBNET");
-ipcRenderer.send('update-resources', "AWS_EC2_SECURITYGROUP");
 */
 
 /*
