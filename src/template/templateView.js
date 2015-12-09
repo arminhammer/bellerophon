@@ -31,15 +31,7 @@ log('Initializing template');
 
 var template = m.prop({});
 
-ipcRenderer.on('get-template-reply', function(event, res) {
-	m.startComputation();
-	console.log('Template');
-	console.log(res);
-	template(res);
-	m.endComputation();
-});
-
-ipcRenderer.send('get-template-request');
+ipcRenderer.send('get-template');
 
 ipcRenderer.on('update-template', function(event, res) {
 	m.startComputation();

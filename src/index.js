@@ -164,9 +164,9 @@ ipcMain.on('send-log', function(event, arg) {
 	log(arg.msg, arg.level, arg.from);
 });
 
-ipcMain.on('get-template-request', function(event, arg) {
+ipcMain.on('get-template', function(event, arg) {
 	console.log('Received get template request');
-	event.sender.send('get-template-reply', template.body);
+	event.sender.send('update-template', template.body);
 });
 
 ipcMain.on('open-template-window', function(event) {
