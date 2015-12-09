@@ -215,54 +215,35 @@ var Resource = {
 	}
 };
 
-var ResourceOld = function() {
-
-
-
-
-	/*
-
-	 var  = function(name, body) {
-	 ResourceBase.call(this);
-	 var self = this;
-	 self.id = name;
-	 self.name = name + '-resource';
-	 self.body = body;
-	 self.block = {}
-	 };
-	 };
-	 .prototype = Object.create(ResourceBase.prototype);
-
-	 AWS_EC2_CustomerGateway
-	 AWS_EC2_DHCPOptions
-	 AWS_EC2_EIP
-	 AWS_EC2_EIPAssociation
-	 AWS_EC2_Instance
-	 AWS_EC2_InternetGateway
-	 AWS_EC2_NetworkAcl
-	 AWS_EC2_NetworkAclEntry
-	 AWS_EC2_NetworkInterface
-	 AWS_EC2_NetworkInterfaceAttachment
-	 AWS_EC2_PlacementGroup
-	 AWS_EC2_Route
-	 AWS_EC2_RouteTable
-	 AWS_EC2_SecurityGroupEgress
-	 AWS_EC2_SecurityGroupIngress
-	 AWS_EC2_SpotFleet
-	 AWS_EC2_SubnetNetworkAclAssociation
-	 AWS_EC2_SubnetRouteTableAssociation
-	 AWS_EC2_Volume
-	 AWS_EC2_VolumeAttachment
-	 AWS_EC2_VPCDHCPOptionsAssociation
-	 AWS_EC2_VPCEndpoint
-	 AWS_EC2_VPCGatewayAttachment
-	 AWS_EC2_VPCPeeringConnection
-	 AWS_EC2_VPNConnection
-	 AWS_EC2_VPNConnectionRoute
-	 AWS_EC2_VPNGateway
-	 AWS_EC2_VPNGatewayRoutePropagation
-	 */
-
-};
+/*
+ AWS_EC2_CustomerGateway
+ AWS_EC2_DHCPOptions
+ AWS_EC2_EIP
+ AWS_EC2_EIPAssociation
+ AWS_EC2_Instance
+ AWS_EC2_InternetGateway
+ AWS_EC2_NetworkAcl
+ AWS_EC2_NetworkAclEntry
+ AWS_EC2_NetworkInterface
+ AWS_EC2_NetworkInterfaceAttachment
+ AWS_EC2_PlacementGroup
+ AWS_EC2_Route
+ AWS_EC2_RouteTable
+ AWS_EC2_SecurityGroupEgress
+ AWS_EC2_SecurityGroupIngress
+ AWS_EC2_SpotFleet
+ AWS_EC2_SubnetNetworkAclAssociation
+ AWS_EC2_SubnetRouteTableAssociation
+ AWS_EC2_Volume
+ AWS_EC2_VolumeAttachment
+ AWS_EC2_VPCDHCPOptionsAssociation
+ AWS_EC2_VPCEndpoint
+ AWS_EC2_VPCGatewayAttachment
+ AWS_EC2_VPCPeeringConnection
+ AWS_EC2_VPNConnection
+ AWS_EC2_VPNConnectionRoute
+ AWS_EC2_VPNGateway
+ AWS_EC2_VPNGatewayRoutePropagation
+ */
 
 module.exports = Resource;

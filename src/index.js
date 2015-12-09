@@ -3,9 +3,6 @@ var electron = require('electron');
 var app = electron.app;
 var Menu = electron.Menu;
 var Tray = electron.Tray;
-var AWS = require('aws-sdk');
-AWS.config.region = 'us-east-1';
-var P = require('bluebird');
 
 var winston = require('winston');
 var Template = require('./template');
@@ -34,21 +31,11 @@ var log = function(msg, level, from) {
 var mainWindow;
 var templateWindow;
 
-var ec2 = P.promisifyAll(new AWS.EC2());
-var ASG = P.promisifyAll(new AWS.AutoScaling());
 log('Initializing Main');
 
 var ipcMain = require('electron').ipcMain;
 
 var template = new Template();
-
-/*
- var template = {
- "AWSTemplateFormatVersion" : "2010-09-09",
- "Parameters" : {},
- "Resources" : {},
- };
- */
 
 var availableResources = {
 	AutoScaling: {
@@ -110,12 +97,6 @@ ipcMain.on('update-resources', function(event, res) {
 	resource
 		.call
 		.then(function(data) {
-			log('Sending data');
-			//log(Resource);
-			log(res);
-			log(data);
-			log(resource.blockGroup);
-
 			data[resource.resBlock].forEach(function(r) {
 				var newResource = new resource.construct(r[resource.rName], r);
 				availableResources[res.primary][res.secondary][newResource.id] = newResource;
@@ -125,39 +106,9 @@ ipcMain.on('update-resources', function(event, res) {
 		.catch(function(e) {
 			console.log(e);
 		});
-
 });
 
-		/*
-		 AWS_EC2_CustomerGateway
-		 AWS_EC2_DHCPOptions
-		 AWS_EC2_EIP
-		 AWS_EC2_EIPAssociation
-		 AWS_EC2_Instance
-		 AWS_EC2_InternetGateway
-		 AWS_EC2_NetworkAcl
-		 AWS_EC2_NetworkAclEntry
-		 AWS_EC2_NetworkInterface
-		 AWS_EC2_NetworkInterfaceAttachment
-		 AWS_EC2_PlacementGroup
-		 AWS_EC2_Route
-		 AWS_EC2_RouteTable
-		 AWS_EC2_SecurityGroupEgress
-		 AWS_EC2_SecurityGroupIngress
-		 AWS_EC2_SpotFleet
-		 AWS_EC2_SubnetNetworkAclAssociation
-		 AWS_EC2_SubnetRouteTableAssociation
-		 AWS_EC2_Volume
-		 AWS_EC2_VolumeAttachment
-		 AWS_EC2_VPCDHCPOptionsAssociation
-		 AWS_EC2_VPCEndpoint
-		 AWS_EC2_VPCGatewayAttachment
-		 AWS_EC2_VPCPeeringConnection
-		 AWS_EC2_VPNConnection
-		 AWS_EC2_VPNConnectionRoute
-		 AWS_EC2_VPNGateway
-		 AWS_EC2_VPNGatewayRoutePropagation
-		 */
+
 
 ipcMain.on('send-log', function(event, arg) {
 	console.log('Received log request');
