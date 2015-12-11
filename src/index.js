@@ -8,6 +8,7 @@ var winston = require('winston');
 var Template = require('./template');
 var Resource = require('./resource');
 var os = require('os');
+var notifier = require('node-notifier');
 
 var logger = new winston.Logger({
 	level: 'info',
@@ -59,31 +60,24 @@ var availableResources = {
 		PlacementGroup : {},
 		Route : {},
 		RouteTable : {},
-
 		SecurityGroup : {},
-		/*
-		 SecurityGroupEgress : {},
-		 SecurityGroupIngress : {},
-		 SpotFleet : {},
-		 */
+		SecurityGroupEgress : {},
+		SecurityGroupIngress : {},
+		SpotFleet : {},
 		Subnet : {},
-		/*
-		 SubnetNetworkAclAssociation : {},
-		 SubnetRouteTableAssociation : {},
-		 Volume : {},
-		 VolumeAttachment : {},
-		 */
-		VPC : {}
-		/*
-		 VPCDHCPOptionsAssociation : {},
-		 VPCEndpoint : {},
-		 VPCGatewayAttachment : {},
-		 VPCPeeringConnection : {},
-		 VPNConnection : {},
-		 VPNConnectionRoute : {},
-		 VPNGateway : {},
-		 VPNGatewayRoutePropagation : {}
-		 */
+		SubnetNetworkAclAssociation : {},
+		SubnetRouteTableAssociation : {},
+		Volume : {},
+		VolumeAttachment : {},
+		VPC : {},
+		VPCDHCPOptionsAssociation : {},
+		VPCEndpoint : {},
+		VPCGatewayAttachment : {},
+		VPCPeeringConnection : {},
+		VPNConnection : {},
+		VPNConnectionRoute : {},
+		VPNGateway : {},
+		VPNGatewayRoutePropagation : {}
 	}
 };
 
@@ -104,6 +98,10 @@ ipcMain.on('update-resources', function(event, res) {
 		})
 		.catch(function(e) {
 			console.log(e);
+			notifier.notify({
+				'title': 'Belleraphon error:',
+				'message': e
+			});
 		});
 });
 

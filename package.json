@@ -43,5 +43,8 @@
       "node",
       "browser"
     ]
+  },
+  "dependencies": {
+    "node-notifier": "^4.4.0"
   }
 }

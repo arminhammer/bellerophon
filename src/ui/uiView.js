@@ -42,11 +42,11 @@ ipcRenderer.send('update-resources', { primary: 'AutoScaling', secondary: 'Scali
 ipcRenderer.send('update-resources', { primary: 'AutoScaling', secondary: 'ScheduledAction'});
 //ipcRenderer.send('update-resources', { primary: 'AutoScaling', secondary: 'LifecycleHook'});
 
-ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'VPC'});
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'CustomerGateway'});
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'SecurityGroup'});
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'Subnet'});
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'VPC'});
 /*
- AWS::EC2::CustomerGateway
  AWS::EC2::DHCPOptions
  AWS::EC2::EIP
  AWS::EC2::EIPAssociation
