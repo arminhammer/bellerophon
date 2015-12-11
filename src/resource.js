@@ -167,9 +167,9 @@ var Resource = {
 			}
 		},
 		DHCPOptions : {
-			//call: ec2.describeAsync({}),
-			resBlock: '',
-			rName: '',
+			call: ec2.describeDhcpOptionsAsync({}),
+			resBlock: 'DhcpOptions',
+			rName: 'DhcpOptionsId',
 			construct: function(name, body) {
 				this.id = name;
 				this.inTemplate = false;
@@ -177,14 +177,22 @@ var Resource = {
 				this.name = name + '-resource';
 				this.body = body;
 				this.block = {
-
-				};
+					"Type" : "AWS::EC2::DHCPOptions",
+					"Properties" : {
+					"DomainName" : "String",
+						"DomainNameServers" : [],
+						"NetbiosNameServers" : [],
+						"NetbiosNodeType" : "Number",
+						"NtpServers" : [],
+						"Tags" : []
+				}
+			};
 			}
 		},
 		EIP : {
-			//call: ec2.describeAsync({}),
-			resBlock: '',
-			rName: '',
+			call: ec2.describeAddressesAsync({}),
+			resBlock: 'Addresses',
+			rName: 'PublicIp',
 			construct: function(name, body) {
 				this.id = name;
 				this.inTemplate = false;
@@ -197,7 +205,7 @@ var Resource = {
 			}
 		},
 		EIPAssociation : {
-			////call: ec2.describeAsync({}),
+			//call: ec2.describeAsync({}),
 			resBlock: '',
 			rName: '',
 			construct: function(name, body) {
@@ -212,9 +220,9 @@ var Resource = {
 			}
 		},
 		Instance : {
-			//call: ec2.describeAsync({}),
-			resBlock: '',
-			rName: '',
+			call: ec2.describeInstancesAsync({}),
+			resBlock: 'Instances',
+			rName: 'InstancesId',
 			construct: function(name, body) {
 				this.id = name;
 				this.inTemplate = false;
@@ -227,9 +235,9 @@ var Resource = {
 			}
 		},
 		InternetGateway : {
-			//call: ec2.describeAsync({}),
-			resBlock: '',
-			rName: '',
+			call: ec2.describeInternetGatewaysAsync({}),
+			resBlock: 'InternetGateways',
+			rName: 'InternetGatewayId',
 			construct: function(name, body) {
 				this.id = name;
 				this.inTemplate = false;
@@ -242,9 +250,9 @@ var Resource = {
 			}
 		},
 		NetworkAcl : {
-			//call: ec2.describeAsync({}),
-			resBlock: '',
-			rName: '',
+			call: ec2.describeNetworkAclsAsync({}),
+			resBlock: 'NetworkAcls',
+			rName: 'NetworkAclId',
 			construct: function(name, body) {
 				this.id = name;
 				this.inTemplate = false;
@@ -272,9 +280,9 @@ var Resource = {
 			}
 		},
 		NetworkInterface : {
-			//call: ec2.describeAsync({}),
-			resBlock: '',
-			rName: '',
+			call: ec2.describeNetworkInterfacesAsync({}),
+			resBlock: 'NetworkInterfaces',
+			rName: 'NetworkInterfaceId',
 			construct: function(name, body) {
 				this.id = name;
 				this.inTemplate = false;
@@ -302,9 +310,9 @@ var Resource = {
 			}
 		},
 		PlacementGroup : {
-			//call: ec2.describeAsync({}),
-			resBlock: '',
-			rName: '',
+			call: ec2.describePlacementGroupsAsync({}),
+			resBlock: 'PlacementGroups',
+			rName: 'GroupName',
 			construct: function(name, body) {
 				this.id = name;
 				this.inTemplate = false;
@@ -332,9 +340,9 @@ var Resource = {
 			}
 		},
 		RouteTable : {
-			//call: ec2.describeAsync({}),
-			resBlock: '',
-			rName: '',
+			call: ec2.describeRouteTablesAsync({}),
+			resBlock: 'RouteTables',
+			rName: 'RouteTableId',
 			construct: function(name, body) {
 				this.id = name;
 				this.inTemplate = false;
@@ -399,9 +407,9 @@ var Resource = {
 			}
 		},
 		SpotFleet: {
-			//call: ec2.describeAsync({}),
-			resBlock: '',
-			rName: '',
+			call: ec2.describeSpotFleetRequestsAsync({}),
+			resBlock: 'SpotFleetRequestConfigs',
+			rName: 'SpotFleetRequestId',
 			construct: function(name, body) {
 				this.id = name;
 				this.inTemplate = false;
@@ -409,7 +417,10 @@ var Resource = {
 				this.name = name + '-resource';
 				this.body = body;
 				this.block = {
-
+					"Type" : "AWS::EC2::SpotFleet",
+					"Properties" : {
+					"SpotFleetRequestConfigData": "SpotFleetRequestConfigData"
+				}
 				};
 			}
 		},
@@ -467,9 +478,9 @@ var Resource = {
 			}
 		},
 		Volume: {
-			//call: ec2.describeAsync({}),
-			resBlock: '',
-			rName: '',
+			call: ec2.describeVolumesAsync({}),
+			resBlock: 'Volumes',
+			rName: 'VolumeId',
 			construct: function(name, body) {
 				this.id = name;
 				this.inTemplate = false;
@@ -534,9 +545,9 @@ var Resource = {
 			}
 		},
 		VPCEndpoint: {
-			//call: ec2.describeAsync({}),
-			resBlock: '',
-			rName: '',
+			call: ec2.describeVpcEndpointsAsync({}),
+			resBlock: 'VpcEndpoints',
+			rName: 'VpcEndpointId',
 			construct: function(name, body) {
 				this.id = name;
 				this.inTemplate = false;
@@ -564,9 +575,9 @@ var Resource = {
 			}
 		},
 		VPCPeeringConnection: {
-			//call: ec2.describeAsync({}),
-			resBlock: '',
-			rName: '',
+			call: ec2.describeVpcPeeringConnectionsAsync({}),
+			resBlock: 'VpcPeeringConnections',
+			rName: 'VpcPeeringConnectionId',
 			construct: function(name, body) {
 				this.id = name;
 				this.inTemplate = false;
@@ -579,9 +590,9 @@ var Resource = {
 			}
 		},
 		VPNConnection: {
-			//call: ec2.describeAsync({}),
-			resBlock: '',
-			rName: '',
+			call: ec2.describeVpnConnectionsAsync({}),
+			resBlock: 'VpnConnections',
+			rName: 'VpnConnectionId',
 			construct: function(name, body) {
 				this.id = name;
 				this.inTemplate = false;
@@ -609,9 +620,9 @@ var Resource = {
 			}
 		},
 		VPNGateway: {
-			//call: ec2.describeAsync({}),
-			resBlock: '',
-			rName: '',
+			call: ec2.describeVpnGatewaysAsync({}),
+			resBlock: 'VpnGateways',
+			rName: 'VpnGatewayId',
 			construct: function(name, body) {
 				this.id = name;
 				this.inTemplate = false;
@@ -640,36 +651,5 @@ var Resource = {
 		}
 	}
 };
-
-/*
- AWS_EC2_CustomerGateway
- AWS_EC2_DHCPOptions
- AWS_EC2_EIP
- AWS_EC2_EIPAssociation
- AWS_EC2_Instance
- AWS_EC2_InternetGateway
- AWS_EC2_NetworkAcl
- AWS_EC2_NetworkAclEntry
- AWS_EC2_NetworkInterface
- AWS_EC2_NetworkInterfaceAttachment
- AWS_EC2_PlacementGroup
- AWS_EC2_Route
- AWS_EC2_RouteTable
- AWS_EC2_SecurityGroupEgress
- AWS_EC2_SecurityGroupIngress
- AWS_EC2_SpotFleet
- AWS_EC2_SubnetNetworkAclAssociation
- AWS_EC2_SubnetRouteTableAssociation
- AWS_EC2_Volume
- AWS_EC2_VolumeAttachment
- AWS_EC2_VPCDHCPOptionsAssociation
- AWS_EC2_VPCEndpoint
- AWS_EC2_VPCGatewayAttachment
- AWS_EC2_VPCPeeringConnection
- AWS_EC2_VPNConnection
- AWS_EC2_VPNConnectionRoute
- AWS_EC2_VPNGateway
- AWS_EC2_VPNGatewayRoutePropagation
- */
 
 module.exports = Resource;
