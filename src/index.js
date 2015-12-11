@@ -97,7 +97,8 @@ ipcMain.on('update-resources', function(event, res) {
 			event.sender.send('update-resources', availableResources);
 		})
 		.catch(function(e) {
-			console.log(e);
+			log(e);
+			log(e.stack);
 			notifier.notify({
 				'title': 'Belleraphon error:',
 				'message': e

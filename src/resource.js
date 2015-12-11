@@ -179,14 +179,14 @@ var Resource = {
 				this.block = {
 					"Type" : "AWS::EC2::DHCPOptions",
 					"Properties" : {
-					"DomainName" : "String",
+						"DomainName" : "String",
 						"DomainNameServers" : [],
 						"NetbiosNameServers" : [],
 						"NetbiosNodeType" : "Number",
 						"NtpServers" : [],
 						"Tags" : []
-				}
-			};
+					}
+				};
 			}
 		},
 		EIP : {
@@ -200,7 +200,11 @@ var Resource = {
 				this.name = name + '-resource';
 				this.body = body;
 				this.block = {
-
+					"Type" : "AWS::EC2::EIP",
+					"Properties" : {
+						"InstanceId" : String,
+						"Domain" : String
+					}
 				};
 			}
 		},
@@ -221,8 +225,8 @@ var Resource = {
 		},
 		Instance : {
 			call: ec2.describeInstancesAsync({}),
-			resBlock: 'Instances',
-			rName: 'InstancesId',
+			resBlock: 'Reservations',
+			rName: 'ReservationId',
 			construct: function(name, body) {
 				this.id = name;
 				this.inTemplate = false;
@@ -230,7 +234,34 @@ var Resource = {
 				this.name = name + '-resource';
 				this.body = body;
 				this.block = {
-
+					"Type" : "AWS::EC2::Instance",
+					"Properties" : {
+						"AvailabilityZone" : String,
+						"BlockDeviceMappings" : [],
+						"DisableApiTermination" : Boolean,
+						"EbsOptimized" : Boolean,
+						"IamInstanceProfile" : String,
+						"ImageId" : String,
+						"InstanceInitiatedShutdownBehavior" : String,
+						"InstanceType" : String,
+						"KernelId" : String,
+						"KeyName" : String,
+						"Monitoring" : Boolean,
+						"NetworkInterfaces" : [],
+						"PlacementGroupName" : String,
+						"PrivateIpAddress" : String,
+						"RamdiskId" : String,
+						"SecurityGroupIds" : [String],
+						"SecurityGroups" : [ String],
+						"SourceDestCheck" : Boolean,
+						"SsmAssociations" : [],
+						"SubnetId" : String,
+						"Tags" : [],
+						"Tenancy" : String,
+						"UserData" : String,
+						"Volumes" : [],
+						"AdditionalInfo" : String
+					}
 				};
 			}
 		},
@@ -245,7 +276,10 @@ var Resource = {
 				this.name = name + '-resource';
 				this.body = body;
 				this.block = {
-
+					"Type" : "AWS::EC2::InternetGateway",
+					"Properties" : {
+						"Tags" : []
+					}
 				};
 			}
 		},
@@ -260,7 +294,11 @@ var Resource = {
 				this.name = name + '-resource';
 				this.body = body;
 				this.block = {
-
+					"Type" : "AWS::EC2::NetworkAcl",
+					"Properties" : {
+						"Tags" : [],
+						"VpcId" : String
+					}
 				};
 			}
 		},
@@ -290,7 +328,17 @@ var Resource = {
 				this.name = name + '-resource';
 				this.body = body;
 				this.block = {
-
+					"Type" : "AWS::EC2::NetworkInterface",
+					"Properties" : {
+						"Description" : String,
+						"GroupSet" : [ String],
+						"PrivateIpAddress" : String,
+						"PrivateIpAddresses" : [],
+						"SecondaryPrivateIpAddressCount" : Integer,
+						"SourceDestCheck" : Boolean,
+						"SubnetId" : String,
+						"Tags" : [],
+					}
 				};
 			}
 		},
@@ -309,7 +357,7 @@ var Resource = {
 				};
 			}
 		},
-		PlacementGroup : {
+		PlacementGroup: {
 			call: ec2.describePlacementGroupsAsync({}),
 			resBlock: 'PlacementGroups',
 			rName: 'GroupName',
@@ -320,7 +368,10 @@ var Resource = {
 				this.name = name + '-resource';
 				this.body = body;
 				this.block = {
-
+					"Type" : "AWS::EC2::PlacementGroup",
+					"Properties" : {
+						"Strategy" : String
+					}
 				};
 			}
 		},
@@ -350,7 +401,11 @@ var Resource = {
 				this.name = name + '-resource';
 				this.body = body;
 				this.block = {
-
+					"Type" : "AWS::EC2::RouteTable",
+					"Properties" : {
+						"VpcId" : String,
+						"Tags" : []
+					}
 				};
 			}
 		},
@@ -419,8 +474,8 @@ var Resource = {
 				this.block = {
 					"Type" : "AWS::EC2::SpotFleet",
 					"Properties" : {
-					"SpotFleetRequestConfigData": "SpotFleetRequestConfigData"
-				}
+						"SpotFleetRequestConfigData": "SpotFleetRequestConfigData"
+					}
 				};
 			}
 		},
@@ -488,7 +543,18 @@ var Resource = {
 				this.name = name + '-resource';
 				this.body = body;
 				this.block = {
-
+					"Type":"AWS::EC2::Volume",
+					"Properties" : {
+						"AutoEnableIO" : Boolean,
+						"AvailabilityZone" : String,
+						"Encrypted" : Boolean,
+						"Iops" : Number,
+						"KmsKeyId" : String,
+						"Size" : String,
+						"SnapshotId" : String,
+						"Tags" : [],
+						"VolumeType" : String
+					}
 				};
 			}
 		},
@@ -555,7 +621,13 @@ var Resource = {
 				this.name = name + '-resource';
 				this.body = body;
 				this.block = {
-
+					"Type" : "AWS::EC2::VPCEndpoint",
+					"Properties" : {
+						"PolicyDocument" : {},
+						"RouteTableIds" : [],
+						"ServiceName" : String,
+						"VpcId" : String
+					}
 				};
 			}
 		},
@@ -585,7 +657,12 @@ var Resource = {
 				this.name = name + '-resource';
 				this.body = body;
 				this.block = {
-
+					"Type" : "AWS::EC2::VPCPeeringConnection",
+					"Properties" : {
+						"PeerVpcId" : String,
+						"Tags" : [],
+						"VpcId" : String
+					}
 				};
 			}
 		},
@@ -600,7 +677,14 @@ var Resource = {
 				this.name = name + '-resource';
 				this.body = body;
 				this.block = {
-
+					"Type" : "AWS::EC2::VPNConnection",
+					"Properties" : {
+						"Type" : String,
+						"CustomerGatewayId" : GatewayID,
+						"StaticRoutesOnly" : Boolean,
+						"Tags" :  [],
+						"VpnGatewayId" : GatewayID
+					}
 				};
 			}
 		},
@@ -630,7 +714,11 @@ var Resource = {
 				this.name = name + '-resource';
 				this.body = body;
 				this.block = {
-
+					"Type" : "AWS::EC2::VPNGateway",
+					"Properties" : {
+						"Type" : String,
+						"Tags" : []
+					}
 				};
 			}
 		},

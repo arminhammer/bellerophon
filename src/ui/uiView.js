@@ -42,39 +42,29 @@ ipcRenderer.send('update-resources', { primary: 'AutoScaling', secondary: 'Scali
 ipcRenderer.send('update-resources', { primary: 'AutoScaling', secondary: 'ScheduledAction'});
 //ipcRenderer.send('update-resources', { primary: 'AutoScaling', secondary: 'LifecycleHook'});
 
+
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'CustomerGateway'});
+
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'DHCPOptions'});
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'EIP'});
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'Instance'});
+
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'InternetGateway'});
+
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'NetworkAcl'});
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'NetworkInterface'});
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'PlacementGroup'});
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'RouteTable'});
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'SecurityGroup'});
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'SpotFleet'});
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'Subnet'});
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'Volume'});
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'VPC'});
-/*
- AWS::EC2::DHCPOptions
- AWS::EC2::EIP
- AWS::EC2::EIPAssociation
- AWS::EC2::Instance
- AWS::EC2::InternetGateway
- AWS::EC2::NetworkAcl
- AWS::EC2::NetworkAclEntry
- AWS::EC2::NetworkInterface
- AWS::EC2::NetworkInterfaceAttachment
- AWS::EC2::PlacementGroup
- AWS::EC2::Route
- AWS::EC2::RouteTable
- AWS::EC2::SecurityGroupEgress
- AWS::EC2::SecurityGroupIngress
- AWS::EC2::SpotFleet
- AWS::EC2::SubnetNetworkAclAssociation
- AWS::EC2::SubnetRouteTableAssociation
- AWS::EC2::Volume
- AWS::EC2::VolumeAttachment
- AWS::EC2::VPCDHCPOptionsAssociation
- AWS::EC2::VPCEndpoint
- AWS::EC2::VPCGatewayAttachment
- AWS::EC2::VPCPeeringConnection
- AWS::EC2::VPNConnection
- AWS::EC2::VPNConnectionRoute
- AWS::EC2::VPNGateway
- AWS::EC2::VPNGatewayRoutePropagation
- */
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'VPCEndpoint'});
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'VPCPeeringConnection'});
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'VPNConnection'});
+ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'VPNGateway'});
+/**/
 
 ipcRenderer.on('update-resources', function(event, res) {
 	m.startComputation();
