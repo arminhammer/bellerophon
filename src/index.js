@@ -91,12 +91,11 @@ ipcMain.on('update-resources', function(event, res) {
 	log('Got update-resources request');
 	log(res.primary);
 	log(res.secondary);
-	log(Resource[res.primary][res.secondary]);
 	var resource = Resource[res.primary][res.secondary];
-	log(resource);
 	resource
 		.call
 		.then(function(data) {
+			log(data);
 			data[resource.resBlock].forEach(function(r) {
 				var newResource = new resource.construct(r[resource.rName], r);
 				availableResources[res.primary][res.secondary][newResource.id] = newResource;
@@ -107,8 +106,6 @@ ipcMain.on('update-resources', function(event, res) {
 			console.log(e);
 		});
 });
-
-
 
 ipcMain.on('send-log', function(event, arg) {
 	console.log('Received log request');

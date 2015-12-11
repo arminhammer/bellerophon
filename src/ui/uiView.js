@@ -46,9 +46,6 @@ ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'VPC'});
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'SecurityGroup'});
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'Subnet'});
 /*
-*/
-
-/*
  AWS::EC2::CustomerGateway
  AWS::EC2::DHCPOptions
  AWS::EC2::EIP
@@ -113,7 +110,7 @@ var uiView = {
 			 ])
 			 ]),*/
 			m(".row.MainContent", [
-				m("nav.col-xs-3.bs-docs-sidebar", [
+				m("nav.col-xs-3.bs-docs-sidebar .col-md-2 .col-lg-2", [
 					m("ul.nav.nav-stacked.fixed[id='sidebar']", [
 						_.map(controller.resources(), function(resource, key) {
 							return m("li", [
@@ -130,7 +127,7 @@ var uiView = {
 						m("button.btn.btn-warning#templateButton", { onclick: controller.openTemplateWindow }, "Show Template")
 					])
 				]),
-				m(".col-xs-9", [
+				m(".col-xs-9 .col-md-10 .col-lg-10", [
 					_.map(controller.resources(), function(group, key) {
 						return	m('.row', [
 							m(".group[id='" + key + "']", [
@@ -166,7 +163,7 @@ var uiView = {
 																						}
 																					})
 																				}),
-																				_.trunc(resource.id,50)
+																				m("span[data-toggle='tooltip'][data-placement='top']", {title: resource.id, config: controller.addTooltip }, _.trunc(resource.id,40))
 																			])
 																		]),
 																		m(".panel-body", [

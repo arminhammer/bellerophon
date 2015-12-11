@@ -49,7 +49,7 @@ var Resource = {
 		LaunchConfiguration: {
 			call: ASG.describeLaunchConfigurationsAsync({}),
 			resBlock: 'LaunchConfigurations',
-			name: 'LaunchConfigurationName',
+			rName: 'LaunchConfigurationName',
 			construct: function(name, body) {
 				this.inTemplate = false;
 				this.templateParams = {};
@@ -96,7 +96,7 @@ var Resource = {
 		ScalingPolicy: {
 			call: ASG.describePoliciesAsync({}),
 			resBlock: 'ScalingPolicies',
-			name: 'PolicyName',
+			rName: 'PolicyName',
 			construct: function(name, body) {
 				this.inTemplate = false;
 				this.templateParams = {};
@@ -122,7 +122,7 @@ var Resource = {
 		ScheduledAction: {
 			call: ASG.describeScheduledActionsAsync({}),
 			resBlock: 'ScheduledUpdateGroupActions',
-			name: 'ScheduledActionName',
+			rName: 'ScheduledActionName',
 			construct: function(name, body) {
 				this.inTemplate = false;
 				this.templateParams = {};
