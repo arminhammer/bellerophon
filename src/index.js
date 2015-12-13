@@ -3,7 +3,7 @@ var electron = require('electron');
 var app = electron.app;
 var Menu = electron.Menu;
 var Tray = electron.Tray;
-
+var fs = require('fs');
 var winston = require('winston');
 var Template = require('./template');
 var Resource = require('./resource');
@@ -34,18 +34,19 @@ var templateWindow;
 
 log('Initializing Main');
 
-var ipcMain = require('electron').ipcMain;
+var ipcMain = electron.ipcMain;
+var dialog = electron.dialog;
 
 var template = new Template();
 
 var availableResources = {
 	AutoScaling: {
-	 AutoScalingGroup: {},
-	 LaunchConfiguration: {},
-	 LifecycleHook: {},
-	 ScalingPolicy: {},
-	 ScheduledAction: {}
-	 },
+		AutoScalingGroup: {},
+		LaunchConfiguration: {},
+		LifecycleHook: {},
+		ScalingPolicy: {},
+		ScheduledAction: {}
+	},
 	EC2: {
 		CustomerGateway : {},
 		DHCPOptions : {},
@@ -121,6 +122,21 @@ ipcMain.on('open-template-window', function(event) {
 	if(!templateWindow) {
 		templateWindow = createTemplateWindow();
 	}
+});
+
+ipcMain.on('open-save-dialog', function(event) {
+	log('Received save request');
+	dialog.showSaveDialog(
+		mainWindow, {
+			title: 'belleraphon_template.json',
+			defaultPath: os.homedir()
+		},
+		function(filename) {
+			log('Saving at ' + filename);
+			fs.writeFile(filename, JSON.stringify(template.body,null,2),function() {
+				log('Saved ' + filename);
+			});
+		});
 });
 
 ipcMain.on('toggle-param', function(event, res) {

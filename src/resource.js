@@ -11,6 +11,10 @@ var P = require('bluebird');
 var ec2 = P.promisifyAll(new AWS.EC2());
 var ASG = P.promisifyAll(new AWS.AutoScaling());
 
+var buildName = function(name) {
+	return name + 'Resource';
+};
+
 var Resource = {
 	AutoScaling: {
 		AutoScalingGroup: {
@@ -21,7 +25,7 @@ var Resource = {
 				this.inTemplate = false;
 				this.templateParams = {};
 				this.id = name;
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type": "AWS::AutoScaling::AutoScalingGroup",
@@ -54,7 +58,7 @@ var Resource = {
 				this.inTemplate = false;
 				this.templateParams = {};
 				this.id = name;
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::AutoScaling::LaunchConfiguration",
@@ -88,7 +92,7 @@ var Resource = {
 		 this.inTemplate = false;
 		 this.templateParams = {};
 		 this.id = name;
-		 this.name = name + '-resource';
+		 this.name = buildName(name);
 		 this.body = body;
 		 this.block = {}
 		 }
@@ -101,7 +105,7 @@ var Resource = {
 				this.inTemplate = false;
 				this.templateParams = {};
 				this.id = name;
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::AutoScaling::ScalingPolicy",
@@ -127,7 +131,7 @@ var Resource = {
 				this.inTemplate = false;
 				this.templateParams = {};
 				this.id = name;
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::AutoScaling::ScheduledAction",
@@ -153,7 +157,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::EC2::CustomerGateway",
@@ -174,7 +178,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::EC2::DHCPOptions",
@@ -197,7 +201,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::EC2::EIP",
@@ -216,7 +220,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 
@@ -231,7 +235,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::EC2::Instance",
@@ -273,7 +277,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::EC2::InternetGateway",
@@ -291,7 +295,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::EC2::NetworkAcl",
@@ -310,7 +314,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 
@@ -325,7 +329,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::EC2::NetworkInterface",
@@ -350,7 +354,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 
@@ -365,7 +369,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::EC2::PlacementGroup",
@@ -383,7 +387,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 
@@ -398,7 +402,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::EC2::RouteTable",
@@ -417,7 +421,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type": "AWS::EC2::SecurityGroup",
@@ -439,7 +443,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 
@@ -454,7 +458,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 
@@ -469,7 +473,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::EC2::SpotFleet",
@@ -487,7 +491,7 @@ var Resource = {
 				this.inTemplate = false;
 				this.templateParams = {};
 				this.id = name;
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::EC2::Subnet",
@@ -510,7 +514,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 
@@ -525,7 +529,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 
@@ -540,7 +544,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type":"AWS::EC2::Volume",
@@ -566,7 +570,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 
@@ -581,7 +585,7 @@ var Resource = {
 				this.inTemplate = false;
 				this.templateParams = {};
 				this.id = name;
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::EC2::VPC",
@@ -603,7 +607,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 
@@ -618,7 +622,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::EC2::VPCEndpoint",
@@ -639,7 +643,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 
@@ -654,7 +658,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::EC2::VPCPeeringConnection",
@@ -674,7 +678,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::EC2::VPNConnection",
@@ -696,7 +700,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 
@@ -711,7 +715,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 					"Type" : "AWS::EC2::VPNGateway",
@@ -730,7 +734,7 @@ var Resource = {
 				this.id = name;
 				this.inTemplate = false;
 				this.templateParams = {};
-				this.name = name + '-resource';
+				this.name = buildName(name);
 				this.body = body;
 				this.block = {
 

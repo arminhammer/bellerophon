@@ -54,7 +54,7 @@ var Template = function() {
 		if(self.body.Resources[resource.name]) {
 			if(self.body.Resources[resource.name].Properties[pKey]) {
 				var oldVal = self.body.Resources[resource.name].Properties[pKey];
-				var paramName = resource.name + '-' + pKey + '-param';
+				var paramName = resource.name + pKey + 'Param';
 				self.body.Resources[resource.name].Properties[pKey] = '{ Ref: ' + paramName + ' }';
 				self.body.Parameters[paramName] = {
 					"Type" : "String",
@@ -67,7 +67,7 @@ var Template = function() {
 	self.removeParam = function(resource, pKey) {
 		if(self.body.Resources[resource.name]) {
 			if(self.body.Resources[resource.name].Properties[pKey]) {
-				var paramName = resource.name + '-' + pKey + '-param';
+				var paramName = resource.name + pKey + 'Param';
 				self.body.Resources[resource.name].Properties[pKey] = self.body.Parameters[paramName].Default;
 				delete self.body.Parameters[paramName];
 			}

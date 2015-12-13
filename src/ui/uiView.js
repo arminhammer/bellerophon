@@ -48,9 +48,7 @@ ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'CustomerGatew
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'DHCPOptions'});
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'EIP'});
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'Instance'});
-
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'InternetGateway'});
-
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'NetworkAcl'});
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'NetworkInterface'});
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'PlacementGroup'});
@@ -79,10 +77,15 @@ function openTemplateWindow() {
 	ipcRenderer.send('open-template-window');
 }
 
+function openSaveDialog() {
+	ipcRenderer.send('open-save-dialog');
+}
+
 var uiView = {
 	controller: function() {
 		this.resources = resources;
 		this.openTemplateWindow = openTemplateWindow;
+		this.openSaveDialog = openSaveDialog;
 		this.addTooltip = function(element, isInitialized, context) {
 			if(isInitialized) {
 				return;
@@ -114,7 +117,12 @@ var uiView = {
 								])
 							])
 						}),
-						m("button.btn.btn-warning#templateButton", { onclick: controller.openTemplateWindow }, "Show Template")
+						m('div', [
+							m("button.btn.btn-warning#templateButton", { onclick: controller.openTemplateWindow }, "Show Template"),
+						]),
+						m('div', [
+							m("button.btn.btn-warning#templateButton", { onclick: controller.openSaveDialog }, "Save Template")
+						])
 					])
 				]),
 				m(".col-xs-9 .col-md-10 .col-lg-10", [

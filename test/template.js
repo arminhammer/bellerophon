@@ -9,7 +9,7 @@ var template = new Template();
 var MockResource = function(name, body) {
 	var self = this;
 	self.id = name;
-	self.name = name + '-resource';
+	self.name = name + 'Resource';
 	self.body = body;
 	self.block = {
 		"Type" : "AWS::Mock::Resource",
