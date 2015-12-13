@@ -97,5 +97,5 @@ gulp.task('electron', function() {
 });
 
 gulp.task('prepublish', ['nsp']);
-gulp.task('default', ['static', 'test']);
+gulp.task('default', ['lint','static', 'test']);
 gulp.task('publish', ['electron']);

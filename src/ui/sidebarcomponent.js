@@ -2,12 +2,21 @@
 
 var m = require('mithril');
 var _ = require('lodash');
+var ipcRenderer = require('electron').ipcRenderer;
+
+function openTemplateWindow() {
+	ipcRenderer.send('open-template-window');
+}
+
+function openSaveDialog() {
+	ipcRenderer.send('open-save-dialog');
+}
 
 var SideBarComponent = {
 	controller: function(options) {
 		this.resources = options.resources;
-		this.openTemplateWindow = options.openTemplateWindow;
-		this.openSaveDialog = options.openSaveDialog;
+		this.openTemplateWindow = openTemplateWindow;
+		this.openSaveDialog = openSaveDialog;
 	},
 	view: function(controller) {
 		return m('nav.col-xs-3.bs-docs-sidebar .col-md-2 .col-lg-2', [
