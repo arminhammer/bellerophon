@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "index.js",
   "dependencies": {
-    "aws-sdk": "^2.2.17",
+    "aws-sdk": "^2.2.22",
     "bluebird": "^3.0.6",
     "bootstrap": "^3.3.5",
     "bootswatch": "^3.3.6",

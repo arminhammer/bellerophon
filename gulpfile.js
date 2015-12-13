@@ -51,7 +51,7 @@ gulp.task('electron', function() {
 			packageJson: packageJson,
 			release: './release',
 			cache: './cache',
-			version: 'v0.35.0',
+			version: 'v0.36.0',
 			packaging: true,
 			platforms: ['win32-x64', 'darwin-x64', 'linux-x64'],
 			platformResources: {

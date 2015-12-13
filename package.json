@@ -25,15 +25,15 @@
   ],
   "devDependencies": {
     "electron-packager": "^5.0.0",
-    "electron-prebuilt": "^0.35.0",
+    "electron-prebuilt": "^0.36.0",
     "eslint-config-devenv": "^1.1.0",
     "gulp": "^3.6.0",
     "gulp-electron": "0.0.9",
     "gulp-eslint": "^1.0.0",
     "gulp-exclude-gitignore": "^1.0.0",
-    "gulp-istanbul": "^0.9.0",
+    "gulp-istanbul": "^0.10.3",
     "gulp-mocha": "^2.0.0",
-    "gulp-nsp": "^2.1.0",
+    "gulp-nsp": "^2.2.1",
     "gulp-plumber": "^1.0.0",
     "xo": "^0.11.1"
   },

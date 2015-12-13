@@ -28,6 +28,22 @@ var log = function(msg, level, from) {
 	logger.log(level, from, msg);
 };
 
+function showSaveDialog() {
+	dialog.showSaveDialog(
+		mainWindow, {
+			title: 'belleraphon_template.json',
+			defaultPath: os.homedir()
+		},
+		function(filename) {
+			if(filename) {
+				log('Saving at ' + filename);
+				fs.writeFile(filename, JSON.stringify(template.body,null,2),function() {
+					log('Saved ' + filename);
+				});
+			}
+		});
+};
+
 // prevent window being garbage collected
 var mainWindow;
 var templateWindow;
@@ -126,17 +142,7 @@ ipcMain.on('open-template-window', function(event) {
 
 ipcMain.on('open-save-dialog', function(event) {
 	log('Received save request');
-	dialog.showSaveDialog(
-		mainWindow, {
-			title: 'belleraphon_template.json',
-			defaultPath: os.homedir()
-		},
-		function(filename) {
-			log('Saving at ' + filename);
-			fs.writeFile(filename, JSON.stringify(template.body,null,2),function() {
-				log('Saved ' + filename);
-			});
-		});
+	showSaveDialog();
 });
 
 ipcMain.on('toggle-param', function(event, res) {
@@ -328,7 +334,9 @@ app.on('ready', function() {
 				{
 					label: 'Save Template',
 					accelerator: 'Command + S',
-					role: 'hide'
+					click: function() {
+						showSaveDialog();
+					}
 				},
 				{
 					type: 'separator'
