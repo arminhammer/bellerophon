@@ -1,9 +1,12 @@
 'use strict';
 
 var assert = require('assert');
+var Resource = require('../src/resource');
 
-describe('Belleraphon', function () {
-	it('should have unit test!', function () {
-		//assert(false, 'we expected this package author to add actual unit tests.');
+describe('resource', function () {
+	it('buildName should return a unique alphanumeric name', function () {
+		var vpc = new Resource.EC2.VPC.construct('resource-001', {});
+		//var testName = 'resource-001';
+		assert.equal(vpc.name, 'resource001Resource');
 	});
 });

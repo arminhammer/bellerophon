@@ -139,9 +139,6 @@ var uiView = {
 													m("h4", subKey + 's'),
 													_.map(controller.resources()[key][subKey], function (resource) {
 														var colSizes = { xs: 12, md: 6, lg: 4};
-														/*if(subKeySize === 1 || subKeySize === 2) {
-														 colSizes = { xs: 12, md: 6, lg: 6}
-														 }*/
 														var colSizeString = 'col-xs-' + colSizes.xs + ' col-md-' + colSizes.md + ' col-lg-' + colSizes.lg;
 														return m('div', [
 															m("div", { class: colSizeString },[
@@ -186,7 +183,7 @@ var uiView = {
 																							//}
 																						})
 																					});
-																					if((resource.block.Properties[pKey]) != 'String') {
+																					if((resource.block.Properties[pKey]) != "String") {
 																						paramCheckbox = m('div')
 																					}
 																					if(pVal != '') {

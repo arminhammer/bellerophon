@@ -12,6 +12,7 @@ var ec2 = P.promisifyAll(new AWS.EC2());
 var ASG = P.promisifyAll(new AWS.AutoScaling());
 
 var buildName = function(name) {
+	name = name.replace( /\W/g , '');
 	return name + 'Resource';
 };
 
@@ -206,8 +207,8 @@ var Resource = {
 				this.block = {
 					"Type" : "AWS::EC2::EIP",
 					"Properties" : {
-						"InstanceId" : String,
-						"Domain" : String
+						"InstanceId" : "String",
+						"Domain" : "String"
 					}
 				};
 			}
@@ -240,31 +241,31 @@ var Resource = {
 				this.block = {
 					"Type" : "AWS::EC2::Instance",
 					"Properties" : {
-						"AvailabilityZone" : String,
+						"AvailabilityZone" : "String",
 						"BlockDeviceMappings" : [],
-						"DisableApiTermination" : Boolean,
-						"EbsOptimized" : Boolean,
-						"IamInstanceProfile" : String,
-						"ImageId" : String,
-						"InstanceInitiatedShutdownBehavior" : String,
-						"InstanceType" : String,
-						"KernelId" : String,
-						"KeyName" : String,
-						"Monitoring" : Boolean,
+						"DisableApiTermination" : "Boolean",
+						"EbsOptimized" : "Boolean",
+						"IamInstanceProfile" : "String",
+						"ImageId" : "String",
+						"InstanceInitiatedShutdownBehavior" : "String",
+						"InstanceType" : "String",
+						"KernelId" : "String",
+						"KeyName" : "String",
+						"Monitoring" : "Boolean",
 						"NetworkInterfaces" : [],
-						"PlacementGroupName" : String,
-						"PrivateIpAddress" : String,
-						"RamdiskId" : String,
-						"SecurityGroupIds" : [String],
-						"SecurityGroups" : [ String],
-						"SourceDestCheck" : Boolean,
+						"PlacementGroupName" : "String",
+						"PrivateIpAddress" : "String",
+						"RamdiskId" : "String",
+						"SecurityGroupIds" : ["String"],
+						"SecurityGroups" : [ "String"],
+						"SourceDestCheck" : "Boolean",
 						"SsmAssociations" : [],
-						"SubnetId" : String,
+						"SubnetId" : "String",
 						"Tags" : [],
-						"Tenancy" : String,
-						"UserData" : String,
+						"Tenancy" : "String",
+						"UserData" : "String",
 						"Volumes" : [],
-						"AdditionalInfo" : String
+						"AdditionalInfo" : "String"
 					}
 				};
 			}
@@ -301,7 +302,7 @@ var Resource = {
 					"Type" : "AWS::EC2::NetworkAcl",
 					"Properties" : {
 						"Tags" : [],
-						"VpcId" : String
+						"VpcId" : "String"
 					}
 				};
 			}
@@ -334,13 +335,13 @@ var Resource = {
 				this.block = {
 					"Type" : "AWS::EC2::NetworkInterface",
 					"Properties" : {
-						"Description" : String,
-						"GroupSet" : [ String],
-						"PrivateIpAddress" : String,
+						"Description" : "String",
+						"GroupSet" : ["String"],
+						"PrivateIpAddress" : "String",
 						"PrivateIpAddresses" : [],
-						"SecondaryPrivateIpAddressCount" : Integer,
-						"SourceDestCheck" : Boolean,
-						"SubnetId" : String,
+						"SecondaryPrivateIpAddressCount" : "Integer",
+						"SourceDestCheck" : "Boolean",
+						"SubnetId" : "String",
 						"Tags" : [],
 					}
 				};
@@ -374,7 +375,7 @@ var Resource = {
 				this.block = {
 					"Type" : "AWS::EC2::PlacementGroup",
 					"Properties" : {
-						"Strategy" : String
+						"Strategy" : "String"
 					}
 				};
 			}
@@ -407,7 +408,7 @@ var Resource = {
 				this.block = {
 					"Type" : "AWS::EC2::RouteTable",
 					"Properties" : {
-						"VpcId" : String,
+						"VpcId" : "String",
 						"Tags" : []
 					}
 				};
@@ -549,15 +550,15 @@ var Resource = {
 				this.block = {
 					"Type":"AWS::EC2::Volume",
 					"Properties" : {
-						"AutoEnableIO" : Boolean,
-						"AvailabilityZone" : String,
-						"Encrypted" : Boolean,
-						"Iops" : Number,
-						"KmsKeyId" : String,
-						"Size" : String,
-						"SnapshotId" : String,
+						"AutoEnableIO" : "Boolean",
+						"AvailabilityZone" : "String",
+						"Encrypted" : "Boolean",
+						"Iops" : "Number",
+						"KmsKeyId" : "String",
+						"Size" : "String",
+						"SnapshotId" : "String",
 						"Tags" : [],
-						"VolumeType" : String
+						"VolumeType" : "String"
 					}
 				};
 			}
@@ -629,8 +630,8 @@ var Resource = {
 					"Properties" : {
 						"PolicyDocument" : {},
 						"RouteTableIds" : [],
-						"ServiceName" : String,
-						"VpcId" : String
+						"ServiceName" : "String",
+						"VpcId" : "String"
 					}
 				};
 			}
@@ -663,9 +664,9 @@ var Resource = {
 				this.block = {
 					"Type" : "AWS::EC2::VPCPeeringConnection",
 					"Properties" : {
-						"PeerVpcId" : String,
+						"PeerVpcId" : "String",
 						"Tags" : [],
-						"VpcId" : String
+						"VpcId" : "String"
 					}
 				};
 			}
@@ -683,9 +684,9 @@ var Resource = {
 				this.block = {
 					"Type" : "AWS::EC2::VPNConnection",
 					"Properties" : {
-						"Type" : String,
+						"Type" : "String",
 						"CustomerGatewayId" : GatewayID,
-						"StaticRoutesOnly" : Boolean,
+						"StaticRoutesOnly" : "Boolean",
 						"Tags" :  [],
 						"VpnGatewayId" : GatewayID
 					}
@@ -720,7 +721,7 @@ var Resource = {
 				this.block = {
 					"Type" : "AWS::EC2::VPNGateway",
 					"Properties" : {
-						"Type" : String,
+						"Type" : "String",
 						"Tags" : []
 					}
 				};
