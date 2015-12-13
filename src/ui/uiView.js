@@ -13,6 +13,8 @@ var _ = require('lodash');
 // In renderer process (web page).
 var ipcRenderer = require('electron').ipcRenderer;
 
+var SidebarComponent = require('./sidebar');
+
 var log = function(msg, level) {
 	if(!level) {
 		level = 'info';
@@ -42,9 +44,7 @@ ipcRenderer.send('update-resources', { primary: 'AutoScaling', secondary: 'Scali
 ipcRenderer.send('update-resources', { primary: 'AutoScaling', secondary: 'ScheduledAction'});
 //ipcRenderer.send('update-resources', { primary: 'AutoScaling', secondary: 'LifecycleHook'});
 
-
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'CustomerGateway'});
-
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'DHCPOptions'});
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'EIP'});
 ipcRenderer.send('update-resources', { primary: 'EC2', secondary: 'Instance'});
@@ -95,36 +95,8 @@ var uiView = {
 	},
 	view: function(controller) {
 		return m(".container-fluid", [
-			/*m(".navbar.navbar-fixed-top", [
-			 m(".container", [
-			 m(".navbar-header", [
-			 m("a.navbar-brand[href='#']", "Bellerophon"),
-			 ])
-			 ])
-			 ]),*/
 			m(".row.MainContent", [
-				m("nav.col-xs-3.bs-docs-sidebar .col-md-2 .col-lg-2", [
-					m("ul.nav.nav-stacked.fixed[id='sidebar']", [
-						_.map(controller.resources(), function(resource, key) {
-							return m("li", [
-								m("a[href='#" + key + "']", key),
-								m("ul.nav.nav-stacked", [
-									_.map(controller.resources()[key], function(subResource, subKey) {
-										if(Object.keys(controller.resources()[key][subKey]).length > 0) {
-											return m("li", [m("a[href='#" + key + subKey + "']", subKey)])
-										}
-									})
-								])
-							])
-						}),
-						m('div', [
-							m("button.btn.btn-warning#templateButton", { onclick: controller.openTemplateWindow }, "Show Template"),
-						]),
-						m('div', [
-							m("button.btn.btn-warning#templateButton", { onclick: controller.openSaveDialog }, "Save Template")
-						])
-					])
-				]),
+				m.component(SidebarComponent, { resources: controller.resources, openTemplateWindow: controller.openTemplateWindow, openSaveDialog: controller.openSaveDialog }),
 				m(".col-xs-9 .col-md-10 .col-lg-10", [
 					_.map(controller.resources(), function(group, key) {
 						return	m('.row', [
