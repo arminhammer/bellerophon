@@ -24,11 +24,19 @@ gulp.task('lint', function () {
 	return gulp.src(['src/**/*.js','!src/node_modules/**'])
 		.pipe(eslint({
 			extends: 'eslint:recommended',
-			ecmaFeatures: {
-				//'modules': true
-			},
 			rules: {
-				'strict': 2
+				'strict': [2, 'global'],
+				'quotes': [2, 'single']
+			},
+			envs: [
+				'amd',
+				'node'
+			],
+			"globals":{
+				'$': true,
+				'document': true,
+				'window': true,
+				'CodeMirror': true
 			}
 		}))
 		.pipe(eslint.format())

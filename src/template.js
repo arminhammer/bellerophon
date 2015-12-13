@@ -2,7 +2,7 @@
  * Created by arminhammer on 11/24/15.
  */
 
-"use strict";
+'use strict';
 
 var _ = require('lodash');
 
@@ -26,7 +26,7 @@ var Template = function() {
 				recursiveReplace(object[key], newPattern, oldPattern);
 			}
 		});
-	};
+	}
 
 	function populateBlock(block, body) {
 		block.Properties = _.reduce(block.Properties, function(result, n, key) {
@@ -34,7 +34,7 @@ var Template = function() {
 			return result;
 		}, {});
 		return block;
-	};
+	}
 
 	self.addResource = function(resource) {
 		recursiveReplace(self.body.Resources, '{ Ref: ' + resource.name + ' }', resource.id);
@@ -57,8 +57,8 @@ var Template = function() {
 				var paramName = resource.name + pKey + 'Param';
 				self.body.Resources[resource.name].Properties[pKey] = '{ Ref: ' + paramName + ' }';
 				self.body.Parameters[paramName] = {
-					"Type" : "String",
-					"Default" : oldVal
+					'Type' : 'String',
+					'Default' : oldVal
 				}
 			}
 		}
@@ -75,9 +75,9 @@ var Template = function() {
 	};
 
 	self.body = {
-		"AWSTemplateFormatVersion" : "2010-09-09",
-		"Parameters" : {},
-		"Resources" : {}
+		'AWSTemplateFormatVersion' : '2010-09-09',
+		'Parameters' : {},
+		'Resources' : {}
 	};
 
 };

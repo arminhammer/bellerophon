@@ -2,7 +2,6 @@
 var electron = require('electron');
 var app = electron.app;
 var Menu = electron.Menu;
-var Tray = electron.Tray;
 var fs = require('fs');
 var winston = require('winston');
 var Template = require('./template');
@@ -42,7 +41,7 @@ function showSaveDialog() {
 				});
 			}
 		});
-};
+}
 
 // prevent window being garbage collected
 var mainWindow;
@@ -124,23 +123,23 @@ ipcMain.on('update-resources', function(event, res) {
 });
 
 ipcMain.on('send-log', function(event, arg) {
-	console.log('Received log request');
+	log('Received log request');
 	log(arg.msg, arg.level, arg.from);
 });
 
-ipcMain.on('get-template', function(event, arg) {
-	console.log('Received get template request');
+ipcMain.on('get-template', function(event) {
+	log('Received get template request');
 	event.sender.send('update-template', template.body);
 });
 
-ipcMain.on('open-template-window', function(event) {
-	console.log('Received request to open template window.');
+ipcMain.on('open-template-window', function() {
+	log('Received request to open template window.');
 	if(!templateWindow) {
 		templateWindow = createTemplateWindow();
 	}
 });
 
-ipcMain.on('open-save-dialog', function(event) {
+ipcMain.on('open-save-dialog', function() {
 	log('Received save request');
 	showSaveDialog();
 });
@@ -176,7 +175,7 @@ ipcMain.on('add-to-template-request', function(event, res) {
 });
 
 ipcMain.on('remove-from-template-request', function(event, res) {
-	console.log('Removed resource from template');
+	log('Removed resource from template');
 	availableResources[res.key][res.subKey][res.resource.id].inTemplate = false;
 	template.removeResource(res.resource);
 	if(templateWindow) {
@@ -230,17 +229,17 @@ app.on('window-all-closed', function() {
 });
 
 app.on('activate-with-no-open-windows', function() {
-	console.log('activate-with-no-open-windows');
+	log('activate-with-no-open-windows');
 	if (!mainWindow) {
 		mainWindow = createMainWindow();
 	}
 });
 
-var appIcon = null;
+//var appIcon = null;
 var menu = null;
 
 app.on('ready', function() {
-	console.log('Ready');
+	log('Ready');
 
 	var menuTemplate = [
 		{
@@ -279,7 +278,7 @@ app.on('ready', function() {
 						if (focusedWindow)
 							focusedWindow.toggleDevTools();
 					}
-				},
+				}
 			]
 		},
 		{
@@ -295,7 +294,7 @@ app.on('ready', function() {
 					label: 'Close',
 					accelerator: 'CmdOrCtrl+W',
 					role: 'close'
-				},
+				}
 			]
 		},
 		{
@@ -305,9 +304,9 @@ app.on('ready', function() {
 				{
 					label: 'Learn More',
 					click: function() { require('electron').shell.openExternal('http://github.com/arminhammer/bellerophon') }
-				},
+				}
 			]
-		},
+		}
 	];
 
 	if (process.platform == 'darwin') {
@@ -345,7 +344,7 @@ app.on('ready', function() {
 					label: 'Quit',
 					accelerator: 'Command+Q',
 					click: function() { app.quit(); }
-				},
+				}
 			]
 		});
 		menuTemplate[3].submenu.push(

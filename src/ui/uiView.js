@@ -2,10 +2,7 @@
  * Created by arminhammer on 11/18/15.
  */
 
-"use strict";
-
-console.log('Loaded!');
-//var P = require('bluebird');
+'use strict';
 
 var m = require('mithril');
 var _ = require('lodash');
@@ -68,8 +65,8 @@ ipcRenderer.on('update-resources', function(event, res) {
 	m.startComputation();
 	log('Updating resources');
 	resources(res);
-	console.log('Updating resources');
-	console.log(resources());
+	log('Updating resources');
+	log(resources());
 	m.endComputation();
 });
 
@@ -86,7 +83,7 @@ var uiView = {
 		this.resources = resources;
 		this.openTemplateWindow = openTemplateWindow;
 		this.openSaveDialog = openSaveDialog;
-		this.addTooltip = function(element, isInitialized, context) {
+		this.addTooltip = function(element, isInitialized) {
 			if(isInitialized) {
 				return;
 			}
@@ -94,34 +91,34 @@ var uiView = {
 		}
 	},
 	view: function(controller) {
-		return m(".container-fluid", [
-			m(".row.MainContent", [
+		return m('.container-fluid', [
+			m('.row.MainContent', [
 				m.component(SidebarComponent, { resources: controller.resources, openTemplateWindow: controller.openTemplateWindow, openSaveDialog: controller.openSaveDialog }),
-				m(".col-xs-9 .col-md-10 .col-lg-10", [
+				m('.col-xs-9 .col-md-10 .col-lg-10', [
 					_.map(controller.resources(), function(group, key) {
 						return	m('.row', [
-							m(".group[id='" + key + "']", [
-								m("h3", key),
+							m('.group[id="' + key + '"]', [
+								m('h3', key),
 								_.map(controller.resources()[key], function(subResource, subKey) {
 									var subKeySize = Object.keys(controller.resources()[key][subKey]).length;
 									if(subKeySize > 0) {
 										return m('.row', [
-											m(".col-xs-12", [
-												m(".subgroup[id='" + key + subKey + "']", [
-													m("h4", subKey + 's'),
+											m('.col-xs-12', [
+												m('.subgroup[id="' + key + subKey + '"]', [
+													m('h4', subKey + 's'),
 													_.map(controller.resources()[key][subKey], function (resource) {
 														var colSizes = { xs: 12, md: 6, lg: 4};
 														var colSizeString = 'col-xs-' + colSizes.xs + ' col-md-' + colSizes.md + ' col-lg-' + colSizes.lg;
 														return m('div', [
-															m("div", { class: colSizeString },[
+															m('div', { class: colSizeString },[
 																m('div', [
-																	[m(".panel.panel-warning", [
-																		m(".panel-heading", [
-																			m("h3.panel-title", [
-																				m("input[type=checkbox]", {
+																	[m('.panel.panel-warning', [
+																		m('.panel-heading', [
+																			m('h3.panel-title', [
+																				m('input[type=checkbox]', {
 																					checked: resource.inTemplate,
 																					name: resource.id,
-																					onclick: m.withAttr("checked", function() {
+																					onclick: m.withAttr('checked', function() {
 																						log('Checked ' + resource);
 																						if(resource.inTemplate) {
 																							removeFromTemplate({resource: resource, key: key, subKey: subKey});
@@ -130,10 +127,10 @@ var uiView = {
 																						}
 																					})
 																				}),
-																				m("span[data-toggle='tooltip'][data-placement='top']", {title: resource.id, config: controller.addTooltip }, _.trunc(resource.id,40))
+																				m('span[data-toggle="tooltip"][data-placement="top"]', {title: resource.id, config: controller.addTooltip }, _.trunc(resource.id,40))
 																			])
 																		]),
-																		m(".panel-body", [
+																		m('.panel-body', [
 																			m('table.table.table-condensed', [
 																				m('tr', [
 																					m('th.col-xs-1', 'Param.'),
@@ -144,10 +141,10 @@ var uiView = {
 																					if(_.isObject(pVal)) {
 																						pVal = JSON.stringify(pVal, null, 2);
 																					}
-																					var paramCheckbox = m("input[type=checkbox]", {
+																					var paramCheckbox = m('input[type=checkbox]', {
 																						checked: resource.templateParams[pKey],
 																						//name: resource.id,
-																						onclick: m.withAttr("checked", function() {
+																						onclick: m.withAttr('checked', function() {
 																							log('Checked ' + resource);
 																							toggleParamInTemplate({resource: resource, key: key, subKey: subKey, pKey: pKey });
 																							//if(resource.templateParams[pKey]) {} else {
@@ -155,7 +152,7 @@ var uiView = {
 																							//}
 																						})
 																					});
-																					if((resource.block.Properties[pKey]) != "String") {
+																					if((resource.block.Properties[pKey]) != 'String') {
 																						paramCheckbox = m('div')
 																					}
 																					if(pVal != '') {
@@ -167,7 +164,7 @@ var uiView = {
 																								m('b', {title: pKey, config: controller.addTooltip }, _.trunc(pKey,15))
 																							]),
 																							m('td.col-xs-8', [
-																								m("i[data-toggle='tooltip'][data-placement='top']", {title: pVal, config: controller.addTooltip }, _.trunc(pVal,20))
+																								m('i[data-toggle="tooltip"][data-placement="top"]', {title: pVal, config: controller.addTooltip }, _.trunc(pVal,20))
 																							])
 																						])
 																					}

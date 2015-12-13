@@ -2,7 +2,7 @@
  * Created by arminhammer on 11/24/15.
  */
 
-"use strict";
+'use strict';
 var AWS = require('aws-sdk');
 AWS.config.region = 'us-east-1';
 
@@ -21,7 +21,7 @@ var Resource = {
 		AutoScalingGroup: {
 			call: ASG.describeAutoScalingGroupsAsync({}),
 			resBlock: 'AutoScalingGroups',
-			rName: "AutoScalingGroupName",
+			rName: 'AutoScalingGroupName',
 			construct: function (name, body) {
 				this.inTemplate = false;
 				this.templateParams = {};
@@ -29,24 +29,24 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type": "AWS::AutoScaling::AutoScalingGroup",
-					"Properties": {
-						"AvailabilityZones": [],
-						"Cooldown": "String",
-						"DesiredCapacity": "String",
-						"HealthCheckGracePeriod": "Integer",
-						"HealthCheckType": "String",
-						"InstanceId": "String",
-						"LaunchConfigurationName": "String",
-						"LoadBalancerNames": [],
-						"MaxSize": "String",
-						"MetricsCollection": [],
-						"MinSize": "String",
-						"NotificationConfigurations": [],
-						"PlacementGroup": "String",
-						"Tags": [],
-						"TerminationPolicies": [],
-						"VPCZoneIdentifier": []
+					'Type': 'AWS::AutoScaling::AutoScalingGroup',
+					'Properties': {
+						'AvailabilityZones': [],
+						'Cooldown': 'String',
+						'DesiredCapacity': 'String',
+						'HealthCheckGracePeriod': 'Integer',
+						'HealthCheckType': 'String',
+						'InstanceId': 'String',
+						'LaunchConfigurationName': 'String',
+						'LoadBalancerNames': [],
+						'MaxSize': 'String',
+						'MetricsCollection': [],
+						'MinSize': 'String',
+						'NotificationConfigurations': [],
+						'PlacementGroup': 'String',
+						'Tags': [],
+						'TerminationPolicies': [],
+						'VPCZoneIdentifier': []
 					}
 				};
 			}
@@ -62,25 +62,25 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::AutoScaling::LaunchConfiguration",
-					"Properties" : {
-						"AssociatePublicIpAddress" : "Boolean",
-						"BlockDeviceMappings" : [],
-						"ClassicLinkVPCId" : "String",
-						"ClassicLinkVPCSecurityGroups" : [],
-						"EbsOptimized" : "Boolean",
-						"IamInstanceProfile" : "String",
-						"ImageId" : "String",
-						"InstanceId" : "String",
-						"InstanceMonitoring" : "Boolean",
-						"InstanceType" : "String",
-						"KernelId" : "String",
-						"KeyName" : "String",
-						"PlacementTenancy" : "String",
-						"RamDiskId" : "String",
-						"SecurityGroups" : [],
-						"SpotPrice" : "String",
-						"UserData" : "String"
+					'Type' : 'AWS::AutoScaling::LaunchConfiguration',
+					'Properties' : {
+						'AssociatePublicIpAddress' : 'Boolean',
+						'BlockDeviceMappings' : [],
+						'ClassicLinkVPCId' : 'String',
+						'ClassicLinkVPCSecurityGroups' : [],
+						'EbsOptimized' : 'Boolean',
+						'IamInstanceProfile' : 'String',
+						'ImageId' : 'String',
+						'InstanceId' : 'String',
+						'InstanceMonitoring' : 'Boolean',
+						'InstanceType' : 'String',
+						'KernelId' : 'String',
+						'KeyName' : 'String',
+						'PlacementTenancy' : 'String',
+						'RamDiskId' : 'String',
+						'SecurityGroups' : [],
+						'SpotPrice' : 'String',
+						'UserData' : 'String'
 					}
 				}
 			}
@@ -109,17 +109,17 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::AutoScaling::ScalingPolicy",
-					"Properties" : {
-						"AdjustmentType" : "String",
-						"AutoScalingGroupName" : "String",
-						"Cooldown" : "String",
-						"EstimatedInstanceWarmup" : "Integer",
-						"MetricAggregationType" : "String",
-						"MinAdjustmentMagnitude" : "Integer",
-						"PolicyType" : "String",
-						"ScalingAdjustment" : "String",
-						"StepAdjustments" : []
+					'Type' : 'AWS::AutoScaling::ScalingPolicy',
+					'Properties' : {
+						'AdjustmentType' : 'String',
+						'AutoScalingGroupName' : 'String',
+						'Cooldown' : 'String',
+						'EstimatedInstanceWarmup' : 'Integer',
+						'MetricAggregationType' : 'String',
+						'MinAdjustmentMagnitude' : 'Integer',
+						'PolicyType' : 'String',
+						'ScalingAdjustment' : 'String',
+						'StepAdjustments' : []
 					}
 				}
 			}
@@ -135,15 +135,15 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::AutoScaling::ScheduledAction",
-					"Properties" : {
-						"AutoScalingGroupName" : "String",
-						"DesiredCapacity" : "Integer",
-						"EndTime" : "Time stamp",
-						"MaxSize" : "Integer",
-						"MinSize" : "Integer",
-						"Recurrence" : "String",
-						"StartTime" : "Time stamp"
+					'Type' : 'AWS::AutoScaling::ScheduledAction',
+					'Properties' : {
+						'AutoScalingGroupName' : 'String',
+						'DesiredCapacity' : 'Integer',
+						'EndTime' : 'Time stamp',
+						'MaxSize' : 'Integer',
+						'MinSize' : 'Integer',
+						'Recurrence' : 'String',
+						'StartTime' : 'Time stamp'
 					}
 				}
 			}
@@ -161,12 +161,12 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::EC2::CustomerGateway",
-					"Properties" : {
-						"BgpAsn" : "Number",
-						"IpAddress" : "String",
-						"Tags" :  [],
-						"Type" : "String"
+					'Type' : 'AWS::EC2::CustomerGateway',
+					'Properties' : {
+						'BgpAsn' : 'Number',
+						'IpAddress' : 'String',
+						'Tags' :  [],
+						'Type' : 'String'
 					}
 				};
 			}
@@ -182,14 +182,14 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::EC2::DHCPOptions",
-					"Properties" : {
-						"DomainName" : "String",
-						"DomainNameServers" : [],
-						"NetbiosNameServers" : [],
-						"NetbiosNodeType" : "Number",
-						"NtpServers" : [],
-						"Tags" : []
+					'Type' : 'AWS::EC2::DHCPOptions',
+					'Properties' : {
+						'DomainName' : 'String',
+						'DomainNameServers' : [],
+						'NetbiosNameServers' : [],
+						'NetbiosNodeType' : 'Number',
+						'NtpServers' : [],
+						'Tags' : []
 					}
 				};
 			}
@@ -205,10 +205,10 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::EC2::EIP",
-					"Properties" : {
-						"InstanceId" : "String",
-						"Domain" : "String"
+					'Type' : 'AWS::EC2::EIP',
+					'Properties' : {
+						'InstanceId' : 'String',
+						'Domain' : 'String'
 					}
 				};
 			}
@@ -239,33 +239,33 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::EC2::Instance",
-					"Properties" : {
-						"AvailabilityZone" : "String",
-						"BlockDeviceMappings" : [],
-						"DisableApiTermination" : "Boolean",
-						"EbsOptimized" : "Boolean",
-						"IamInstanceProfile" : "String",
-						"ImageId" : "String",
-						"InstanceInitiatedShutdownBehavior" : "String",
-						"InstanceType" : "String",
-						"KernelId" : "String",
-						"KeyName" : "String",
-						"Monitoring" : "Boolean",
-						"NetworkInterfaces" : [],
-						"PlacementGroupName" : "String",
-						"PrivateIpAddress" : "String",
-						"RamdiskId" : "String",
-						"SecurityGroupIds" : ["String"],
-						"SecurityGroups" : [ "String"],
-						"SourceDestCheck" : "Boolean",
-						"SsmAssociations" : [],
-						"SubnetId" : "String",
-						"Tags" : [],
-						"Tenancy" : "String",
-						"UserData" : "String",
-						"Volumes" : [],
-						"AdditionalInfo" : "String"
+					'Type' : 'AWS::EC2::Instance',
+					'Properties' : {
+						'AvailabilityZone' : 'String',
+						'BlockDeviceMappings' : [],
+						'DisableApiTermination' : 'Boolean',
+						'EbsOptimized' : 'Boolean',
+						'IamInstanceProfile' : 'String',
+						'ImageId' : 'String',
+						'InstanceInitiatedShutdownBehavior' : 'String',
+						'InstanceType' : 'String',
+						'KernelId' : 'String',
+						'KeyName' : 'String',
+						'Monitoring' : 'Boolean',
+						'NetworkInterfaces' : [],
+						'PlacementGroupName' : 'String',
+						'PrivateIpAddress' : 'String',
+						'RamdiskId' : 'String',
+						'SecurityGroupIds' : ['String'],
+						'SecurityGroups' : [ 'String'],
+						'SourceDestCheck' : 'Boolean',
+						'SsmAssociations' : [],
+						'SubnetId' : 'String',
+						'Tags' : [],
+						'Tenancy' : 'String',
+						'UserData' : 'String',
+						'Volumes' : [],
+						'AdditionalInfo' : 'String'
 					}
 				};
 			}
@@ -281,9 +281,9 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::EC2::InternetGateway",
-					"Properties" : {
-						"Tags" : []
+					'Type' : 'AWS::EC2::InternetGateway',
+					'Properties' : {
+						'Tags' : []
 					}
 				};
 			}
@@ -299,10 +299,10 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::EC2::NetworkAcl",
-					"Properties" : {
-						"Tags" : [],
-						"VpcId" : "String"
+					'Type' : 'AWS::EC2::NetworkAcl',
+					'Properties' : {
+						'Tags' : [],
+						'VpcId' : 'String'
 					}
 				};
 			}
@@ -333,16 +333,16 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::EC2::NetworkInterface",
-					"Properties" : {
-						"Description" : "String",
-						"GroupSet" : ["String"],
-						"PrivateIpAddress" : "String",
-						"PrivateIpAddresses" : [],
-						"SecondaryPrivateIpAddressCount" : "Integer",
-						"SourceDestCheck" : "Boolean",
-						"SubnetId" : "String",
-						"Tags" : [],
+					'Type' : 'AWS::EC2::NetworkInterface',
+					'Properties' : {
+						'Description' : 'String',
+						'GroupSet' : ['String'],
+						'PrivateIpAddress' : 'String',
+						'PrivateIpAddresses' : [],
+						'SecondaryPrivateIpAddressCount' : 'Integer',
+						'SourceDestCheck' : 'Boolean',
+						'SubnetId' : 'String',
+						'Tags' : []
 					}
 				};
 			}
@@ -373,9 +373,9 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::EC2::PlacementGroup",
-					"Properties" : {
-						"Strategy" : "String"
+					'Type' : 'AWS::EC2::PlacementGroup',
+					'Properties' : {
+						'Strategy' : 'String'
 					}
 				};
 			}
@@ -406,10 +406,10 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::EC2::RouteTable",
-					"Properties" : {
-						"VpcId" : "String",
-						"Tags" : []
+					'Type' : 'AWS::EC2::RouteTable',
+					'Properties' : {
+						'VpcId' : 'String',
+						'Tags' : []
 					}
 				};
 			}
@@ -425,13 +425,13 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type": "AWS::EC2::SecurityGroup",
-					"Properties": {
-						"GroupDescription": "String",
-						"SecurityGroupEgress": [],
-						"SecurityGroupIngress": [],
-						"Tags": [],
-						"VpcId": "String"
+					'Type': 'AWS::EC2::SecurityGroup',
+					'Properties': {
+						'GroupDescription': 'String',
+						'SecurityGroupEgress': [],
+						'SecurityGroupIngress': [],
+						'Tags': [],
+						'VpcId': 'String'
 					}
 				};
 			}
@@ -477,9 +477,9 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::EC2::SpotFleet",
-					"Properties" : {
-						"SpotFleetRequestConfigData": "SpotFleetRequestConfigData"
+					'Type' : 'AWS::EC2::SpotFleet',
+					'Properties' : {
+						'SpotFleetRequestConfigData': 'SpotFleetRequestConfigData'
 					}
 				};
 			}
@@ -495,13 +495,13 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::EC2::Subnet",
-					"Properties" : {
-						"AvailabilityZone": "String",
-						"CidrBlock": "String",
-						"MapPublicIpOnLaunch": "Boolean",
-						"Tags": [],
-						"VpcId": {"Ref": "String"}
+					'Type' : 'AWS::EC2::Subnet',
+					'Properties' : {
+						'AvailabilityZone': 'String',
+						'CidrBlock': 'String',
+						'MapPublicIpOnLaunch': 'Boolean',
+						'Tags': [],
+						'VpcId': {'Ref': 'String'}
 
 					}
 				};
@@ -548,17 +548,17 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type":"AWS::EC2::Volume",
-					"Properties" : {
-						"AutoEnableIO" : "Boolean",
-						"AvailabilityZone" : "String",
-						"Encrypted" : "Boolean",
-						"Iops" : "Number",
-						"KmsKeyId" : "String",
-						"Size" : "String",
-						"SnapshotId" : "String",
-						"Tags" : [],
-						"VolumeType" : "String"
+					'Type':'AWS::EC2::Volume',
+					'Properties' : {
+						'AutoEnableIO' : 'Boolean',
+						'AvailabilityZone' : 'String',
+						'Encrypted' : 'Boolean',
+						'Iops' : 'Number',
+						'KmsKeyId' : 'String',
+						'Size' : 'String',
+						'SnapshotId' : 'String',
+						'Tags' : [],
+						'VolumeType' : 'String'
 					}
 				};
 			}
@@ -589,13 +589,13 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::EC2::VPC",
-					"Properties" : {
-						"CidrBlock" : "String",
-						"EnableDnsSupport" : "Boolean",
-						"EnableDnsHostnames" : "Boolean",
-						"InstanceTenancy" : "String",
-						"Tags" : []
+					'Type' : 'AWS::EC2::VPC',
+					'Properties' : {
+						'CidrBlock' : 'String',
+						'EnableDnsSupport' : 'Boolean',
+						'EnableDnsHostnames' : 'Boolean',
+						'InstanceTenancy' : 'String',
+						'Tags' : []
 					}
 				};
 			}
@@ -626,12 +626,12 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::EC2::VPCEndpoint",
-					"Properties" : {
-						"PolicyDocument" : {},
-						"RouteTableIds" : [],
-						"ServiceName" : "String",
-						"VpcId" : "String"
+					'Type' : 'AWS::EC2::VPCEndpoint',
+					'Properties' : {
+						'PolicyDocument' : {},
+						'RouteTableIds' : [],
+						'ServiceName' : 'String',
+						'VpcId' : 'String'
 					}
 				};
 			}
@@ -662,11 +662,11 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::EC2::VPCPeeringConnection",
-					"Properties" : {
-						"PeerVpcId" : "String",
-						"Tags" : [],
-						"VpcId" : "String"
+					'Type' : 'AWS::EC2::VPCPeeringConnection',
+					'Properties' : {
+						'PeerVpcId' : 'String',
+						'Tags' : [],
+						'VpcId' : 'String'
 					}
 				};
 			}
@@ -682,13 +682,13 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::EC2::VPNConnection",
-					"Properties" : {
-						"Type" : "String",
-						"CustomerGatewayId" : GatewayID,
-						"StaticRoutesOnly" : "Boolean",
-						"Tags" :  [],
-						"VpnGatewayId" : GatewayID
+					'Type' : 'AWS::EC2::VPNConnection',
+					'Properties' : {
+						'Type' : 'String',
+						'CustomerGatewayId' : 'GatewayID',
+						'StaticRoutesOnly' : 'Boolean',
+						'Tags' :  [],
+						'VpnGatewayId' : 'GatewayID'
 					}
 				};
 			}
@@ -719,10 +719,10 @@ var Resource = {
 				this.name = buildName(name);
 				this.body = body;
 				this.block = {
-					"Type" : "AWS::EC2::VPNGateway",
-					"Properties" : {
-						"Type" : "String",
-						"Tags" : []
+					'Type' : 'AWS::EC2::VPNGateway',
+					'Properties' : {
+						'Type' : 'String',
+						'Tags' : []
 					}
 				};
 			}
