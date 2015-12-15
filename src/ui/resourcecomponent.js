@@ -26,6 +26,20 @@ function addTooltip(element, isInitialized) {
 	$(element).tooltip();
 }
 
+function formatTitle(title) {
+	if(_.endsWith(title,'ay')) {
+		return _.startCase(title + 's');
+	} else if(_.endsWith(title,'y')) {
+		return _.startCase(title.substring(0, title.length - 1) + 'ies');
+	} else if(_.endsWith(title,'s')) {
+		return _.startCase(title);
+	} else if(title === title.toUpperCase()) {
+		return title + 's';
+	} else {
+		return _.startCase(title + 's');
+	}
+}
+
 var ResourceComponent = {
 	controller: function (options) {
 		this.resources = options.resources;
@@ -44,72 +58,70 @@ var ResourceComponent = {
 								return m('.row', [
 									m('.col-xs-12', [
 										m('.subgroup[id="' + key + subKey + '"]', [
-											m('h4', subKey + 's'),
+											m('h4', formatTitle(subKey)),
 											_.map(controller.resources()[key][subKey], function (resource) {
 												var colSizes = { xs: 12, md: 6, lg: 4};
-												var colSizeString = 'col-xs-' + colSizes.xs + ' col-md-' + colSizes.md + ' col-lg-' + colSizes.lg;
-												return m('div', [
-													m('div', { class: colSizeString },[
-														m('div', [
-															[m('.panel.panel-warning', [
-																m('.panel-heading', [
-																	m('h3.panel-title', [
-																		m('input[type=checkbox]', {
-																			checked: resource.inTemplate,
-																			name: resource.id,
-																			onclick: m.withAttr('checked', function() {
-																				controller.log('Checked ' + resource);
-																				if(resource.inTemplate) {
-																					removeFromTemplate({resource: resource, key: key, subKey: subKey});
-																				} else {
-																					addToTemplate({resource: resource, key: key, subKey: subKey});
-																				}
-																			})
-																		}),
-																		m('span[data-toggle="tooltip"][data-placement="top"]', {title: resource.id, config: controller.addTooltip }, _.trunc(resource.id,40))
-																	])
+												var colSizeString = 'col-xs-12 col-md-6 col-lg-4';
+												return m('div', { class: colSizeString },[
+													[m('.panel.panel-warning', [
+														m('.panel-heading', [
+															m('h3.panel-title', [
+																m('input[type=checkbox]', {
+																	checked: resource.inTemplate,
+																	name: resource.id,
+																	onclick: m.withAttr('checked', function() {
+																		controller.log('Checked ' + resource);
+																		if(resource.inTemplate) {
+																			removeFromTemplate({resource: resource, key: key, subKey: subKey});
+																		} else {
+																			addToTemplate({resource: resource, key: key, subKey: subKey});
+																		}
+																	})
+																}),
+																m('span[data-toggle="tooltip"][data-placement="top"]', {title: resource.id, config: controller.addTooltip }, _.trunc(resource.id,40))
+															])
+														]),
+														m('.panel-body', [
+															m('table.table.table-condensed', [
+																m('tr', [
+																	m('th.col-xs-2', 'Param.'),
+																	m('th.col-xs-3', 'Name'),
+																	m('th.col-xs-7', 'Value')
 																]),
-																m('.panel-body', [
-																	m('table.table.table-condensed', [
-																		m('tr', [
-																			m('th.col-xs-1', 'Param.'),
-																			m('th.col-xs-3', 'Name'),
-																			m('th.col-xs-8', 'Value')
-																		]),
-																		_.map(resource.body, function(pVal, pKey) {
-																			if(_.isObject(pVal)) {
-																				pVal = JSON.stringify(pVal, null, 2);
-																			}
-																			var paramCheckbox = m('input[type=checkbox]', {
-																				checked: resource.templateParams[pKey],
-																				//name: resource.id,
-																				onclick: m.withAttr('checked', function() {
-																					controller.log('Checked ' + resource);
-																					toggleParamInTemplate({resource: resource, key: key, subKey: subKey, pKey: pKey });
-																				})
-																			});
-																			if((resource.block.Properties[pKey]) != 'String') {
-																				paramCheckbox = m('div')
-																			}
-																			if(pVal != '') {
-																				return m('tr', [
-																					m('td.col-xs-1', [
-																						paramCheckbox
-																					]),
-																					m('td.col-xs-3', [
-																						m('b', {title: pKey, config: controller.addTooltip }, _.trunc(pKey,15))
-																					]),
-																					m('td.col-xs-8', [
-																						m('i[data-toggle="tooltip"][data-placement="top"]', {title: pVal, config: controller.addTooltip }, _.trunc(pVal, 30))
-																					])
-																				])
-																			}
+																_.map(resource.body, function(pVal, pKey) {
+																	if(_.isObject(pVal)) {
+																		pVal = JSON.stringify(pVal, null, 2);
+																	}
+																	var paramCheckbox = m('input[type=checkbox]', {
+																		checked: resource.templateParams[pKey],
+																		//name: resource.id,
+																		onclick: m.withAttr('checked', function() {
+																			controller.log('Checked ' + resource);
+																			toggleParamInTemplate({resource: resource, key: key, subKey: subKey, pKey: pKey });
 																		})
-																	])
-																])
-															])]
+																	});
+																	if((resource.block.Properties[pKey]) != 'String') {
+																		paramCheckbox = m('div')
+																	}
+																	if(pVal != '') {
+																		return m('tr', [
+																			m('td.col-xs-2', [
+																				paramCheckbox
+																			]),
+																			m('td.col-xs-3', [
+																				//m('b', {title: pKey, config: controller.addTooltip }, _.trunc(pKey,15))
+																				m('b', {title: pKey, config: controller.addTooltip }, pKey)
+																			]),
+																			m('td.col-xs-7', [
+																				//m('span[data-toggle="tooltip"][data-placement="top"]', {title: pVal, config: controller.addTooltip }, _.trunc(pVal, 30))
+																				m('span[data-toggle="tooltip"][data-placement="top"]', {title: pVal, config: controller.addTooltip }, pVal)
+																			])
+																		])
+																	}
+																})
+															])
 														])
-													])
+													])]
 												])
 											})
 										])

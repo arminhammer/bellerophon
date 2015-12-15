@@ -37,7 +37,7 @@ var SideBarComponent = {
 					m('button.btn.btn-warning#templateButton', { onclick: controller.openTemplateWindow }, 'Show Template')
 				]),
 				m('div', [
-					m('button.btn.btn-warning#templateButton', { onclick: controller.openSaveDialog }, 'Save Template')
+					m('button.btn.btn-primary#templateButton', { onclick: controller.openSaveDialog }, 'Save Template')
 				])
 			])
 		])

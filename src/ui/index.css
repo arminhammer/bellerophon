@@ -3,14 +3,21 @@
 }
 
 .panel-body {
-	/*(word-break:break-all;*/
+	/*(word-break:break-all;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	display : flex
+	display : flex*/
 }
 
-.panel-body table tr td {
+.panel-body table {
+	table-layout:fixed;
+}
+
+.panel-body table td {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .navbar {
