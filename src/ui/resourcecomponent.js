@@ -100,7 +100,7 @@ var ResourceComponent = {
 																						m('b', {title: pKey, config: controller.addTooltip }, _.trunc(pKey,15))
 																					]),
 																					m('td.col-xs-8', [
-																						m('i[data-toggle="tooltip"][data-placement="top"]', {title: pVal, config: controller.addTooltip }, _.trunc(pVal,20))
+																						m('i[data-toggle="tooltip"][data-placement="top"]', {title: pVal, config: controller.addTooltip }, _.trunc(pVal, 30))
 																					])
 																				])
 																			}

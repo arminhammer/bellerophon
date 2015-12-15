@@ -16,6 +16,14 @@ var buildName = function(name) {
 	return name + 'Resource';
 };
 
+function baseConstruct(obj, name, body) {
+	obj.inTemplate = false;
+	obj.templateParams = {};
+	obj.id = name;
+	obj.name = buildName(name);
+	obj.body = body;
+}
+
 var Resource = {
 	AutoScaling: {
 		AutoScalingGroup: {
@@ -23,11 +31,7 @@ var Resource = {
 			resBlock: 'AutoScalingGroups',
 			rName: 'AutoScalingGroupName',
 			construct: function (name, body) {
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.id = name;
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type': 'AWS::AutoScaling::AutoScalingGroup',
 					'Properties': {
@@ -56,11 +60,7 @@ var Resource = {
 			resBlock: 'LaunchConfigurations',
 			rName: 'LaunchConfigurationName',
 			construct: function(name, body) {
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.id = name;
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::AutoScaling::LaunchConfiguration',
 					'Properties' : {
@@ -103,11 +103,7 @@ var Resource = {
 			resBlock: 'ScalingPolicies',
 			rName: 'PolicyName',
 			construct: function(name, body) {
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.id = name;
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::AutoScaling::ScalingPolicy',
 					'Properties' : {
@@ -129,11 +125,7 @@ var Resource = {
 			resBlock: 'ScheduledUpdateGroupActions',
 			rName: 'ScheduledActionName',
 			construct: function(name, body) {
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.id = name;
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::AutoScaling::ScheduledAction',
 					'Properties' : {
@@ -155,11 +147,7 @@ var Resource = {
 			resBlock: 'CustomerGateways',
 			rName: 'CustomerGatewayId',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::EC2::CustomerGateway',
 					'Properties' : {
@@ -176,11 +164,7 @@ var Resource = {
 			resBlock: 'DhcpOptions',
 			rName: 'DhcpOptionsId',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::EC2::DHCPOptions',
 					'Properties' : {
@@ -199,11 +183,7 @@ var Resource = {
 			resBlock: 'Addresses',
 			rName: 'PublicIp',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::EC2::EIP',
 					'Properties' : {
@@ -218,14 +198,8 @@ var Resource = {
 			resBlock: '',
 			rName: '',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
-				this.block = {
-
-				};
+				baseConstruct(this, name, body);
+				this.block = {};
 			}
 		},
 		Instance : {
@@ -233,11 +207,7 @@ var Resource = {
 			resBlock: 'Reservations',
 			rName: 'ReservationId',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::EC2::Instance',
 					'Properties' : {
@@ -275,11 +245,7 @@ var Resource = {
 			resBlock: 'InternetGateways',
 			rName: 'InternetGatewayId',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::EC2::InternetGateway',
 					'Properties' : {
@@ -293,11 +259,7 @@ var Resource = {
 			resBlock: 'NetworkAcls',
 			rName: 'NetworkAclId',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::EC2::NetworkAcl',
 					'Properties' : {
@@ -312,14 +274,8 @@ var Resource = {
 			resBlock: '',
 			rName: '',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
-				this.block = {
-
-				};
+				baseConstruct(this, name, body);
+				this.block = {};
 			}
 		},
 		NetworkInterface : {
@@ -327,11 +283,7 @@ var Resource = {
 			resBlock: 'NetworkInterfaces',
 			rName: 'NetworkInterfaceId',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::EC2::NetworkInterface',
 					'Properties' : {
@@ -352,11 +304,7 @@ var Resource = {
 			resBlock: '',
 			rName: '',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 
 				};
@@ -367,11 +315,7 @@ var Resource = {
 			resBlock: 'PlacementGroups',
 			rName: 'GroupName',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::EC2::PlacementGroup',
 					'Properties' : {
@@ -385,11 +329,7 @@ var Resource = {
 			resBlock: '',
 			rName: '',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 
 				};
@@ -400,11 +340,7 @@ var Resource = {
 			resBlock: 'RouteTables',
 			rName: 'RouteTableId',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::EC2::RouteTable',
 					'Properties' : {
@@ -419,11 +355,7 @@ var Resource = {
 			resBlock: 'SecurityGroups',
 			rName: 'GroupId',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type': 'AWS::EC2::SecurityGroup',
 					'Properties': {
@@ -441,14 +373,8 @@ var Resource = {
 			resBlock: '',
 			rName: '',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
-				this.block = {
-
-				};
+				baseConstruct(this, name, body);
+				this.block = {};
 			}
 		},
 		SecurityGroupIngress: {
@@ -456,14 +382,8 @@ var Resource = {
 			resBlock: '',
 			rName: '',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
-				this.block = {
-
-				};
+				baseConstruct(this, name, body);
+				this.block = {};
 			}
 		},
 		SpotFleet: {
@@ -471,11 +391,7 @@ var Resource = {
 			resBlock: 'SpotFleetRequestConfigs',
 			rName: 'SpotFleetRequestId',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::EC2::SpotFleet',
 					'Properties' : {
@@ -489,11 +405,7 @@ var Resource = {
 			resBlock: 'Subnets',
 			rName: 'SubnetId',
 			construct: function(name, body) {
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.id = name;
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::EC2::Subnet',
 					'Properties' : {
@@ -512,14 +424,8 @@ var Resource = {
 			resBlock: '',
 			rName: '',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
-				this.block = {
-
-				};
+				baseConstruct(this, name, body);
+				this.block = {};
 			}
 		},
 		SubnetRouteTableAssociation: {
@@ -527,14 +433,8 @@ var Resource = {
 			resBlock: '',
 			rName: '',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
-				this.block = {
-
-				};
+				baseConstruct(this, name, body);
+				this.block = {};
 			}
 		},
 		Volume: {
@@ -542,11 +442,7 @@ var Resource = {
 			resBlock: 'Volumes',
 			rName: 'VolumeId',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type':'AWS::EC2::Volume',
 					'Properties' : {
@@ -568,14 +464,8 @@ var Resource = {
 			resBlock: '',
 			rName: '',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
-				this.block = {
-
-				};
+				baseConstruct(this, name, body);
+				this.block = {};
 			}
 		},
 		VPC:{
@@ -583,11 +473,7 @@ var Resource = {
 			resBlock: 'Vpcs',
 			rName: 'VpcId',
 			construct: function(name, body) {
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.id = name;
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::EC2::VPC',
 					'Properties' : {
@@ -605,14 +491,8 @@ var Resource = {
 			resBlock: '',
 			rName: '',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
-				this.block = {
-
-				};
+				baseConstruct(this, name, body);
+				this.block = {};
 			}
 		},
 		VPCEndpoint: {
@@ -620,11 +500,7 @@ var Resource = {
 			resBlock: 'VpcEndpoints',
 			rName: 'VpcEndpointId',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::EC2::VPCEndpoint',
 					'Properties' : {
@@ -641,14 +517,8 @@ var Resource = {
 			resBlock: '',
 			rName: '',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
-				this.block = {
-
-				};
+				baseConstruct(this, name, body);
+				this.block = {};
 			}
 		},
 		VPCPeeringConnection: {
@@ -656,11 +526,7 @@ var Resource = {
 			resBlock: 'VpcPeeringConnections',
 			rName: 'VpcPeeringConnectionId',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::EC2::VPCPeeringConnection',
 					'Properties' : {
@@ -676,11 +542,7 @@ var Resource = {
 			resBlock: 'VpnConnections',
 			rName: 'VpnConnectionId',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::EC2::VPNConnection',
 					'Properties' : {
@@ -698,14 +560,8 @@ var Resource = {
 			resBlock: '',
 			rName: '',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
-				this.block = {
-
-				};
+				baseConstruct(this, name, body);
+				this.block = {};
 			}
 		},
 		VPNGateway: {
@@ -713,11 +569,7 @@ var Resource = {
 			resBlock: 'VpnGateways',
 			rName: 'VpnGatewayId',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
+				baseConstruct(this, name, body);
 				this.block = {
 					'Type' : 'AWS::EC2::VPNGateway',
 					'Properties' : {
@@ -732,14 +584,8 @@ var Resource = {
 			resBlock: '',
 			rName: '',
 			construct: function(name, body) {
-				this.id = name;
-				this.inTemplate = false;
-				this.templateParams = {};
-				this.name = buildName(name);
-				this.body = body;
-				this.block = {
-
-				};
+				baseConstruct(this, name, body);
+				this.block = {};
 			}
 		}
 	}
