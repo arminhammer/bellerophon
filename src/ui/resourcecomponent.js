@@ -60,7 +60,6 @@ var ResourceComponent = {
 										m('.subgroup[id="' + key + subKey + '"]', [
 											m('h4', formatTitle(subKey)),
 											_.map(controller.resources()[key][subKey], function (resource) {
-												var colSizes = { xs: 12, md: 6, lg: 4};
 												var colSizeString = 'col-xs-12 col-md-6 col-lg-4';
 												return m('div', { class: colSizeString },[
 													[m('.panel.panel-warning', [
@@ -78,7 +77,7 @@ var ResourceComponent = {
 																		}
 																	})
 																}),
-																m('span[data-toggle="tooltip"][data-placement="top"]', {title: resource.id, config: controller.addTooltip }, _.trunc(resource.id,40))
+																m('span[data-toggle="tooltip"][data-placement="left"]', {title: resource.id, config: controller.addTooltip }, _.trunc(resource.id,40))
 															])
 														]),
 														m('.panel-body', [
@@ -103,21 +102,19 @@ var ResourceComponent = {
 																	if((resource.block.Properties[pKey]) != 'String') {
 																		paramCheckbox = m('div')
 																	}
-																	//if(pVal != '') {
-																		return m('tr', [
-																			m('td.col-xs-2', [
-																				paramCheckbox
-																			]),
-																			m('td.col-xs-3', [
-																				//m('b', {title: pKey, config: controller.addTooltip }, _.trunc(pKey,15))
-																				m('b', {title: pKey, config: controller.addTooltip }, pKey)
-																			]),
-																			m('td.col-xs-7', [
-																				//m('span[data-toggle="tooltip"][data-placement="top"]', {title: pVal, config: controller.addTooltip }, _.trunc(pVal, 30))
-																				m('span[data-toggle="tooltip"][data-placement="top"]', {title: pVal, config: controller.addTooltip }, pVal)
-																			])
+																	return m('tr', [
+																		m('td.col-xs-2', [
+																			paramCheckbox
+																		]),
+																		m('td.col-xs-3', [
+																			//m('b', {title: pKey, config: controller.addTooltip }, _.trunc(pKey,15))
+																			m('b', {title: pKey, config: controller.addTooltip }, pKey)
+																		]),
+																		m('td.col-xs-7', [
+																			//m('span[data-toggle="tooltip"][data-placement="top"]', {title: pVal, config: controller.addTooltip }, _.trunc(pVal, 30))
+																			m('span[data-toggle="tooltip"][data-placement="left"]', {title: pVal, config: controller.addTooltip }, pVal)
 																		])
-																	//}
+																	])
 																})
 															])
 														])

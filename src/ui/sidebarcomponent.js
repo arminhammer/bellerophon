@@ -12,11 +12,16 @@ function openSaveDialog() {
 	ipcRenderer.send('open-save-dialog');
 }
 
+function refreshResources() {
+
+}
+
 var SideBarComponent = {
 	controller: function(options) {
 		this.resources = options.resources;
 		this.openTemplateWindow = openTemplateWindow;
 		this.openSaveDialog = openSaveDialog;
+		this.refreshResources = refreshResources;
 	},
 	view: function(controller) {
 		return m('nav.col-xs-3.bs-docs-sidebar .col-md-2 .col-lg-2', [
@@ -38,6 +43,15 @@ var SideBarComponent = {
 				]),
 				m('div', [
 					m('button.btn.btn-primary#templateButton', { onclick: controller.openSaveDialog }, 'Save Template')
+				]),
+				m('div', [
+					m('button.btn.btn-primary#templateButton', { onclick: controller.refreshResources }, 'Refresh')
+				]),
+				m('div', [
+					m('select', { class: 'form-control' }, [
+						m('option', 'us-east-1'),
+						m('option', 'us-west-1')
+					])
 				])
 			])
 		])
