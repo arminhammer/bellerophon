@@ -106,6 +106,11 @@ ipcMain.on('update-resources', function(event, res) {
 		.call
 		.then(function(data) {
 			log(data);
+			if(resource.preHook) {
+				data = resource.preHook(data);
+				log('PREHOOK');
+			}
+			log(data);
 			data[resource.resBlock].forEach(function(r) {
 				var newResource = new resource.construct(r[resource.rName], r);
 				availableResources[res.primary][res.secondary][newResource.id] = newResource;

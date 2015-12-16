@@ -103,7 +103,7 @@ var ResourceComponent = {
 																	if((resource.block.Properties[pKey]) != 'String') {
 																		paramCheckbox = m('div')
 																	}
-																	if(pVal != '') {
+																	//if(pVal != '') {
 																		return m('tr', [
 																			m('td.col-xs-2', [
 																				paramCheckbox
@@ -117,7 +117,7 @@ var ResourceComponent = {
 																				m('span[data-toggle="tooltip"][data-placement="top"]', {title: pVal, config: controller.addTooltip }, pVal)
 																			])
 																		])
-																	}
+																	//}
 																})
 															])
 														])

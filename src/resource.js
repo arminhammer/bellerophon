@@ -3,6 +3,8 @@
  */
 
 'use strict';
+var _ = require('lodash');
+
 var AWS = require('aws-sdk');
 AWS.config.region = 'us-east-1';
 
@@ -204,8 +206,17 @@ var Resource = {
 		},
 		Instance : {
 			call: ec2.describeInstancesAsync({}),
-			resBlock: 'Reservations',
-			rName: 'ReservationId',
+			resBlock: 'Instances',
+			rName: 'InstanceId',
+			preHook: function(data) {
+				var returnInstances = [];
+				_.each(data.Reservations, function(reservation) {
+					_.each(reservation.Instances, function(instance) {
+						returnInstances.push(instance);
+					});
+				});
+				return { Instances: returnInstances };
+			},
 			construct: function(name, body) {
 				baseConstruct(this, name, body);
 				this.block = {
