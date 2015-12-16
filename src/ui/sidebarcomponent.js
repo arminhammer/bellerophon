@@ -13,7 +13,7 @@ function openSaveDialog() {
 }
 
 function refreshResources() {
-
+	ipcRenderer.send('refresh-resources')
 }
 
 var SideBarComponent = {

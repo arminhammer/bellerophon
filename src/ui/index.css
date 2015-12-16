@@ -113,3 +113,7 @@
 .glyphicon-refresh {
 	padding-left: 30px;
 }
+
+.tooltip-inner {
+	text-align: left;
+}

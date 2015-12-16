@@ -97,6 +97,10 @@ var availableResources = {
 	}
 };
 
+ipcMain.on('refresh-resources', function(event, res) {
+
+});
+
 ipcMain.on('update-resources', function(event, res) {
 	log('Got update-resources request');
 	log(res.primary);

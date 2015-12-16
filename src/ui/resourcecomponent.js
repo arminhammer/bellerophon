@@ -88,8 +88,10 @@ var ResourceComponent = {
 																	m('th.col-xs-7', 'Value')
 																]),
 																_.map(resource.body, function(pVal, pKey) {
+																	var formattedPVal = pVal;
 																	if(_.isObject(pVal)) {
-																		pVal = JSON.stringify(pVal, null, 2);
+																		formattedPVal = JSON.stringify(pVal, null, '');
+																		pVal = JSON.stringify(pVal, null, '');
 																	}
 																	var paramCheckbox = m('input[type=checkbox]', {
 																		checked: resource.templateParams[pKey],
@@ -112,7 +114,7 @@ var ResourceComponent = {
 																		]),
 																		m('td.col-xs-7', [
 																			//m('span[data-toggle="tooltip"][data-placement="top"]', {title: pVal, config: controller.addTooltip }, _.trunc(pVal, 30))
-																			m('span[data-toggle="tooltip"][data-placement="left"]', {title: pVal, config: controller.addTooltip }, pVal)
+																			m('span[data-toggle="tooltip"][data-placement="left"]', {title: pVal, config: controller.addTooltip }, formattedPVal)
 																		])
 																	])
 																})
