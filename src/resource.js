@@ -195,7 +195,7 @@ var Resource = {
 				};
 			}
 		},
-		EIPAssociation : {
+		/*EIPAssociation : {
 			//call: ec2.describeAsync({}),
 			resBlock: '',
 			rName: '',
@@ -203,7 +203,7 @@ var Resource = {
 				baseConstruct(this, name, body);
 				this.block = {};
 			}
-		},
+		},*/
 		Instance : {
 			call: ec2.describeInstancesAsync({}),
 			resBlock: 'Instances',
@@ -280,7 +280,7 @@ var Resource = {
 				};
 			}
 		},
-		NetworkAclEntry : {
+		/*NetworkAclEntry : {
 			//call: ec2.describeAsync({}),
 			resBlock: '',
 			rName: '',
@@ -288,7 +288,7 @@ var Resource = {
 				baseConstruct(this, name, body);
 				this.block = {};
 			}
-		},
+		},*/
 		NetworkInterface : {
 			call: ec2.describeNetworkInterfacesAsync({}),
 			resBlock: 'NetworkInterfaces',
@@ -310,7 +310,7 @@ var Resource = {
 				};
 			}
 		},
-		NetworkInterfaceAttachment : {
+		/*NetworkInterfaceAttachment : {
 			//call: ec2.describeAsync({}),
 			resBlock: '',
 			rName: '',
@@ -320,7 +320,7 @@ var Resource = {
 
 				};
 			}
-		},
+		},*/
 		PlacementGroup: {
 			call: ec2.describePlacementGroupsAsync({}),
 			resBlock: 'PlacementGroups',
@@ -335,7 +335,7 @@ var Resource = {
 				};
 			}
 		},
-		Route: {
+		/*Route: {
 			//call: ec2.describeAsync({}),
 			resBlock: '',
 			rName: '',
@@ -345,7 +345,7 @@ var Resource = {
 
 				};
 			}
-		},
+		},*/
 		RouteTable : {
 			call: ec2.describeRouteTablesAsync({}),
 			resBlock: 'RouteTables',
@@ -379,7 +379,7 @@ var Resource = {
 				};
 			}
 		},
-		SecurityGroupEgress: {
+		/*SecurityGroupEgress: {
 			//call: ec2.describeAsync({}),
 			resBlock: '',
 			rName: '',
@@ -387,8 +387,8 @@ var Resource = {
 				baseConstruct(this, name, body);
 				this.block = {};
 			}
-		},
-		SecurityGroupIngress: {
+		},*/
+		/*SecurityGroupIngress: {
 			//call: ec2.describeAsync({}),
 			resBlock: '',
 			rName: '',
@@ -396,7 +396,7 @@ var Resource = {
 				baseConstruct(this, name, body);
 				this.block = {};
 			}
-		},
+		},*/
 		SpotFleet: {
 			call: ec2.describeSpotFleetRequestsAsync({}),
 			resBlock: 'SpotFleetRequestConfigs',
@@ -430,7 +430,7 @@ var Resource = {
 				};
 			}
 		},
-		SubnetNetworkAclAssociation: {
+		/*SubnetNetworkAclAssociation: {
 			//call: ec2.describeAsync({}),
 			resBlock: '',
 			rName: '',
@@ -438,8 +438,8 @@ var Resource = {
 				baseConstruct(this, name, body);
 				this.block = {};
 			}
-		},
-		SubnetRouteTableAssociation: {
+		},*/
+		/*SubnetRouteTableAssociation: {
 			//call: ec2.describeAsync({}),
 			resBlock: '',
 			rName: '',
@@ -447,7 +447,7 @@ var Resource = {
 				baseConstruct(this, name, body);
 				this.block = {};
 			}
-		},
+		},*/
 		Volume: {
 			call: ec2.describeVolumesAsync({}),
 			resBlock: 'Volumes',
@@ -470,7 +470,7 @@ var Resource = {
 				};
 			}
 		},
-		VolumeAttachment: {
+		/*VolumeAttachment: {
 			//call: ec2.describeAsync({}),
 			resBlock: '',
 			rName: '',
@@ -478,7 +478,7 @@ var Resource = {
 				baseConstruct(this, name, body);
 				this.block = {};
 			}
-		},
+		},*/
 		VPC:{
 			call: ec2.describeVpcsAsync({}),
 			resBlock: 'Vpcs',
@@ -497,7 +497,7 @@ var Resource = {
 				};
 			}
 		},
-		VPCDHCPOptionsAssociation : {
+		/*VPCDHCPOptionsAssociation : {
 			//call: ec2.describeAsync({}),
 			resBlock: '',
 			rName: '',
@@ -505,7 +505,7 @@ var Resource = {
 				baseConstruct(this, name, body);
 				this.block = {};
 			}
-		},
+		},*/
 		VPCEndpoint: {
 			call: ec2.describeVpcEndpointsAsync({}),
 			resBlock: 'VpcEndpoints',
@@ -523,7 +523,7 @@ var Resource = {
 				};
 			}
 		},
-		VPCGatewayAttachment: {
+		/*VPCGatewayAttachment: {
 			//call: ec2.describeAsync({}),
 			resBlock: '',
 			rName: '',
@@ -531,7 +531,7 @@ var Resource = {
 				baseConstruct(this, name, body);
 				this.block = {};
 			}
-		},
+		},*/
 		VPCPeeringConnection: {
 			call: ec2.describeVpcPeeringConnectionsAsync({}),
 			resBlock: 'VpcPeeringConnections',
@@ -566,7 +566,7 @@ var Resource = {
 				};
 			}
 		},
-		VPNConnectionRoute: {
+		/*VPNConnectionRoute: {
 			//call: ec2.describeAsync({}),
 			resBlock: '',
 			rName: '',
@@ -574,7 +574,7 @@ var Resource = {
 				baseConstruct(this, name, body);
 				this.block = {};
 			}
-		},
+		},*/
 		VPNGateway: {
 			call: ec2.describeVpnGatewaysAsync({}),
 			resBlock: 'VpnGateways',
@@ -590,7 +590,7 @@ var Resource = {
 				};
 			}
 		},
-		VPNGatewayRoutePropagation: {
+		/*VPNGatewayRoutePropagation: {
 			//call: ec2.describeAsync({}),
 			resBlock: '',
 			rName: '',
@@ -598,7 +598,7 @@ var Resource = {
 				baseConstruct(this, name, body);
 				this.block = {};
 			}
-		}
+		}*/
 	}
 };
 

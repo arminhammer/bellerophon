@@ -8,6 +8,8 @@ var Template = require('./template');
 var Resource = require('./resource');
 var os = require('os');
 var notifier = require('node-notifier');
+var _ = require('lodash');
+var P = require('bluebird');
 
 var logger = new winston.Logger({
 	level: 'info',
@@ -54,7 +56,7 @@ var dialog = electron.dialog;
 
 var template = new Template();
 
-var availableResources = {
+var availableResourcesTemplate = {
 	AutoScaling: {
 		AutoScalingGroup: {},
 		LaunchConfiguration: {},
@@ -97,16 +99,21 @@ var availableResources = {
 	}
 };
 
-ipcMain.on('refresh-resources', function(event, res) {
+var availableResources = _.cloneDeep(availableResourcesTemplate);
 
+ipcMain.on('refresh-resources', function(event, res) {
+	availableResources = null;
+	availableResources = availableResourcesTemplate;
+	updateResources()
+		.then(function() {
+			log('REFRESHING');
+			event.sender.send('update-resources', availableResources);
+		});
 });
 
-ipcMain.on('update-resources', function(event, res) {
-	log('Got update-resources request');
-	log(res.primary);
-	log(res.secondary);
-	var resource = Resource[res.primary][res.secondary];
-	resource
+function updateResource(primary, secondary) {
+	var resource = Resource[primary][secondary];
+	return resource
 		.call
 		.then(function(data) {
 			log(data);
@@ -117,9 +124,8 @@ ipcMain.on('update-resources', function(event, res) {
 			log(data);
 			data[resource.resBlock].forEach(function(r) {
 				var newResource = new resource.construct(r[resource.rName], r);
-				availableResources[res.primary][res.secondary][newResource.id] = newResource;
+				availableResources[primary][secondary][newResource.id] = newResource;
 			});
-			event.sender.send('update-resources', availableResources);
 		})
 		.catch(function(e) {
 			log(e);
@@ -129,6 +135,41 @@ ipcMain.on('update-resources', function(event, res) {
 				'message': e
 			});
 		});
+}
+
+function updateResources() {
+	var resArray = [];
+	_.each(Resource, function(primaryBlock, primaryKey) {
+		_.each(Resource[primaryKey], function(resource, secondaryKey) {
+				resArray.push(updateResource(primaryKey, secondaryKey));
+			});
+	});
+	return P.all(resArray);
+	//log('LISTR');
+	//log(primaryKey + '::' + secondaryKey);
+	//return updateResource(primaryKey, secondaryKey);
+
+}
+
+ipcMain.on('update-resource', function(event, res) {
+	log('Got update-resource request');
+	//log(res.primary);
+	//log(res.secondary);
+	updateResource(res.primary, res.secondary)
+		.then(function() {
+			event.sender.send('update-resources', availableResources);
+		});
+});
+
+ipcMain.on('update-resources', function(event, res) {
+	log('Got update-resources request');
+	//log(res.primary);
+	//log(res.secondary);
+	updateResources()
+	.then(function() {
+		log('SENDING');
+		event.sender.send('update-resources', availableResources);
+	});
 });
 
 ipcMain.on('send-log', function(event, arg) {
