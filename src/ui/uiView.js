@@ -21,15 +21,40 @@ var log = function(msg, level) {
 
 log('Initialized UI.');
 
-var resources = m.prop({});
+var resources = m.prop({
+	AutoScaling: {}
+	//EC2: {}
+});
+
+console.log('Redrawing...');
+m.redraw(true);
+
+function updateResource(primary, secondary) {
+	m.startComputation();
+	ipcRenderer.send('update-resource', { primary: primary, secondary: secondary});
+}
+
+function updateResources() {
+	m.startComputation();
+	ipcRenderer.send('update-resources');
+}
+
+//updateResources();
 
 
-ipcRenderer.send('update-resource', { primary: 'AutoScaling', secondary: 'AutoScalingGroup'});
-ipcRenderer.send('update-resource', { primary: 'AutoScaling', secondary: 'LaunchConfiguration'});
-ipcRenderer.send('update-resource', { primary: 'AutoScaling', secondary: 'ScalingPolicy'});
-ipcRenderer.send('update-resource', { primary: 'AutoScaling', secondary: 'ScheduledAction'});
+//updateResource('AutoScaling','AutoScalingGroup');
+//updateResource('AutoScaling','LaunchConfiguration');
+//updateResource('AutoScaling','ScalingPolicy');
+//updateResource('AutoScaling','ScheduledAction');
+/*
+//ipcRenderer.send('update-resource', { primary: 'AutoScaling', secondary: 'LaunchConfiguration'});
+ ipcRenderer.send('update-resource', { primary: 'AutoScaling', secondary: 'AutoScalingGroup'});
+ ipcRenderer.send('update-resource', { primary: 'AutoScaling', secondary: 'LaunchConfiguration'});
+ ipcRenderer.send('update-resource', { primary: 'AutoScaling', secondary: 'ScalingPolicy'});
+ ipcRenderer.send('update-resource', { primary: 'AutoScaling', secondary: 'ScheduledAction'});
+
+
 //ipcRenderer.send('update-resource', { primary: 'AutoScaling', secondary: 'LifecycleHook'});
-
 ipcRenderer.send('update-resource', { primary: 'EC2', secondary: 'CustomerGateway'});
 ipcRenderer.send('update-resource', { primary: 'EC2', secondary: 'DHCPOptions'});
 ipcRenderer.send('update-resource', { primary: 'EC2', secondary: 'EIP'});
@@ -48,18 +73,19 @@ ipcRenderer.send('update-resource', { primary: 'EC2', secondary: 'VPCEndpoint'})
 ipcRenderer.send('update-resource', { primary: 'EC2', secondary: 'VPCPeeringConnection'});
 ipcRenderer.send('update-resource', { primary: 'EC2', secondary: 'VPNConnection'});
 ipcRenderer.send('update-resource', { primary: 'EC2', secondary: 'VPNGateway'});
+*/
 
-/*
 ipcRenderer.send('update-resources');
- */
+
 
 ipcRenderer.on('update-resources', function(event, res) {
-	m.startComputation();
-	log('Updating resources');
+	//m.startComputation();
+	console.log('Updating resources');
+	console.log(resources());
 	resources(res);
-	log('Updating resources');
-	log(resources());
-	m.endComputation();
+	console.log('Updated resources');
+	m.redraw();
+	//m.endComputation();
 });
 
 var uiView = {

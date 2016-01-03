@@ -6,6 +6,7 @@
 var m = require('mithril');
 var _ = require('lodash');
 var ipcRenderer = require('electron').ipcRenderer;
+var PanelComponent = require('./panelcomponent');
 
 function addToTemplate(resourceReq) {
 	ipcRenderer.send('add-to-template-request', resourceReq);
@@ -27,6 +28,7 @@ function addTooltip(element, isInitialized) {
 }
 
 function formatTitle(title) {
+	console.log('formatTitle');
 	if(_.endsWith(title,'ay')) {
 		return _.startCase(title + 's');
 	} else if(_.endsWith(title,'y')) {
@@ -47,6 +49,8 @@ var ResourceComponent = {
 		this.log = options.log;
 	},
 	view: function (controller) {
+		console.log('Start drawing view:');
+		console.log(Date.now());
 		return m('.col-xs-9 .col-md-10 .col-lg-10', [
 			_.map(controller.resources(), function(group, key) {
 				return	m('.row', [
@@ -61,74 +65,16 @@ var ResourceComponent = {
 											m('h4', formatTitle(subKey)),
 											_.map(controller.resources()[key][subKey], function (resource) {
 												var colSizeString = 'col-xs-12 col-md-6 col-lg-4';
-												return m('div', { class: colSizeString },[
-													[m('.panel.panel-warning', [
-														m('.panel-heading', [
-															m('h3.panel-title', [
-																m('input[type=checkbox]', {
-																	checked: resource.inTemplate,
-																	name: resource.id,
-																	onclick: m.withAttr('checked', function() {
-																		controller.log('Checked ' + resource);
-																		if(resource.inTemplate) {
-																			removeFromTemplate({resource: resource, key: key, subKey: subKey});
-																		} else {
-																			addToTemplate({resource: resource, key: key, subKey: subKey});
-																		}
-																	})
-																}),
-																m('span[data-toggle="tooltip"][data-placement="left"]', {title: resource.id, config: controller.addTooltip }, _.trunc(resource.id,40))
-															])
-														]),
-														m('.panel-body', [
-															m('table.table.table-condensed', [
-																m('tr', [
-																	m('th.col-xs-2', 'Param.'),
-																	m('th.col-xs-3', 'Name'),
-																	m('th.col-xs-7', 'Value')
-																]),
-																_.map(resource.body, function(pVal, pKey) {
-																	var formattedPVal = pVal;
-																	if(_.isObject(pVal)) {
-																		formattedPVal = JSON.stringify(pVal, null, '');
-																		pVal = JSON.stringify(pVal, null, '');
-																	}
-																	var paramCheckbox = m('input[type=checkbox]', {
-																		checked: resource.templateParams[pKey],
-																		//name: resource.id,
-																		onclick: m.withAttr('checked', function() {
-																			controller.log('Checked ' + resource);
-																			toggleParamInTemplate({resource: resource, key: key, subKey: subKey, pKey: pKey });
-																		})
-																	});
-																	if((resource.block.Properties[pKey]) != 'String') {
-																		paramCheckbox = m('div')
-																	}
-																	return m('tr', [
-																		m('td.col-xs-2', [
-																			paramCheckbox
-																		]),
-																		m('td.col-xs-3', [
-																			//m('b', {title: pKey, config: controller.addTooltip }, _.trunc(pKey,15))
-																			m('b', {title: pKey, config: controller.addTooltip }, pKey)
-																		]),
-																		m('td.col-xs-7', [
-																			//m('span[data-toggle="tooltip"][data-placement="top"]', {title: pVal, config: controller.addTooltip }, _.trunc(pVal, 30))
-																			m('span[data-toggle="tooltip"][data-placement="left"]', {title: pVal, config: controller.addTooltip }, formattedPVal)
-																		])
-																	])
-																})
-															])
-														])
-													])]
-												])
+												return m.component(PanelComponent, { resource: resource })
 											})
 										])
 									])
 								])
 							}
 						})
-					])
+					]),
+					console.log('END Draw'),
+					console.log(Date.now())
 				])
 			})
 		])

@@ -111,7 +111,7 @@ ipcMain.on('refresh-resources', function(event, res) {
 	updateResources()
 		.then(function() {
 			log('REFRESHING');
-			event.sender.send('update-resources', availableResources);
+			event.sender.send('update-resources', cleanupAvailableResource(availableResources));
 		});
 });
 
@@ -130,6 +130,9 @@ function updateResource(primary, secondary) {
 				var newResource = new resource.construct(r[resource.rName], r);
 				availableResources[primary][secondary][newResource.id] = newResource;
 			});
+		})
+		.then(function() {
+			mainWindow.webContents.send('update-resources', cleanupAvailableResource(availableResources));
 		})
 		.catch(function(e) {
 			log(e);
@@ -160,15 +163,11 @@ ipcMain.on('update-resource', function(event, res) {
 	//log(res.primary);
 	//log(res.secondary);
 	updateResource(res.primary, res.secondary)
-		.then(function() {
-			event.sender.send('update-resources', availableResources);
-		});
+
 });
 
 ipcMain.on('update-resources', function(event, res) {
 	log('Got update-resources request');
-	//log(res.primary);
-	//log(res.secondary);
 	updateResources()
 	.then(function() {
 		log('SENDING');
