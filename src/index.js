@@ -101,6 +101,10 @@ var availableResourcesTemplate = {
 
 var availableResources = _.cloneDeep(availableResourcesTemplate);
 
+var cleanupAvailableResource = function(available) {
+	return available;
+};
+
 ipcMain.on('refresh-resources', function(event, res) {
 	availableResources = null;
 	availableResources = availableResourcesTemplate;
@@ -112,7 +116,7 @@ ipcMain.on('refresh-resources', function(event, res) {
 });
 
 function updateResource(primary, secondary) {
-	var resource = Resource[primary][secondary];
+	var resource = Resource.resources[primary][secondary];
 	return resource
 		.call
 		.then(function(data) {
@@ -139,8 +143,8 @@ function updateResource(primary, secondary) {
 
 function updateResources() {
 	var resArray = [];
-	_.each(Resource, function(primaryBlock, primaryKey) {
-		_.each(Resource[primaryKey], function(resource, secondaryKey) {
+	_.each(Resource.resources, function(primaryBlock, primaryKey) {
+		_.each(Resource.resources[primaryKey], function(resource, secondaryKey) {
 				resArray.push(updateResource(primaryKey, secondaryKey));
 			});
 	});
@@ -168,7 +172,7 @@ ipcMain.on('update-resources', function(event, res) {
 	updateResources()
 	.then(function() {
 		log('SENDING');
-		event.sender.send('update-resources', availableResources);
+		event.sender.send('update-resources', cleanupAvailableResource(availableResources));
 	});
 });
 
