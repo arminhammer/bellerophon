@@ -131,9 +131,6 @@ function updateResource(primary, secondary) {
 				availableResources[primary][secondary][newResource.id] = newResource;
 			});
 		})
-		//.then(function() {
-		//	mainWindow.webContents.send('update-resources', cleanupAvailableResource(availableResources));
-		//})
 		.catch(function(e) {
 			log(e);
 			log(e.stack);
@@ -152,18 +149,11 @@ function updateResources() {
 			});
 	});
 	return P.all(resArray);
-	//log('LISTR');
-	//log(primaryKey + '::' + secondaryKey);
-	//return updateResource(primaryKey, secondaryKey);
-
 }
 
 ipcMain.on('update-resource', function(event, res) {
 	log('Got update-resource request');
-	//log(res.primary);
-	//log(res.secondary);
 	updateResource(res.primary, res.secondary)
-
 });
 
 ipcMain.on('update-resources', function(event, res) {
