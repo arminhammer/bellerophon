@@ -8,7 +8,6 @@ var _ = require('lodash');
 var PanelComponent = require('./panelcomponent');
 
 function formatTitle(title) {
-	console.log('formatTitle');
 	if(_.endsWith(title,'ay')) {
 		return _.startCase(title + 's');
 	} else if(_.endsWith(title,'y')) {
@@ -28,10 +27,18 @@ var ResourceComponent = {
 		this.log = options.log;
 	},
 	view: function (controller) {
-		console.log('CURRENT RES');
-		console.log(controller.resources());
 		if (!controller.resources()) {
-			return m('p', "Loading...")
+			return m('.col-xs-9 .col-md-10 .col-lg-10', [
+				m('.group', [
+					m('.row', [
+						m('.col-xs-12', [
+							m('.subgroup', [
+								m('p', 'Loading...')
+							])
+						])
+					])
+				])
+			])
 		}
 		else {
 			return m('.col-xs-9 .col-md-10 .col-lg-10', [

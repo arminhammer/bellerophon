@@ -590,7 +590,7 @@ var Resource = {
 						}
 					};
 				}
-			},
+			}
 			/*VPNGatewayRoutePropagation: {
 			 //call: ec2.describeAsync({}),
 			 resBlock: '',

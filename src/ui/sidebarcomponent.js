@@ -12,13 +12,7 @@ function openSaveDialog() {
 	ipcRenderer.send('open-save-dialog');
 }
 
-function refreshResources(resources) {
-	console.log('Refreshing resources...');
-	console.log(resources());
-	m.startComputation();
-	resources = m.prop();
-	console.log(resources());
-	m.endComputation();
+function refreshResources() {
 	ipcRenderer.send('refresh-resources');
 }
 

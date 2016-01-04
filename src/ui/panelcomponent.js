@@ -47,9 +47,6 @@ var PanelComponent = {
 								if(controller.resource.inTemplate) {
 									removeFromTemplate({resource: controller.resource, key: controller.key, subKey: controller.subKey});
 								} else {
-									console.log('Adding');
-									var addobj = {resource: controller.resource, key: controller.key, subKey: controller.subKey};
-									console.log(addobj);
 									addToTemplate({resource: controller.resource, key: controller.key, subKey: controller.subKey});
 								}
 							})

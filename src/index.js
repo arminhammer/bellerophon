@@ -105,7 +105,7 @@ var cleanupAvailableResource = function(available) {
 	return available;
 };
 
-ipcMain.on('refresh-resources', function(event, res) {
+ipcMain.on('refresh-resources', function(event) {
 	availableResources = null;
 	availableResources = availableResourcesTemplate;
 	updateResources()
@@ -156,7 +156,7 @@ ipcMain.on('update-resource', function(event, res) {
 	updateResource(res.primary, res.secondary)
 });
 
-ipcMain.on('update-resources', function(event, res) {
+ipcMain.on('update-resources', function(event) {
 	log('Got update-resources request');
 	updateResources()
 	.then(function() {
