@@ -5,13 +5,36 @@
 
 var m = require('mithril');
 var _ = require('lodash');
+var ipcRenderer = require('electron').ipcRenderer;
+
+function addTooltip(element, isInitialized) {
+	if(isInitialized) {
+		return;
+	}
+	$(element).tooltip();
+}
+
+function addToTemplate(resourceReq) {
+	ipcRenderer.send('add-to-template-request', resourceReq);
+}
+
+function removeFromTemplate(resourceReq) {
+	ipcRenderer.send('remove-from-template-request', resourceReq);
+}
+
+function toggleParamInTemplate(paramReq) {
+	ipcRenderer.send('toggle-param', paramReq);
+}
 
 var PanelComponent = {
 	controller: function(options) {
-		resource: options.resource
+		this.resource = options.resource;
+		this.addTooltip = addTooltip;
 	},
 	view: function(controller) {
-		return m('div', { class: colSizeString },[
+		console.log('This is the resource:');
+		console.log(controller);
+		return m('div', { class: 'col-xs-12 col-md-6 col-lg-4' },[
 			[m('.panel.panel-warning', [
 				m('.panel-heading', [
 					m('h3.panel-title', [
@@ -45,7 +68,6 @@ var PanelComponent = {
 							}
 							var paramCheckbox = m('input[type=checkbox]', {
 								checked: controller.resource.templateParams[pKey],
-								//name: controller.resource.id,
 								onclick: m.withAttr('checked', function() {
 									controller.log('Checked ' + controller.resource);
 									toggleParamInTemplate({resource: controller.resource, key: key, subKey: subKey, pKey: pKey });
@@ -59,11 +81,9 @@ var PanelComponent = {
 									paramCheckbox
 								]),
 								m('td.col-xs-3', [
-									//m('b', {title: pKey, config: controller.addTooltip }, _.trunc(pKey,15))
 									m('b', {title: pKey, config: controller.addTooltip }, pKey)
 								]),
 								m('td.col-xs-7', [
-									//m('span[data-toggle="tooltip"][data-placement="top"]', {title: pVal, config: controller.addTooltip }, _.trunc(pVal, 30))
 									m('span[data-toggle="tooltip"][data-placement="left"]', {title: pVal, config: controller.addTooltip }, formattedPVal)
 								])
 							])
