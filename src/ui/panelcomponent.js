@@ -30,10 +30,11 @@ var PanelComponent = {
 	controller: function(options) {
 		this.resource = options.resource;
 		this.addTooltip = addTooltip;
+		this.log = options.log;
+		this.key = options.key;
+		this.subKey = options.subKey;
 	},
 	view: function(controller) {
-		console.log('This is the resource:');
-		console.log(controller);
 		return m('div', { class: 'col-xs-12 col-md-6 col-lg-4' },[
 			[m('.panel.panel-warning', [
 				m('.panel-heading', [
@@ -44,9 +45,12 @@ var PanelComponent = {
 							onclick: m.withAttr('checked', function() {
 								controller.log('Checked ' + controller.resource);
 								if(controller.resource.inTemplate) {
-									removeFromTemplate({resource: controller.resource, key: key, subKey: subKey});
+									removeFromTemplate({resource: controller.resource, key: controller.key, subKey: controller.subKey});
 								} else {
-									addToTemplate({resource: controller.resource, key: key, subKey: subKey});
+									console.log('Adding');
+									var addobj = {resource: controller.resource, key: controller.key, subKey: controller.subKey};
+									console.log(addobj);
+									addToTemplate({resource: controller.resource, key: controller.key, subKey: controller.subKey});
 								}
 							})
 						}),
@@ -70,7 +74,7 @@ var PanelComponent = {
 								checked: controller.resource.templateParams[pKey],
 								onclick: m.withAttr('checked', function() {
 									controller.log('Checked ' + controller.resource);
-									toggleParamInTemplate({resource: controller.resource, key: key, subKey: subKey, pKey: pKey });
+									toggleParamInTemplate({resource: controller.resource, key: controller.key, subKey: controller.subKey, pKey: pKey });
 								})
 							});
 							if((controller.resource.block.Properties[pKey]) != 'String') {

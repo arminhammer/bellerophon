@@ -12,8 +12,14 @@ function openSaveDialog() {
 	ipcRenderer.send('open-save-dialog');
 }
 
-function refreshResources() {
-	ipcRenderer.send('refresh-resources')
+function refreshResources(resources) {
+	console.log('Refreshing resources...');
+	console.log(resources());
+	//m.startComputation();
+	//resources = m.prop();
+	//console.log(resources());
+	//m.endComputation();
+	ipcRenderer.send('refresh-resources');
 }
 
 var SideBarComponent = {
@@ -45,7 +51,7 @@ var SideBarComponent = {
 					m('button.btn.btn-primary#templateButton', { onclick: controller.openSaveDialog }, 'Save Template')
 				]),
 				m('div', [
-					m('button.btn.btn-primary#templateButton', { onclick: controller.refreshResources }, 'Refresh')
+					m('button.btn.btn-primary#templateButton', { onclick: function() { controller.refreshResources(controller.resources) } }, 'Refresh')
 				]),
 				m('div', [
 					m('select', { class: 'form-control' }, [

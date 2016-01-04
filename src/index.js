@@ -131,9 +131,9 @@ function updateResource(primary, secondary) {
 				availableResources[primary][secondary][newResource.id] = newResource;
 			});
 		})
-		.then(function() {
-			mainWindow.webContents.send('update-resources', cleanupAvailableResource(availableResources));
-		})
+		//.then(function() {
+		//	mainWindow.webContents.send('update-resources', cleanupAvailableResource(availableResources));
+		//})
 		.catch(function(e) {
 			log(e);
 			log(e.stack);
@@ -217,6 +217,7 @@ ipcMain.on('toggle-param', function(event, res) {
 
 ipcMain.on('add-to-template-request', function(event, res) {
 	log('Adding resource to template');
+	log(availableResources[res.key]);
 	availableResources[res.key][res.subKey][res.resource.id].inTemplate = true;
 	log('avail');
 	log(availableResources);

@@ -21,10 +21,7 @@ var log = function(msg, level) {
 
 log('Initialized UI.');
 
-var resources = m.prop({
-	AutoScaling: {}
-	//EC2: {}
-});
+var resources = m.prop();
 
 console.log('Redrawing...');
 m.redraw(true);

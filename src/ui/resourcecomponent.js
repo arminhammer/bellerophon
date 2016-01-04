@@ -28,30 +28,37 @@ var ResourceComponent = {
 		this.log = options.log;
 	},
 	view: function (controller) {
-		return m('.col-xs-9 .col-md-10 .col-lg-10', [
-			_.map(controller.resources(), function(group, key) {
-				return	m('.row', [
-					m('.group[id="' + key + '"]', [
-						m('h3', key),
-						_.map(controller.resources()[key], function(subResource, subKey) {
-							var subKeySize = Object.keys(controller.resources()[key][subKey]).length;
-							if(subKeySize > 0) {
-								return m('.row', [
-									m('.col-xs-12', [
-										m('.subgroup[id="' + key + subKey + '"]', [
-											m('h4', formatTitle(subKey)),
-											_.map(controller.resources()[key][subKey], function (resource) {
-												return m.component(PanelComponent, { resource: resource })
-											})
+		console.log('CURRENT RES');
+		console.log(controller.resources());
+		if (!controller.resources()) {
+			return m('p', "Loading...")
+		}
+		else {
+			return m('.col-xs-9 .col-md-10 .col-lg-10', [
+				_.map(controller.resources(), function (group, key) {
+					return m('.row', [
+						m('.group[id="' + key + '"]', [
+							m('h3', key),
+							_.map(controller.resources()[key], function (subResource, subKey) {
+								var subKeySize = Object.keys(controller.resources()[key][subKey]).length;
+								if (subKeySize > 0) {
+									return m('.row', [
+										m('.col-xs-12', [
+											m('.subgroup[id="' + key + subKey + '"]', [
+												m('h4', formatTitle(subKey)),
+												_.map(controller.resources()[key][subKey], function (resource) {
+													return m.component(PanelComponent, {resource: resource, log: controller.log, key: key, subKey: subKey })
+												})
+											])
 										])
 									])
-								])
-							}
-						})
-					]),
-				])
-			})
-		])
+								}
+							})
+						])
+					])
+				})
+			])
+		}
 	}
 };
 
