@@ -35,6 +35,7 @@
     "gulp-mocha": "^2.0.0",
     "gulp-nsp": "^2.2.1",
     "gulp-plumber": "^1.0.0",
+    "rewire": "^2.5.1",
     "xo": "^0.11.1"
   },
   "xo": {

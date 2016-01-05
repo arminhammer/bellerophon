@@ -5,8 +5,6 @@
 'use strict';
 
 var m = require('mithril');
-
-// In renderer process (web page).
 var ipcRenderer = require('electron').ipcRenderer;
 
 var SidebarComponent = require('./sidebarcomponent');
@@ -19,9 +17,10 @@ var log = function(msg, level) {
 	ipcRenderer.send('send-log', { from: 'UI:', level: level, msg: msg });
 };
 
-log('Initialized UI.');
+//log('Initialized UI.');
 
 var resources = m.prop();
+
 ipcRenderer.send('update-resources');
 
 ipcRenderer.on('update-resources', function(event, res) {
@@ -34,7 +33,7 @@ ipcRenderer.on('update-resources', function(event, res) {
 	//m.endComputation();
 });
 
-var uiView = {
+var UiView = {
 	controller: function() {
 		this.resources = resources;
 		this.log = log;
@@ -49,4 +48,6 @@ var uiView = {
 	}
 };
 
-m.mount(document.body,uiView);
+m.mount(document.body,UiView);
+
+module.exports = UiView;
