@@ -88,19 +88,41 @@ var Resource = {
 					}
 				}
 			},
-			/*LifecycleHook: {
-			 call: ASG.describeLifecycleHooksAsync({}),
-			 resBlock: 'LifecycleHooks',
-			 name: 'LifecycleHookName',
-			 construct: function(name, body) {
-			 this.inTemplate = false;
-			 this.templateParams = {};
-			 this.id = name;
-			 this.name = buildName(name);
-			 this.body = body;
-			 this.block = {}
-			 }
-			 },*/
+			LifecycleHook: {
+				call: function() {
+					return ASG
+						.describeAutoScalingGroupsAsync({})
+						.then(function(data) {
+							return P.map(data.AutoScalingGroups, function(group) {
+								return ASG.describeLifecycleHooksAsync({ AutoScalingGroupName: group.AutoScalingGroupName });
+							});
+						})
+				}(),
+				resBlock: 'LifecycleHooks',
+				rName: 'LifecycleHookName',
+				preHook: function (data) {
+					var cycles = [];
+					_.each(data, function(hook) {
+						cycles = cycles.concat(hook.LifecycleHooks)
+					});
+					return { LifecycleHooks: cycles };
+				},
+				construct: function (name, body) {
+					baseConstruct(this, name, body);
+					this.block = {
+						"Type" : "AWS::AutoScaling::LifecycleHook",
+						"Properties" : {
+							"AutoScalingGroupName" : 'String',
+							"DefaultResult" : 'String',
+							"HeartbeatTimeout" : 'Integer',
+							"LifecycleTransition" : 'String',
+							"NotificationMetadata" : 'String',
+							"NotificationTargetARN" : 'String',
+							"RoleARN" : 'String'
+						}
+					}
+				}
+			},
 			ScalingPolicy: {
 				call: ASG.describePoliciesAsync({}),
 				resBlock: 'ScalingPolicies',

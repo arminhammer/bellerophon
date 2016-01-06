@@ -123,9 +123,7 @@ function updateResource(primary, secondary) {
 			log(data);
 			if(resource.preHook) {
 				data = resource.preHook(data);
-				log('PREHOOK');
 			}
-			log(data);
 			data[resource.resBlock].forEach(function(r) {
 				var newResource = new resource.construct(r[resource.rName], r);
 				availableResources[primary][secondary][newResource.id] = newResource;
@@ -197,7 +195,7 @@ ipcMain.on('toggle-param', function(event, res) {
 		template.addParam(res.resource, res.pKey);
 	}
 	log('avail');
-	log(availableResources[res.key][res.subKey][res.resource.id].templateParams);
+	//log(availableResources[res.key][res.subKey][res.resource.id].templateParams);
 	//addResource(res.resource);
 	if(templateWindow) {
 		templateWindow.webContents.send('update-template', template.body);
@@ -207,10 +205,10 @@ ipcMain.on('toggle-param', function(event, res) {
 
 ipcMain.on('add-to-template-request', function(event, res) {
 	log('Adding resource to template');
-	log(availableResources[res.key]);
+	//log(availableResources[res.key]);
 	availableResources[res.key][res.subKey][res.resource.id].inTemplate = true;
-	log('avail');
-	log(availableResources);
+	//log('avail');
+	//log(availableResources);
 	template.addResource(res.resource);
 	if(templateWindow) {
 		templateWindow.webContents.send('update-template', template.body);
