@@ -6,6 +6,7 @@
 
 var assert = require('assert');
 var rewire = require("rewire");
+var _ = require('lodash');
 
 var SideBarComponent = rewire('../src/ui/sidebarcomponent');
 
@@ -24,8 +25,8 @@ describe('SideBarComponent', function () {
 
 	it('controller should have accept resources object', function () {
 		var options = { resources: {} };
-		var controller = SideBarComponent.controller(options);
-		assert.equal({}, SideBarComponent.controller.resources);
+		var controller = new SideBarComponent.controller(options);
+		assert(true, _.isEmpty(controller.resources));
 	});
 
 });
