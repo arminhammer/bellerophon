@@ -17,20 +17,20 @@ var log = function(msg, level) {
 	ipcRenderer.send('send-log', { from: 'UI:', level: level, msg: msg });
 };
 
-//log('Initialized UI.');
+log('Initialized UI.');
 
 var resources = m.prop();
 
 ipcRenderer.send('update-resources');
 
 ipcRenderer.on('update-resources', function(event, res) {
-	//m.startComputation();
+	m.startComputation();
 	log('Updating resources');
-	log(resources());
+	//log(resources());
 	resources(res);
 	log('Updated resources');
-	m.redraw();
-	//m.endComputation();
+	//m.redraw();
+	m.endComputation();
 });
 
 var UiView = {

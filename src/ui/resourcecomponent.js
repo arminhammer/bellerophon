@@ -49,11 +49,13 @@ var ResourceComponent = {
 							_.map(controller.resources()[key], function (subResource, subKey) {
 								var subKeySize = Object.keys(controller.resources()[key][subKey]).length;
 								if (subKeySize > 0) {
+									//console.log(controller.resources()[key][subKey]);
 									return m('.row', [
 										m('.col-xs-12', [
 											m('.subgroup[id="' + key + subKey + '"]', [
 												m('h4', formatTitle(subKey)),
 												_.map(controller.resources()[key][subKey], function (resource) {
+													//console.log('Rendering ' + controller.resources()[key][subKey] + ': ' + resource.id);
 													return m.component(PanelComponent, {resource: resource, log: controller.log, key: key, subKey: subKey })
 												})
 											])

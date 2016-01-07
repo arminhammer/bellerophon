@@ -42,12 +42,12 @@ var PanelComponent = {
 						m('input[type=checkbox]', {
 							checked: controller.resource.inTemplate,
 							name: controller.resource.id,
-							onclick: m.withAttr('checked', function() {
-								controller.log('Checked ' + controller.resource);
-								if(controller.resource.inTemplate) {
-									removeFromTemplate({resource: controller.resource, key: controller.key, subKey: controller.subKey});
-								} else {
+							onclick: m.withAttr('checked', function(check) {
+								controller.log('Checked ' + check);
+								if(check) {
 									addToTemplate({resource: controller.resource, key: controller.key, subKey: controller.subKey});
+								} else {
+									removeFromTemplate({resource: controller.resource, key: controller.key, subKey: controller.subKey});
 								}
 							})
 						}),

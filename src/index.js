@@ -59,7 +59,7 @@ function updateResource(primary, secondary) {
 	return resource
 		.call
 		.then(function(data) {
-			logger.log(data);
+			//logger.log(data);
 			if(resource.preHook) {
 				data = resource.preHook(data);
 			}
@@ -144,7 +144,7 @@ ipcMain.on('toggle-param', function(event, res) {
 
 ipcMain.on('add-to-template-request', function(event, res) {
 	logger.log('Adding resource to template');
-	//logger.log(availableResources[res.key]);
+	//logger.log(availableResources);
 	availableResources[res.key][res.subKey][res.resource.id].inTemplate = true;
 	//logger.log('avail');
 	//logger.log(availableResources);
@@ -158,6 +158,7 @@ ipcMain.on('add-to-template-request', function(event, res) {
 ipcMain.on('remove-from-template-request', function(event, res) {
 	logger.log('Removed resource from template');
 	availableResources[res.key][res.subKey][res.resource.id].inTemplate = false;
+	logger.log(availableResources[res.key][res.subKey][res.resource.id].inTemplate);
 	template.removeResource(res.resource);
 	if(templateWindow) {
 		templateWindow.webContents.send('update-template', template.body);

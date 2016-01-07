@@ -37,13 +37,13 @@ var SideBarComponent = {
 							})
 						])
 					])
-				}),
-				m('div', [
+				})
+				/*m('div', [
 					m('select', { class: 'form-control' }, [
 						m('option', 'us-east-1'),
 						m('option', 'us-west-1')
 					])
-				])
+				])*/
 			])
 		])
 	}

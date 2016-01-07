@@ -24,8 +24,9 @@
     "bellerophon"
   ],
   "devDependencies": {
+    "electron": "^0.4.1",
     "electron-packager": "^5.0.0",
-    "electron-prebuilt": "^0.36.0",
+    "electron-prebuilt": "0.36.0",
     "eslint-config-devenv": "^1.1.0",
     "gulp": "^3.6.0",
     "gulp-electron": "0.0.9",
