@@ -9,6 +9,7 @@ var notifier = require('node-notifier');
 var _ = require('lodash');
 var P = require('bluebird');
 var Logger = require('./logger');
+var AvailableResources = require('./availableresources');
 
 var logger = new Logger();
 
@@ -38,59 +39,14 @@ var ipcMain = electron.ipcMain;
 var dialog = electron.dialog;
 
 var template = new Template();
-
-var availableResourcesTemplate = {
-	AutoScaling: {
-		AutoScalingGroup: {},
-		LaunchConfiguration: {},
-		LifecycleHook: {},
-		ScalingPolicy: {},
-		ScheduledAction: {}
-	},
-	EC2: {
-		CustomerGateway : {},
-		DHCPOptions : {},
-		EIP : {},
-		EIPAssociation : {},
-		Instance : {},
-		InternetGateway : {},
-		NetworkAcl : {},
-		NetworkAclEntry : {},
-		NetworkInterface : {},
-		NetworkInterfaceAttachment : {},
-		PlacementGroup : {},
-		Route : {},
-		RouteTable : {},
-		SecurityGroup : {},
-		SecurityGroupEgress : {},
-		SecurityGroupIngress : {},
-		SpotFleet : {},
-		Subnet : {},
-		SubnetNetworkAclAssociation : {},
-		SubnetRouteTableAssociation : {},
-		Volume : {},
-		VolumeAttachment : {},
-		VPC : {},
-		VPCDHCPOptionsAssociation : {},
-		VPCEndpoint : {},
-		VPCGatewayAttachment : {},
-		VPCPeeringConnection : {},
-		VPNConnection : {},
-		VPNConnectionRoute : {},
-		VPNGateway : {},
-		VPNGatewayRoutePropagation : {}
-	}
-};
-
-var availableResources = _.cloneDeep(availableResourcesTemplate);
+var availableResources = AvailableResources.getBlankAvailableResources();
 
 var cleanupAvailableResource = function(available) {
 	return available;
 };
 
 ipcMain.on('refresh-resources', function(event) {
-	availableResources = null;
-	availableResources = availableResourcesTemplate;
+	availableResources = AvailableResources.getBlankAvailableResources();
 	updateResources()
 		.then(function() {
 			logger.log('REFRESHING');
