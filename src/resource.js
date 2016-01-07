@@ -110,15 +110,15 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type" : "AWS::AutoScaling::LifecycleHook",
-						"Properties" : {
-							"AutoScalingGroupName" : 'String',
-							"DefaultResult" : 'String',
-							"HeartbeatTimeout" : 'Integer',
-							"LifecycleTransition" : 'String',
-							"NotificationMetadata" : 'String',
-							"NotificationTargetARN" : 'String',
-							"RoleARN" : 'String'
+						'Type' : 'AWS::AutoScaling::LifecycleHook',
+						'Properties' : {
+							'AutoScalingGroupName' : 'String',
+							'DefaultResult' : 'String',
+							'HeartbeatTimeout' : 'Integer',
+							'LifecycleTransition' : 'String',
+							'NotificationMetadata' : 'String',
+							'NotificationTargetARN' : 'String',
+							'RoleARN' : 'String'
 						}
 					}
 				}

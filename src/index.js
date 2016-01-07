@@ -3,31 +3,14 @@ var electron = require('electron');
 var app = electron.app;
 var Menu = electron.Menu;
 var fs = require('fs');
-var winston = require('winston');
 var Template = require('./template');
 var Resource = require('./resource');
-var os = require('os');
 var notifier = require('node-notifier');
 var _ = require('lodash');
 var P = require('bluebird');
+var Logger = require('./logger');
 
-var logger = new winston.Logger({
-	level: 'info',
-	transports: [
-		new (winston.transports.Console)(),
-		new (winston.transports.File)({ filename: os.homedir() + '/.bellerophon.log' })
-	]
-});
-
-var log = function(msg, level, from) {
-	if(!level) {
-		level = 'info';
-	}
-	if(!from) {
-		from = 'SERVER:'
-	}
-	logger.log(level, from, msg);
-};
+var logger = new Logger();
 
 function showSaveDialog() {
 	dialog.showSaveDialog(
@@ -49,7 +32,7 @@ function showSaveDialog() {
 var mainWindow;
 var templateWindow;
 
-log('Initializing Main');
+logger.log('Initializing Main');
 
 var ipcMain = electron.ipcMain;
 var dialog = electron.dialog;
@@ -110,7 +93,7 @@ ipcMain.on('refresh-resources', function(event) {
 	availableResources = availableResourcesTemplate;
 	updateResources()
 		.then(function() {
-			log('REFRESHING');
+			logger.log('REFRESHING');
 			event.sender.send('update-resources', cleanupAvailableResource(availableResources));
 		});
 });
@@ -120,7 +103,7 @@ function updateResource(primary, secondary) {
 	return resource
 		.call
 		.then(function(data) {
-			log(data);
+			logger.log(data);
 			if(resource.preHook) {
 				data = resource.preHook(data);
 			}
@@ -130,8 +113,8 @@ function updateResource(primary, secondary) {
 			});
 		})
 		.catch(function(e) {
-			log(e);
-			log(e.stack);
+			logger.log(e);
+			logger.log(e.stack);
 			notifier.notify({
 				'title': 'Belleraphon error:',
 				'message': e
@@ -150,43 +133,43 @@ function updateResources() {
 }
 
 ipcMain.on('update-resource', function(event, res) {
-	log('Got update-resource request');
+	logger.log('Got update-resource request');
 	updateResource(res.primary, res.secondary)
 });
 
 ipcMain.on('update-resources', function(event) {
-	log('Got update-resources request');
+	logger.log('Got update-resources request');
 	updateResources()
 	.then(function() {
-		log('SENDING');
+		logger.log('SENDING');
 		event.sender.send('update-resources', cleanupAvailableResource(availableResources));
 	});
 });
 
 ipcMain.on('send-log', function(event, arg) {
-	log('Received log request');
-	log(arg.msg, arg.level, arg.from);
+	logger.log('Received log request');
+	logger.log(arg.msg, arg.level, arg.from);
 });
 
 ipcMain.on('get-template', function(event) {
-	log('Received get template request');
+	logger.log('Received get template request');
 	event.sender.send('update-template', template.body);
 });
 
 ipcMain.on('open-template-window', function() {
-	log('Received request to open template window.');
+	logger.log('Received request to open template window.');
 	if(!templateWindow) {
 		templateWindow = createTemplateWindow();
 	}
 });
 
 ipcMain.on('open-save-dialog', function() {
-	log('Received save request');
+	logger.log('Received save request');
 	showSaveDialog();
 });
 
 ipcMain.on('toggle-param', function(event, res) {
-	log('Toggling param in template');
+	logger.log('Toggling param in template');
 	if(availableResources[res.key][res.subKey][res.resource.id].templateParams[res.pKey]) {
 		availableResources[res.key][res.subKey][res.resource.id].templateParams[res.pKey] = false;
 		template.removeParam(res.resource, res.pKey);
@@ -194,8 +177,8 @@ ipcMain.on('toggle-param', function(event, res) {
 		availableResources[res.key][res.subKey][res.resource.id].templateParams[res.pKey] = true;
 		template.addParam(res.resource, res.pKey);
 	}
-	log('avail');
-	//log(availableResources[res.key][res.subKey][res.resource.id].templateParams);
+	logger.log('avail');
+	//logger.log(availableResources[res.key][res.subKey][res.resource.id].templateParams);
 	//addResource(res.resource);
 	if(templateWindow) {
 		templateWindow.webContents.send('update-template', template.body);
@@ -204,11 +187,11 @@ ipcMain.on('toggle-param', function(event, res) {
 });
 
 ipcMain.on('add-to-template-request', function(event, res) {
-	log('Adding resource to template');
-	//log(availableResources[res.key]);
+	logger.log('Adding resource to template');
+	//logger.log(availableResources[res.key]);
 	availableResources[res.key][res.subKey][res.resource.id].inTemplate = true;
-	//log('avail');
-	//log(availableResources);
+	//logger.log('avail');
+	//logger.log(availableResources);
 	template.addResource(res.resource);
 	if(templateWindow) {
 		templateWindow.webContents.send('update-template', template.body);
@@ -217,7 +200,7 @@ ipcMain.on('add-to-template-request', function(event, res) {
 });
 
 ipcMain.on('remove-from-template-request', function(event, res) {
-	log('Removed resource from template');
+	logger.log('Removed resource from template');
 	availableResources[res.key][res.subKey][res.resource.id].inTemplate = false;
 	template.removeResource(res.resource);
 	if(templateWindow) {
@@ -271,7 +254,7 @@ app.on('window-all-closed', function() {
 });
 
 app.on('activate-with-no-open-windows', function() {
-	log('activate-with-no-open-windows');
+	logger.log('activate-with-no-open-windows');
 	if (!mainWindow) {
 		mainWindow = createMainWindow();
 	}
@@ -281,7 +264,7 @@ app.on('activate-with-no-open-windows', function() {
 var menu = null;
 
 app.on('ready', function() {
-	log('Ready');
+	logger.log('Ready');
 
 	var menuTemplate = [
 		{
