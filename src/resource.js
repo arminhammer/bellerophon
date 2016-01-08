@@ -165,8 +165,8 @@ var Resource = {
 					}
 				}
 			}
-		}
-		/*EC2: {
+		},
+		EC2: {
 			CustomerGateway: {
 				call: ec2.describeCustomerGatewaysAsync({}),
 				resBlock: 'CustomerGateways',
@@ -619,7 +619,7 @@ var Resource = {
 			 //this.block = {};
 			 //}
 			 //}
-		}*/
+		}
 	}
 };
 

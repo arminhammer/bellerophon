@@ -78,24 +78,45 @@ function updateResource(primary, secondary) {
 		});
 }
 
-function updateResources() {
+function updateResources(primaryKey) {
 	var resArray = [];
-	_.each(Resource.resources, function(primaryBlock, primaryKey) {
-		_.each(Resource.resources[primaryKey], function(resource, secondaryKey) {
-				resArray.push(updateResource(primaryKey, secondaryKey));
-			});
+	logger.log(primaryKey);
+	_.each(Resource.resources[primaryKey], function(resource, secondaryKey) {
+		resArray.push(updateResource(primaryKey, secondaryKey));
 	});
 	return P.all(resArray);
 }
 
+function updateAllResources() {
+	var resArray = [];
+	_.each(Resource.resources, function(primaryBlock, primaryKey) {
+		_.each(Resource.resources[primaryKey], function(resource, secondaryKey) {
+			resArray.push(updateResource(primaryKey, secondaryKey));
+		});
+	});
+	return P.all(resArray);
+}
+
+ipcMain.on('update-resource-old', function(event, res) {
+	logger.log('Got update-resource-old request');
+	updateResources(res.primary, res.secondary);
+});
+
 ipcMain.on('update-resource', function(event, res) {
 	logger.log('Got update-resource request');
-	updateResource(res.primary, res.secondary)
+	//logger.log(res.primary);
+	updateResources(res.primary)
+	.then(function() {
+		logger.log('SENDING');
+		var resources = AvailableResources.getBlankAvailableResources();
+		resources[res.primary] = availableResources[res.primary];
+		event.sender.send('update-resources', resources);
+	});
 });
 
 ipcMain.on('update-resources', function(event) {
 	logger.log('Got update-resources request');
-	updateResources()
+	updateAllResources()
 	.then(function() {
 		logger.log('SENDING');
 		event.sender.send('update-resources', cleanupAvailableResource(availableResources));

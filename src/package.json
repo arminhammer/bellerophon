@@ -13,6 +13,7 @@
     "jsonlint": "^1.6.2",
     "lodash": "^3.10.1",
     "mithril": "^0.2.0",
+    "node-notifier": "^4.4.0",
     "winston": "^2.1.1"
   }
 }
