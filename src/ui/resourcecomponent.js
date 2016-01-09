@@ -23,7 +23,7 @@ function formatTitle(title) {
 
 var ResourceComponent = {
 	controller: function (options) {
-		console.log(options.resources);
+		//console.log(options.resources);
 		this.resources = options.resources;
 		this.resourceName = options.resourceName;
 		this.log = options.log;
@@ -45,9 +45,9 @@ var ResourceComponent = {
 		else {*/
 			return m('.col-xs-9 .col-md-10 .col-lg-10', [
 				_.map(controller.resources(), function (group, key) {
-					console.log('KEY');
-					console.log(key);
-					if(key === controller.resourceName) {
+					//console.log('KEY');
+					//console.log(key);
+					if(key === controller.resourceName()) {
 						return m('.row', [
 							m('.group[id="' + key + '"]', [
 								m('h3', key),

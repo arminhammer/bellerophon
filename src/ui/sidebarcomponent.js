@@ -2,7 +2,7 @@
 
 var m = require('mithril');
 var _ = require('lodash');
-var ipcRenderer = require('electron').ipcRenderer;
+
 
 function openTemplateWindow() {
 	ipcRenderer.send('open-template-window');
@@ -16,9 +16,16 @@ function refreshResources() {
 	ipcRenderer.send('refresh-resources');
 }
 
+
+
 var SideBarComponent = {
 	controller: function(options) {
 		this.resources = options.resources;
+		this.ipcRenderer = require('electron').ipcRenderer;
+		this.changeResource = function(key) {
+			console.log(key + ' got clicked!');
+			this.ipcRenderer.send('update-resource', { primary: key })
+		};
 		//this.openTemplateWindow = openTemplateWindow;
 		//this.openSaveDialog = openSaveDialog;
 		//this.refreshResources = refreshResources;
@@ -27,7 +34,7 @@ var SideBarComponent = {
 		return m('nav.col-xs-3.bs-docs-sidebar .col-md-2 .col-lg-2', [
 			m('ul.nav.nav-stacked.fixed[id="sidebar"]', [
 				_.map(controller.resources(), function(resource, key) {
-					return m('li', [
+					return m('li', { onclick: function() { controller.changeResource(key) } }, [
 						m('a[href="#' + key + '"]', key),
 						m('ul.nav.nav-stacked', [
 							_.map(controller.resources()[key], function(subResource, subKey) {

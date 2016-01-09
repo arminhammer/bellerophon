@@ -110,7 +110,7 @@ ipcMain.on('update-resource', function(event, res) {
 		logger.log('SENDING');
 		var resources = AvailableResources.getBlankAvailableResources();
 		resources[res.primary] = availableResources[res.primary];
-		event.sender.send('update-resources', resources);
+		event.sender.send('update-resources', { resources: resources, primary: res.primary });
 	});
 });
 

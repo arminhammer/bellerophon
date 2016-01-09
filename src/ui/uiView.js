@@ -11,7 +11,6 @@ var ResourceComponent = require('./resourcecomponent');
 
 //log('Initialized UI.');
 
-var resources = m.prop();
 
 var UiView = {
 	controller: function() {
@@ -28,7 +27,7 @@ var UiView = {
 	}
 };
 
-var ipcRenderer = null;
+/*var ipcRenderer = null;
 
 function getIPCRenderer() {
 	if(!ipcRenderer) {
@@ -43,25 +42,39 @@ function getIPCRenderer() {
 			log('Updated resources');
 			console.log(resources());
 			m.endComputation();
-			m.redraw();
+			//m.redraw();
 		});
 	}
 	return ipcRenderer;
-}
+}*/
 
 var log = function(msg, level) {
 	if(!level) {
 		level = 'info';
 	}
-	getIPCRenderer().send('send-log', { from: 'UI:', level: level, msg: msg });
+	//getIPCRenderer().send('send-log', { from: 'UI:', level: level, msg: msg });
 };
 
 var PageView = {
 
 	controller: function() {
-		this.resourceName = m.route.param('resourceName');
+		var self = this;
+		self.resourceName = m.prop('AutoScaling');
 		console.log('Hit ' + this.resourceName);
-		console.log('RESOURCES');
+		self.resources = m.prop();
+		self.ipcRenderer = require('electron').ipcRenderer;
+		self.ipcRenderer.on('update-resources', function(event, res) {
+			m.startComputation();
+			log('Updating resources');
+			self.resources(res.resources);
+			self.resourceName(res.primary);
+			console.log('Updated resources');
+			log('Updated resources');
+			console.log(self.resources());
+			m.endComputation();
+		});
+		this.ipcRenderer.send('update-resource', { primary: self.resourceName() });
+		/*console.log('RESOURCES');
 		console.log(resources());
 		if(resources()) {
 			console.log('YES RES');
@@ -69,9 +82,9 @@ var PageView = {
 		} else {
 			console.log('NO RES');
 			if(!this.resourceName) this.resourceName = 'AutoScaling';
-			getIPCRenderer().send('update-resource', { primary: this.resourceName });
+
 			this.resources = resources;
-		}
+		}*/
 		/*if(resources()) {
 			console.log('resources() found');
 			if(resourceName) {
@@ -95,10 +108,10 @@ var PageView = {
 	}
 };
 
-m.route(document.body, '/', {
-	'/': PageView,
-	'/:resourceName': PageView
-});
-//m.mount(document.body,UiView);
+//m.route(document.body, '/', {
+//	'/': PageView,
+//	'/:resourceName': PageView
+//});
+m.mount(document.body,PageView);
 
 module.exports = PageView;
