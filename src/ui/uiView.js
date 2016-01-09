@@ -60,7 +60,7 @@ var PageView = {
 
 	controller: function() {
 		this.resourceName = m.route.param('resourceName');
-		//console.log('Hit ' + resourceName);
+		console.log('Hit ' + this.resourceName);
 		console.log('RESOURCES');
 		console.log(resources());
 		if(resources()) {

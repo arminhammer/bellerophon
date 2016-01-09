@@ -207,7 +207,8 @@ function createMainWindow() {
 		height: 800,
 		minWidth: 850,
 		minHeight: 500,
-		title: 'Bellerophon'
+		title: 'Bellerophon',
+		titleBarStyle: 'hidden-inset'
 	});
 
 	win.loadURL('file://' + __dirname + '/ui/index.html');
@@ -220,6 +221,7 @@ function createTemplateWindow() {
 		width: 600,
 		height: 800,
 		title: 'Bellerophon Template'
+		//titleBarStyle: 'hidden'
 	});
 
 	win.loadURL('file://' + __dirname + '/template/index.html');

@@ -19,9 +19,9 @@ function refreshResources() {
 var SideBarComponent = {
 	controller: function(options) {
 		this.resources = options.resources;
-		this.openTemplateWindow = openTemplateWindow;
-		this.openSaveDialog = openSaveDialog;
-		this.refreshResources = refreshResources;
+		//this.openTemplateWindow = openTemplateWindow;
+		//this.openSaveDialog = openSaveDialog;
+		//this.refreshResources = refreshResources;
 	},
 	view: function(controller) {
 		return m('nav.col-xs-3.bs-docs-sidebar .col-md-2 .col-lg-2', [
