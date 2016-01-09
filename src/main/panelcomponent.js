@@ -5,34 +5,30 @@
 
 var m = require('mithril');
 var _ = require('lodash');
-var ipcRenderer = require('electron').ipcRenderer;
-
-function addTooltip(element, isInitialized) {
-	if(isInitialized) {
-		return;
-	}
-	$(element).tooltip();
-}
-
-function addToTemplate(resourceReq) {
-	ipcRenderer.send('add-to-template-request', resourceReq);
-}
-
-function removeFromTemplate(resourceReq) {
-	ipcRenderer.send('remove-from-template-request', resourceReq);
-}
-
-function toggleParamInTemplate(paramReq) {
-	ipcRenderer.send('toggle-param', paramReq);
-}
 
 var PanelComponent = {
 	controller: function(options) {
-		this.resource = options.resource;
-		this.addTooltip = addTooltip;
-		this.log = options.log;
-		this.key = options.key;
-		this.subKey = options.subKey;
+		var self = this;
+		self.ipcRenderer = require('electron').ipcRenderer;
+		self.resource = options.resource;
+		self.log = options.log;
+		self.key = options.key;
+		self.subKey = options.subKey;
+		self.addTooltip = function(element, isInitialized) {
+			if(isInitialized) {
+				return;
+			}
+			$(element).tooltip();
+		};
+		self.addToTemplate = function(resourceReq) {
+			ipcRenderer.send('add-to-template-request', resourceReq);
+		};
+		self.removeFromTemplate = function(resourceReq) {
+			ipcRenderer.send('remove-from-template-request', resourceReq);
+		};
+		self.toggleParamInTemplate = function(paramReq) {
+			ipcRenderer.send('toggle-param', paramReq);
+		};
 	},
 	view: function(controller) {
 		return m('div', { class: 'col-xs-12 col-md-6 col-lg-4' },[
@@ -45,9 +41,9 @@ var PanelComponent = {
 							onclick: m.withAttr('checked', function(check) {
 								controller.log('Checked ' + check);
 								if(check) {
-									addToTemplate({resource: controller.resource, key: controller.key, subKey: controller.subKey});
+									controller.addToTemplate({resource: controller.resource, key: controller.key, subKey: controller.subKey});
 								} else {
-									removeFromTemplate({resource: controller.resource, key: controller.key, subKey: controller.subKey});
+									controller.removeFromTemplate({resource: controller.resource, key: controller.key, subKey: controller.subKey});
 								}
 							})
 						}),
@@ -71,7 +67,7 @@ var PanelComponent = {
 								checked: controller.resource.templateParams[pKey],
 								onclick: m.withAttr('checked', function() {
 									controller.log('Checked ' + controller.resource);
-									toggleParamInTemplate({resource: controller.resource, key: controller.key, subKey: controller.subKey, pKey: pKey });
+									controller.toggleParamInTemplate({resource: controller.resource, key: controller.key, subKey: controller.subKey, pKey: pKey });
 								})
 							});
 							if((controller.resource.block.Properties[pKey]) != 'String') {

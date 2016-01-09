@@ -88,7 +88,7 @@ function updateResources(primaryKey) {
 	return P.all(resArray);
 }
 
-function updateAllResources() {
+/*function updateAllResources() {
 	var resArray = [];
 	_.each(Resource.resources, function(primaryBlock, primaryKey) {
 		_.each(Resource.resources[primaryKey], function(resource, secondaryKey) {
@@ -96,12 +96,12 @@ function updateAllResources() {
 		});
 	});
 	return P.all(resArray);
-}
+}*/
 
-ipcMain.on('update-resource-old', function(event, res) {
+/*ipcMain.on('update-resource-old', function(event, res) {
 	logger.log('Got update-resource-old request');
 	updateResources(res.primary, res.secondary);
-});
+});*/
 
 ipcMain.on('update-resource', function(event, res) {
 	logger.log('Got update-resource request');
@@ -109,20 +109,20 @@ ipcMain.on('update-resource', function(event, res) {
 	updateResources(res.primary)
 	.then(function() {
 		logger.log('SENDING');
-		var resources = AvailableResources.getBlankAvailableResources();
-		resources[res.primary] = availableResources[res.primary];
-		event.sender.send('update-resources', { resources: resources, primary: res.primary });
+		//var resources = AvailableResources.getBlankAvailableResources();
+		//resources[res.primary] = availableResources[res.primary];
+		event.sender.send('update-resources', { resources: availableResources, primary: res.primary });
 	});
 });
 
-ipcMain.on('update-resources', function(event) {
+/*ipcMain.on('update-resources', function(event) {
 	logger.log('Got update-resources request');
 	updateAllResources()
 	.then(function() {
 		logger.log('SENDING');
 		event.sender.send('update-resources', cleanupAvailableResource(availableResources));
 	});
-});
+});*/
 
 ipcMain.on('send-log', function(event, arg) {
 	logger.log('Received log request');
@@ -174,7 +174,9 @@ ipcMain.on('add-to-template-request', function(event, res) {
 	if(templateWindow) {
 		templateWindow.webContents.send('update-template', template.body);
 	}
-	event.sender.send('update-resources', availableResources);
+	var resources = AvailableResources.getBlankAvailableResources();
+	resources[res.primary] = availableResources[res.primary];
+	event.sender.send('update-resources', { resources: resources, primary: res.key });
 });
 
 ipcMain.on('remove-from-template-request', function(event, res) {

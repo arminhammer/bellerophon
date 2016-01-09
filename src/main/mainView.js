@@ -35,7 +35,7 @@ var MainView = {
 	view: function(controller) {
 		return m('.container-fluid', [
 			m('.row.MainContent', [
-				m.component(SidebarComponent, { resources: controller.resources }),
+				m.component(SidebarComponent, { resources: controller.resources, resourceName: controller.resourceName }),
 				m.component(ResourceComponent, { resources: controller.resources, log: controller.log, resourceName: controller.resourceName })
 			])
 		])
