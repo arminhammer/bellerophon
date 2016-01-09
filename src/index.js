@@ -46,14 +46,14 @@ var cleanupAvailableResource = function(available) {
 	return available;
 };
 
-ipcMain.on('refresh-resources', function(event) {
+/*ipcMain.on('refresh-resources', function(event) {
 	availableResources = AvailableResources.getBlankAvailableResources();
 	updateResources()
 		.then(function() {
 			logger.log('REFRESHING');
 			event.sender.send('update-resources', cleanupAvailableResource(availableResources));
 		});
-});
+});*/
 
 function updateResource(primary, secondary) {
 	var resource = Resource.resources[primary][secondary];
@@ -66,7 +66,13 @@ function updateResource(primary, secondary) {
 			}
 			data[resource.resBlock].forEach(function(r) {
 				var newResource = new resource.construct(r[resource.rName], r);
+				var oldResource = availableResources[primary][secondary][newResource.id];
 				availableResources[primary][secondary][newResource.id] = newResource;
+				if(oldResource) {
+					var inTemplate = oldResource.inTemplate;
+					if(inTemplate) { logger.log(inTemplate) }
+					availableResources[primary][secondary][newResource.id].inTemplate = inTemplate;
+				}
 			});
 		})
 		.catch(function(e) {
@@ -161,22 +167,20 @@ ipcMain.on('toggle-param', function(event, res) {
 	if(templateWindow) {
 		templateWindow.webContents.send('update-template', template.body);
 	}
-	event.sender.send('update-resources', availableResources);
+	event.sender.send('update-resources', { resources: availableResources, primary: res.key });
 });
 
 ipcMain.on('add-to-template-request', function(event, res) {
 	logger.log('Adding resource to template');
 	//logger.log(availableResources);
 	availableResources[res.key][res.subKey][res.resource.id].inTemplate = true;
-	//logger.log('avail');
-	//logger.log(availableResources);
+	logger.log('avail');
+	logger.log(JSON.stringify(availableResources));
 	template.addResource(res.resource);
 	if(templateWindow) {
 		templateWindow.webContents.send('update-template', template.body);
 	}
-	var resources = AvailableResources.getBlankAvailableResources();
-	resources[res.primary] = availableResources[res.primary];
-	event.sender.send('update-resources', { resources: resources, primary: res.key });
+	event.sender.send('update-resources', { resources: availableResources, primary: res.key });
 });
 
 ipcMain.on('remove-from-template-request', function(event, res) {
@@ -187,7 +191,7 @@ ipcMain.on('remove-from-template-request', function(event, res) {
 	if(templateWindow) {
 		templateWindow.webContents.send('update-template', template.body);
 	}
-	event.sender.send('update-resources', availableResources);
+	event.sender.send('update-resources', { resources: availableResources, primary: res.key });
 });
 
 // report crashes to the Electron project

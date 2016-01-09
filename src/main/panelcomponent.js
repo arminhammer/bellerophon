@@ -21,16 +21,17 @@ var PanelComponent = {
 			$(element).tooltip();
 		};
 		self.addToTemplate = function(resourceReq) {
-			ipcRenderer.send('add-to-template-request', resourceReq);
+			self.ipcRenderer.send('add-to-template-request', resourceReq);
 		};
 		self.removeFromTemplate = function(resourceReq) {
-			ipcRenderer.send('remove-from-template-request', resourceReq);
+			self.ipcRenderer.send('remove-from-template-request', resourceReq);
 		};
 		self.toggleParamInTemplate = function(paramReq) {
-			ipcRenderer.send('toggle-param', paramReq);
+			self.ipcRenderer.send('toggle-param', paramReq);
 		};
 	},
 	view: function(controller) {
+		console.log(controller.resource);
 		return m('div', { class: 'col-xs-12 col-md-6 col-lg-4' },[
 			[m('.panel.panel-warning', [
 				m('.panel-heading', [

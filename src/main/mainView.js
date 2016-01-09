@@ -30,7 +30,7 @@ var MainView = {
 			self.log('Updated resources');
 			m.endComputation();
 		});
-		this.ipcRenderer.send('update-resource', { primary: self.resourceName() });
+		self.ipcRenderer.send('update-resource', { primary: self.resourceName() });
 	},
 	view: function(controller) {
 		return m('.container-fluid', [
