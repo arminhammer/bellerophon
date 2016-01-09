@@ -8,7 +8,7 @@ var assert = require('assert');
 var rewire = require("rewire");
 var _ = require('lodash');
 
-var ResourceComponent = require('../src/ui/resourcecomponent');
+var ResourceComponent = require('./resourcecomponent');
 
 describe('ResourceComponent', function () {
 

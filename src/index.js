@@ -10,6 +10,7 @@ var _ = require('lodash');
 var P = require('bluebird');
 var Logger = require('./logger');
 var AvailableResources = require('./availableresources');
+var os = require('os');
 
 var logger = new Logger();
 
@@ -21,9 +22,9 @@ function showSaveDialog() {
 		},
 		function(filename) {
 			if(filename) {
-				log('Saving at ' + filename);
+				logger.log('Saving at ' + filename);
 				fs.writeFile(filename, JSON.stringify(template.body,null,2),function() {
-					log('Saved ' + filename);
+					logger.log('Saved ' + filename);
 				});
 			}
 		});
@@ -211,7 +212,7 @@ function createMainWindow() {
 		titleBarStyle: 'hidden-inset'
 	});
 
-	win.loadURL('file://' + __dirname + '/ui/index.html');
+	win.loadURL('file://' + __dirname + '/main/index.html');
 	win.on('closed', onMainClosed, 'main');
 	return win;
 }

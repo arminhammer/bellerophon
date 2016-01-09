@@ -3,32 +3,13 @@
 var m = require('mithril');
 var _ = require('lodash');
 
-
-function openTemplateWindow() {
-	ipcRenderer.send('open-template-window');
-}
-
-function openSaveDialog() {
-	ipcRenderer.send('open-save-dialog');
-}
-
-function refreshResources() {
-	ipcRenderer.send('refresh-resources');
-}
-
-
-
 var SideBarComponent = {
 	controller: function(options) {
 		this.resources = options.resources;
 		this.ipcRenderer = require('electron').ipcRenderer;
 		this.changeResource = function(key) {
-			console.log(key + ' got clicked!');
 			this.ipcRenderer.send('update-resource', { primary: key })
 		};
-		//this.openTemplateWindow = openTemplateWindow;
-		//this.openSaveDialog = openSaveDialog;
-		//this.refreshResources = refreshResources;
 	},
 	view: function(controller) {
 		return m('nav.col-xs-3.bs-docs-sidebar .col-md-2 .col-lg-2', [
@@ -45,12 +26,6 @@ var SideBarComponent = {
 						])
 					])
 				})
-				/*m('div', [
-					m('select', { class: 'form-control' }, [
-						m('option', 'us-east-1'),
-						m('option', 'us-west-1')
-					])
-				])*/
 			])
 		])
 	}

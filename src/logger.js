@@ -1,7 +1,7 @@
 /**
  * Created by arminhammer on 1/6/16.
  */
-"use strict";
+'use strict';
 var winston = require('winston');
 var os = require('os');
 
