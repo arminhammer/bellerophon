@@ -48,21 +48,30 @@
 	margin-bottom: 20px;
 }
 
+.bs-docs-sidebar .nav>li {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
 /* all links */
 .bs-docs-sidebar .nav>li>a {
 	color: #999;
 	border-left: 2px solid transparent;
 	padding: 4px 20px;
-	font-size: 13px;
+	font-size: 12px;
 	font-weight: 400;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
 }
 
 /* nested links */
 .bs-docs-sidebar .nav .nav>li>a {
-	padding-top: 1px;
-	padding-bottom: 1px;
-	padding-left: 20px;
-	font-size: 12px;
+	padding-left: 25px;
+	font-size: 11px;
 }
 
 /* active & hover links */
