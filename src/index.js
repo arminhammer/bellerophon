@@ -66,12 +66,12 @@ function updateResource(primary, secondary) {
 			}
 			data[resource.resBlock].forEach(function(r) {
 				var newResource = new resource.construct(r[resource.rName], r);
-				var oldResource = availableResources[primary][secondary][newResource.id];
-				availableResources[primary][secondary][newResource.id] = newResource;
+				var oldResource = availableResources[primary].types[secondary][newResource.id];
+				availableResources[primary].types[secondary][newResource.id] = newResource;
 				if(oldResource) {
 					var inTemplate = oldResource.inTemplate;
 					if(inTemplate) { logger.log(inTemplate) }
-					availableResources[primary][secondary][newResource.id].inTemplate = inTemplate;
+					availableResources[primary].types[secondary][newResource.id].inTemplate = inTemplate;
 				}
 			});
 		})

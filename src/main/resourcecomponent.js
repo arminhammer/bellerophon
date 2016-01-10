@@ -50,16 +50,19 @@ var ResourceComponent = {
 					if(key === controller.resourceName()) {
 						return m('.row', [
 							m('.group[id="' + key + '"]', [
-								m('h3', key),
-								_.map(controller.resources()[key], function (subResource, subKey) {
-									var subKeySize = Object.keys(controller.resources()[key][subKey]).length;
+								m('h3', [
+									m('img', { src: "../icons/" + controller.resources()[key].icon + ".svg", height: 40 }),
+									key
+								]),
+								_.map(controller.resources()[key].types, function (subResource, subKey) {
+									var subKeySize = Object.keys(controller.resources()[key].types[subKey]).length;
 									if (subKeySize > 0) {
 										//console.log(controller.resources()[key][subKey]);
 										return m('.row', [
 											m('.col-xs-12', [
 												m('.subgroup[id="' + key + subKey + '"]', [
 													m('h4', formatTitle(subKey)),
-													_.map(controller.resources()[key][subKey], function (resource) {
+													_.map(controller.resources()[key].types[subKey], function (resource) {
 														//console.log('Rendering ' + controller.resources()[key][subKey] + ': ' + resource.id);
 														return m.component(PanelComponent, {
 															resource: resource,

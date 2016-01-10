@@ -89,12 +89,12 @@ var Resource = {
 				}
 			},
 			LifecycleHook: {
-				call: function() {
+				call: function () {
 					return ASG
 						.describeAutoScalingGroupsAsync({})
-						.then(function(data) {
-							return P.map(data.AutoScalingGroups, function(group) {
-								return ASG.describeLifecycleHooksAsync({ AutoScalingGroupName: group.AutoScalingGroupName });
+						.then(function (data) {
+							return P.map(data.AutoScalingGroups, function (group) {
+								return ASG.describeLifecycleHooksAsync({AutoScalingGroupName: group.AutoScalingGroupName});
 							});
 						})
 				}(),
@@ -102,23 +102,23 @@ var Resource = {
 				rName: 'LifecycleHookName',
 				preHook: function (data) {
 					var cycles = [];
-					_.each(data, function(hook) {
+					_.each(data, function (hook) {
 						cycles = cycles.concat(hook.LifecycleHooks)
 					});
-					return { LifecycleHooks: cycles };
+					return {LifecycleHooks: cycles};
 				},
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type' : 'AWS::AutoScaling::LifecycleHook',
-						'Properties' : {
-							'AutoScalingGroupName' : 'String',
-							'DefaultResult' : 'String',
-							'HeartbeatTimeout' : 'Integer',
-							'LifecycleTransition' : 'String',
-							'NotificationMetadata' : 'String',
-							'NotificationTargetARN' : 'String',
-							'RoleARN' : 'String'
+						'Type': 'AWS::AutoScaling::LifecycleHook',
+						'Properties': {
+							'AutoScalingGroupName': 'String',
+							'DefaultResult': 'String',
+							'HeartbeatTimeout': 'Integer',
+							'LifecycleTransition': 'String',
+							'NotificationMetadata': 'String',
+							'NotificationTargetARN': 'String',
+							'RoleARN': 'String'
 						}
 					}
 				}
