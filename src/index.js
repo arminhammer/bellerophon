@@ -155,15 +155,15 @@ ipcMain.on('open-save-dialog', function() {
 
 ipcMain.on('toggle-param', function(event, res) {
 	logger.log('Toggling param in template');
-	if(availableResources[res.key][res.subKey][res.resource.id].templateParams[res.pKey]) {
-		availableResources[res.key][res.subKey][res.resource.id].templateParams[res.pKey] = false;
+	if(availableResources[res.key].types[res.subKey][res.resource.id].templateParams[res.pKey]) {
+		availableResources[res.key].types[res.subKey][res.resource.id].templateParams[res.pKey] = false;
 		template.removeParam(res.resource, res.pKey);
 	} else {
-		availableResources[res.key][res.subKey][res.resource.id].templateParams[res.pKey] = true;
+		availableResources[res.key].types[res.subKey][res.resource.id].templateParams[res.pKey] = true;
 		template.addParam(res.resource, res.pKey);
 	}
 	logger.log('avail');
-	//logger.log(availableResources[res.key][res.subKey][res.resource.id].templateParams);
+	//logger.log(availableResources[res.key].types[res.subKey][res.resource.id].templateParams);
 	//addResource(res.resource);
 	if(templateWindow) {
 		templateWindow.webContents.send('update-template', template.body);
@@ -174,7 +174,7 @@ ipcMain.on('toggle-param', function(event, res) {
 ipcMain.on('add-to-template-request', function(event, res) {
 	logger.log('Adding resource to template');
 	//logger.log(availableResources);
-	availableResources[res.key][res.subKey][res.resource.id].inTemplate = true;
+	availableResources[res.key].types[res.subKey][res.resource.id].inTemplate = true;
 	logger.log('avail');
 	logger.log(JSON.stringify(availableResources));
 	template.addResource(res.resource);
@@ -186,8 +186,8 @@ ipcMain.on('add-to-template-request', function(event, res) {
 
 ipcMain.on('remove-from-template-request', function(event, res) {
 	logger.log('Removed resource from template');
-	availableResources[res.key][res.subKey][res.resource.id].inTemplate = false;
-	logger.log(availableResources[res.key][res.subKey][res.resource.id].inTemplate);
+	availableResources[res.key].types[res.subKey][res.resource.id].inTemplate = false;
+	logger.log(availableResources[res.key].types[res.subKey][res.resource.id].inTemplate);
 	template.removeResource(res.resource);
 	if(templateWindow) {
 		templateWindow.webContents.send('update-template', template.body);
@@ -212,7 +212,7 @@ function onTemplateClosed() {
 function createMainWindow() {
 	var win = new electron.BrowserWindow({
 		width: 850,
-		height: 800,
+		height: 900,
 		minWidth: 850,
 		minHeight: 500,
 		title: 'Bellerophon',
