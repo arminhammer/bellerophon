@@ -15,6 +15,12 @@ var SideBarComponent = {
 	view: function(controller) {
 		return m('nav.col-xs-3.bs-docs-sidebar .col-md-2 .col-lg-2', [
 			m('ul.nav.nav-stacked.fixed[id="sidebar"]', [
+				m('li', [
+					m('#logoHeader', [
+						m('img', { id: 'bellerophonLogo', src: '../icons/bellerophon.svg', height: 50 }),
+						m('span', 'Bellerophon')
+					])
+				]),
 				_.map(controller.resources(), function(resource, key) {
 					return m('li', {
 						onclick: function () {
@@ -23,10 +29,10 @@ var SideBarComponent = {
 					}, [
 						m('a[href="#' + key + '"]', key),
 						m('ul.nav.nav-stacked', [
-							_.map(controller.resources()[key], function (subResource, subKey) {
+							_.map(controller.resources()[key].types, function (subResource, subKey) {
 								if(key === controller.resourceName()) {
 
-									if (Object.keys(controller.resources()[key][subKey]).length > 0) {
+									if (Object.keys(controller.resources()[key].types[subKey]).length > 0) {
 										return m('li', [m('a[href="#' + key + subKey + '"]', subKey)])
 									}
 								}

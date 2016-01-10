@@ -126,3 +126,23 @@
 .tooltip-inner {
 	text-align: left;
 }
+
+.panel-warning > .panel-heading {
+	background-color: #FF9900;
+}
+
+@font-face {
+	font-family: 'Poiret One';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Poiret One'), local('PoiretOne-Regular'), url('../fonts/poiretone.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+#logoHeader {
+	/*padding-right: 0px;*/
+	font-family: 'Poiret One', cursive;
+	font-size: 22px;
+	color: #0052ff;
+	float: right;
+}

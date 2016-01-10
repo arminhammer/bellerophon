@@ -42,11 +42,12 @@ var dialog = electron.dialog;
 var template = new Template();
 var availableResources = AvailableResources.getBlankAvailableResources();
 
+/*
 var cleanupAvailableResource = function(available) {
 	return available;
 };
 
-/*ipcMain.on('refresh-resources', function(event) {
+ipcMain.on('refresh-resources', function(event) {
 	availableResources = AvailableResources.getBlankAvailableResources();
 	updateResources()
 		.then(function() {

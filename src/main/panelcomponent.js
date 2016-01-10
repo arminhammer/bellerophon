@@ -31,7 +31,6 @@ var PanelComponent = {
 		};
 	},
 	view: function(controller) {
-		console.log(controller.resource);
 		return m('div', { class: 'col-xs-12 col-md-6 col-lg-4' },[
 			[m('.panel.panel-warning', [
 				m('.panel-heading', [

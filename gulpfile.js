@@ -84,14 +84,14 @@ gulp.task('electron', function() {
 					CFBundleDisplayName: packageJson.name,
 					CFBundleIdentifier: packageJson.name,
 					CFBundleName: packageJson.name,
-					CFBundleVersion: packageJson.version
-					//icon: 'gulp-electron.icns'
+					CFBundleVersion: packageJson.version,
+					icon: 'src/icons/bellerophon.icns'
 				},
 				win: {
 					"version-string": packageJson.version,
 					"file-version": packageJson.version,
-					"product-version": packageJson.version
-					//"icon": 'gulp-electron.ico'
+					"product-version": packageJson.version,
+					"icon": 'src/icons/bellerophon.ico'
 				}
 			}
 		}))

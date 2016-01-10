@@ -51,7 +51,7 @@ var ResourceComponent = {
 						return m('.row', [
 							m('.group[id="' + key + '"]', [
 								m('h3', [
-									m('img', { src: "../icons/" + controller.resources()[key].icon + ".svg", height: 40 }),
+									m('img', { src: '../icons/' + controller.resources()[key].icon + '.svg', height: 40 }),
 									key
 								]),
 								_.map(controller.resources()[key].types, function (subResource, subKey) {

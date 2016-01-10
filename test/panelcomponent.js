@@ -7,7 +7,7 @@
 var assert = require('assert');
 var rewire = require("rewire");
 
-var PanelComponent = rewire('../src/ui/panelcomponent');
+var PanelComponent = rewire('../src/main/panelcomponent');
 
 var ipcRendererMock = {
 	send: function (msg, content) {}
