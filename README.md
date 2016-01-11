@@ -18,11 +18,11 @@ One of the goals for Bellerophon is to support all AWS resources that can be def
 This list will be updated as support for more resources is added. Fully supported resources will be marked in **bold**, partially supported resources will be marked in
 *italics*, and unsupported resources will be marked in ~~strikethroughs~~.
 
-..* **AWS::AutoScaling::AutoScalingGroup**
-..* **AWS::AutoScaling::LaunchConfiguration**
-..* **AWS::AutoScaling::LifecycleHook**
-..* **AWS::AutoScaling::ScalingPolicy**
-..* **AWS::AutoScaling::ScheduledAction**
+- **AWS::AutoScaling::AutoScalingGroup**
+- **AWS::AutoScaling::LaunchConfiguration**
+- **AWS::AutoScaling::LifecycleHook**
+- **AWS::AutoScaling::ScalingPolicy**
+- **AWS::AutoScaling::ScheduledAction**
 ..*~~AWS::CloudFormation::Authentication~~
 ..*~~AWS::CloudFormation::CustomResource~~
 ..*~~AWS::CloudFormation::Init~~
