@@ -1,11 +1,11 @@
-# ![Bellerophon](https://github.com/arminhammer/bellerophon/blob/master/src/icons/bellerophon.svg) Bellerophon
+# ![Bellerophon](https://raw.githubusercontent.com/arminhammer/bellerophon/master/src/icons/bellerophon.svg) Bellerophon
 
 ## Installation
 1. Make sure you have the awscli installed and configured. Bellerophon assumes that ~/.aws/config and ~/.aws/credentials exist and are configured correctly.
 2. Download Belleraphon:
-..*(Win): https://bellerophon.s3.amazonaws.com/Bellerophon-0.1.0-win32-x64.zip
-..*(Linux): https://bellerophon.s3.amazonaws.com/Bellerophon-0.1.0-linux-x64.zip
-..*(OSX): https://bellerophon.s3.amazonaws.com/Bellerophon-0.1.0-darwin-x64.zip
+- (Win): https://bellerophon.s3.amazonaws.com/Bellerophon-0.1.0-win32-x64.zip
+- (Linux): https://bellerophon.s3.amazonaws.com/Bellerophon-0.1.0-linux-x64.zip
+- (OSX): https://bellerophon.s3.amazonaws.com/Bellerophon-0.1.0-darwin-x64.zip
 3. Unzip and run.
 
 ## Usage
