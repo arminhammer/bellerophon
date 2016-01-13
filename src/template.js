@@ -12,7 +12,7 @@ var Template = function() {
 
 	function recursiveReplace(object, newPattern, oldPattern) {
 		_.forIn(object, function (val, key) {
-			if(val === oldPattern) {
+			if(_.isEqual(val, oldPattern)) {
 				object[key] = newPattern
 			}
 			if (_.isArray(val)) {
@@ -30,23 +30,25 @@ var Template = function() {
 
 	function populateBlock(block, body) {
 		block.Properties = _.reduce(block.Properties, function(result, n, key) {
+			if(body[key]) {
 			result[key] = body[key];
+			}
 			return result;
 		}, {});
 		return block;
 	}
 
 	self.addResource = function(resource) {
-		recursiveReplace(self.body.Resources, '{ Ref: ' + resource.name + ' }', resource.id);
+		recursiveReplace(self.body.Resources, { 'Ref': resource.name }, resource.id);
 		var newResource = populateBlock(resource.block, resource.body);
 		_.each(self.body.Resources, function(val, key) {
-			recursiveReplace(newResource, '{ Ref: ' + key + ' }', key.replace('-resource',''))
+			recursiveReplace(newResource, { 'Ref': key }, key.replace('-resource',''))
 		});
 		self.body.Resources[resource.name] = newResource;
 	};
 
 	self.removeResource = function(resource) {
-		recursiveReplace(self.body.Resources, resource.id, '{ Ref: ' + resource.name + ' }');
+		recursiveReplace(self.body.Resources, resource.id, { 'Ref': resource.name });
 		delete self.body.Resources[resource.name];
 	};
 
