@@ -42,7 +42,7 @@ var Template = function() {
 		recursiveReplace(self.body.Resources, { 'Ref': resource.name }, resource.id);
 		var newResource = populateBlock(resource.block, resource.body);
 		_.each(self.body.Resources, function(val, key) {
-			recursiveReplace(newResource, { 'Ref': key }, key.replace('-resource',''))
+			recursiveReplace(newResource, { 'Ref': key }, key.replace('Resource',''))
 		});
 		self.body.Resources[resource.name] = newResource;
 	};

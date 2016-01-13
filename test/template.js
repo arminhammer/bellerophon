@@ -81,6 +81,18 @@ describe('template', function () {
 		assert.equal(Object.keys(template.body.Resources).length, 0);
 	});
 
+	it('should not add a parameter if the resource is not present', function () {
+		template.removeResource(mockResource1);
+		assert.equal(Object.keys(template.body.Resources).length, 0);
+		template.addParam(mockResource1,'Description');
+		assert.equal(Object.keys(template.body.Parameters).length, 0);
+	});
+
+	it('should remove a parameter', function () {
+		template.removeParam(mockResource1,'Description');
+		assert.equal(Object.keys(template.body.Parameters).length, 0);
+	});
+
 	it('should add two resources and provide a ref', function () {
 		template.addResource(mockResource1);
 		assert.deepEqual(template.body, {
@@ -136,6 +148,71 @@ describe('template', function () {
 						"Description": "Mock Resource 1",
 						"PropertyInteger": 1,
 						"MockResource2": "mock2"
+					}
+				}
+			}
+		});
+	});
+
+	it('In reverse order, should add two resources and provide a ref', function () {
+		template.removeResource(mockResource1);
+		template.addResource(mockResource2);
+		//console.log(JSON.stringify(template.body,null,2));
+		assert.deepEqual(template.body, {
+			"AWSTemplateFormatVersion": "2010-09-09",
+			"Parameters": {},
+			"Resources": {
+				"mock2Resource": {
+					"Type": "AWS::Mock::Resource2",
+					"Properties": {
+						"Description": "Mock Resource 2",
+						"PropertyArray": [],
+						"PropertyInteger": 1,
+						"Tags": []
+					}
+				}
+			}
+		});
+		template.addResource(mockResource1);
+		assert.deepEqual(template.body, {
+				"AWSTemplateFormatVersion": "2010-09-09",
+				"Parameters": {},
+				"Resources": {
+					"mock1Resource": {
+						"Type": "AWS::Mock::Resource",
+						"Properties": {
+							"Description": "Mock Resource 1",
+							"PropertyInteger": 1,
+							"MockResource2": { "Ref": "mock2Resource" }
+						}
+					},
+					"mock2Resource": {
+						"Type": "AWS::Mock::Resource2",
+						"Properties": {
+							"Description": "Mock Resource 2",
+							"PropertyArray": [],
+							"PropertyInteger": 1,
+							"Tags": []
+						}
+					}
+				}
+			}
+		);
+	});
+
+	it('In reverse order, should remove the second resource and revert the ref', function () {
+		template.removeResource(mockResource1);
+		assert.deepEqual(template.body, {
+			"AWSTemplateFormatVersion": "2010-09-09",
+			"Parameters": {},
+			"Resources": {
+				"mock2Resource": {
+					"Type": "AWS::Mock::Resource2",
+					"Properties": {
+						"Description": "Mock Resource 2",
+						"PropertyArray": [],
+						"PropertyInteger": 1,
+						"Tags": []
 					}
 				}
 			}
