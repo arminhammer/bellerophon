@@ -1,4 +1,4 @@
-# ![Bellerophon](arminhammer.github.com/bellerophon/src/icons/bellerophon.svg) Bellerophon
+# ![Bellerophon](https://github.com/arminhammer/bellerophon/blob/master/src/icons/bellerophon.svg) Bellerophon
 
 ## Installation
 1. Make sure you have the awscli installed and configured. Bellerophon assumes that ~/.aws/config and ~/.aws/credentials exist and are configured correctly.
