@@ -13,7 +13,7 @@ var ipcRendererMock = {
 	send: function (msg, content) {}
 };
 
-PanelComponent.__set__('ipcRenderer', ipcRendererMock);
+//PanelComponent.__set__('ipcRenderer', ipcRendererMock);
 
 describe('PanelComponent', function () {
 

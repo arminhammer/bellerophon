@@ -23,7 +23,6 @@ function formatTitle(title) {
 
 var ResourceComponent = {
 	controller: function (options) {
-		//console.log(options.resources);
 		this.resources = options.resources;
 		this.resourceName = options.resourceName;
 		this.log = options.log;

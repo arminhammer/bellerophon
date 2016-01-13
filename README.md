@@ -1,14 +1,16 @@
-# ![Bellerophon](https://cdn.rawgit.com/arminhammer/bellerophon/master/src/icons/bellerophon.svg) Bellerophon
+# Bellerophon
 
-## Installation
-1. Make sure you have the awscli installed and configured. Bellerophon assumes that ~/.aws/config and ~/.aws/credentials exist and are configured correctly.
-2. Download Belleraphon from the https://github.com/arminhammer/bellerophon/releases page. Windows, Linux, and OSX are supported.
-3. Unzip and run.
+# ![Bellerophon](https://cdn.rawgit.com/arminhammer/bellerophon/master/src/icons/bellerophon.svg) 
 
 ## Usage
 Bellerophon will make AWS SDK calls to get information about the resources in your AWS environment. 
 Once the resources are retrieved, you can add them to the CloudFormation template. You can view the template by going to File > Show Template. Once you are
 happy with the design of the template, you can choose File > Save Template.
+
+## Installation
+1. Make sure you have the awscli installed and configured. Bellerophon assumes that ~/.aws/config and ~/.aws/credentials exist and are configured correctly.
+2. Download Belleraphon from the https://github.com/arminhammer/bellerophon/releases page. Windows, Linux, and OSX are supported.
+3. Unzip and run.
 
 ## Supported Resources
 One of the goals for Bellerophon is to support all AWS resources that can be defined in CloudFormation. However, at this time only a subset of resources are supported.

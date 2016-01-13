@@ -8,13 +8,13 @@ var assert = require('assert');
 var rewire = require("rewire");
 var _ = require('lodash');
 
-var SideBarComponent = rewire('../src/ui/sidebarcomponent');
+var SideBarComponent = rewire('../src/main/sidebarcomponent');
 
 var ipcRendererMock = {
 	send: function (msg, content) {}
 };
 
-SideBarComponent.__set__('ipcRenderer', ipcRendererMock);
+//SideBarComponent.__set__('ipcRenderer', ipcRendererMock);
 
 describe('SideBarComponent', function () {
 
