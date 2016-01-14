@@ -57,7 +57,7 @@ var Template = function() {
 			if(self.body.Resources[resource.name].Properties[pKey]) {
 				var oldVal = self.body.Resources[resource.name].Properties[pKey];
 				var paramName = resource.name + pKey + 'Param';
-				self.body.Resources[resource.name].Properties[pKey] = { "Ref" : paramName };
+				self.body.Resources[resource.name].Properties[pKey] = { 'Ref' : paramName };
 				self.body.Parameters[paramName] = {
 					'Type' : 'String',
 					'Default' : oldVal

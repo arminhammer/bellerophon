@@ -91,7 +91,6 @@ var Resource = {
 			},
 			LifecycleHook: {
 				call: function () {
-					console.log('LifecycleHooks');
 					return ASG
 						.describeAutoScalingGroupsAsync({})
 						.then(function (data) {
@@ -752,11 +751,9 @@ var Resource = {
 		S3: {
 			Bucket: {
 				call: function () {
-					console.log('BUCKETS');
 					return S3
 						.listBucketsAsync({})
 						.then(function (data) {
-							console.log(data.Buckets);
 							var finalBuckets = [];
 							return P
 								.map(data.Buckets, function(bucket) {
@@ -770,8 +767,6 @@ var Resource = {
 										})
 								})
 								.then(function() {
-									console.log('finalBuckets');
-									console.log(finalBuckets);
 									return { Buckets: finalBuckets };
 								});
 						})
@@ -781,37 +776,58 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type": "AWS::S3::Bucket",
-						"Properties": {
-							"AccessControl": "String",
-							"BucketName": "String",
-							"CorsConfiguration": "CORS Configuration",
-							"LifecycleConfiguration": "Lifecycle Configuration",
-							"LoggingConfiguration": "Logging Configuration",
-							"NotificationConfiguration" : "Notification Configuration",
-							"ReplicationConfiguration" : "Replication Configuration",
-							"Tags": [],
-							"VersioningConfiguration": "Versioning Configuration",
-							"WebsiteConfiguration": "Website Configuration Type"
+						'Type': 'AWS::S3::Bucket',
+						'Properties': {
+							'AccessControl': 'String',
+							'BucketName': 'String',
+							'CorsConfiguration': 'CORS Configuration',
+							'LifecycleConfiguration': 'Lifecycle Configuration',
+							'LoggingConfiguration': 'Logging Configuration',
+							'NotificationConfiguration' : 'Notification Configuration',
+							'ReplicationConfiguration' : 'Replication Configuration',
+							'Tags': [],
+							'VersioningConfiguration': 'Versioning Configuration',
+							'WebsiteConfiguration': 'Website Configuration Type'
 						}
 					};
 				}
 			},
 			BucketPolicy: {
-				call: function() { return ec2.describeSubnetsAsync({}) },
-				resBlock: 'Subnets',
-				rName: 'SubnetId',
+				call: function() {
+					return S3
+						.listBucketsAsync({})
+						.then(function (data) {
+							var finalPolicies = [];
+							return P
+								.map(data.Buckets, function(bucket) {
+									return S3
+										.getBucketPolicyAsync({ Bucket: bucket.Name })
+										.then(function(policy) {
+											finalPolicies.push({ Bucket: bucket.Name, PolicyDocument: policy });
+										})
+										.catch(function() {
+											//Silently catch the NoSuchPolicyException
+											return;
+										})
+								})
+								.then(function() {
+									return { Policies: finalPolicies };
+								});
+						})
+				},
+				resBlock: 'Policies',
+				rName: 'Bucket',
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type": "AWS::S3::BucketPolicy",
-						"Properties": {
-							"Bucket": "String",
-							"PolicyDocument": "JSON"
+						'Type': 'AWS::S3::BucketPolicy',
+						'Properties': {
+							'Bucket': 'String',
+							'PolicyDocument': 'JSON'
 						}
 					};
 				}
-			},
+			}
 		},
 		SDB: {
 			//AWS::SDB::Domain
