@@ -20,7 +20,7 @@ var AvailableResources = {
 			}
 		},
 		CloudFormation : {
-			//icon: '',
+			icon: 'ManagementTools_CloudFormation',
 			types: {
 				//AWS::CloudFormation::Authentication
 				//AWS::CloudFormation::CustomResource
@@ -32,25 +32,25 @@ var AvailableResources = {
 			}
 		},
 		CloudFront: {
-			//icon: '',
+			icon: 'StorageContentDelivery_AmazonCloudFront',
 			types: {
 				//AWS::CloudFront::Distribution
 			}
 		},
 		CloudTrail: {
-			//icon: '',
+			icon: 'ManagementTools_CloudTrail',
 			types: {
 				//AWS::CloudTrail::Trail
 			}
 		},
 		CloudWatch: {
-			//icon: '',
+			icon: 'ManagementTools_CloudWatch',
 			types: {
 				//AWS::CloudWatch::Alarm
 			}
 		},
 		CodeDeploy: {
-			//icon: '',
+			icon: 'DeploymentManagement_CodeDeploy',
 			types: {
 				//AWS::CodeDeploy::Application
 				//AWS::CodeDeploy::DeploymentConfig
@@ -58,14 +58,14 @@ var AvailableResources = {
 			}
 		},
 		CodePipeline: {
-			//icon: '',
+			icon: 'DeploymentManagement_CodePipeline',
 			types: {
 				//AWS::CodePipeline::CustomActionType
 				//AWS::CodePipeline::Pipeline
 			}
 		},
 		Config: {
-			//icon: '',
+			icon: 'ManagementTools_Config',
 			types: {
 				//AWS::Config::ConfigRule
 				//AWS::Config::ConfigurationRecorder
@@ -73,20 +73,20 @@ var AvailableResources = {
 			}
 		},
 		DataPipeline: {
-			//icon: '',
+			icon: 'Analytics_DataPipeline',
 			types: {
 				//AWS::DataPipeline::Pipeline
 			}
 		},
 		DirectoryService: {
-			//icon: '',
+			icon: 'SecurityIdentity_DirectoryService',
 			types: {
 				//AWS::DirectoryService::MicrosoftAD
 				//AWS::DirectoryService::SimpleAD
 			}
 		},
 		DynamoDB: {
-			//icon: '',
+			icon: 'Database_DynamoDB',
 			types: {
 				//AWS::DynamoDB::Table
 			}
@@ -128,7 +128,7 @@ var AvailableResources = {
 			}
 		},
 		ECS: {
-			//icon: '',
+			icon: 'Compute_AmazonEC2ContainerService',
 			types: {
 				//AWS::ECS::Cluster
 				//AWS::ECS::Service
@@ -136,14 +136,14 @@ var AvailableResources = {
 			}
 		},
 		EFS: {
-			//icon: '',
+			icon: 'StorageContentDelivery_EFS',
 			types: {
 				//AWS::EFS::FileSystem
 				//AWS::EFS::MountTarget
 			}
 		},
 		ElastiCache: {
-			//icon: '',
+			icon: 'Database_AmazonElasticCache',
 			types: {
 				//AWS::ElastiCache::CacheCluster
 				//AWS::ElastiCache::ParameterGroup
@@ -154,7 +154,7 @@ var AvailableResources = {
 			}
 		},
 		ElasticBeanstalk: {
-			//icon: '',
+			icon: 'Compute_Elastic Beanstalk',
 			types: {
 				//AWS::ElasticBeanstalk::Application
 				//AWS::ElasticBeanstalk::ApplicationVersion
@@ -163,13 +163,13 @@ var AvailableResources = {
 			}
 		},
 		ElasticLoadBalancing: {
-			//icon: '',
+			icon: 'Compute_ElasticLoadBalancing',
 			types: {
 				//AWS::ElasticLoadBalancing::LoadBalancer
 			}
 		},
 		IAM: {
-			//icon: '',
+			icon: 'SecurityIdentity_IdentityAccessManagement',
 			types: {
 				//AWS::IAM::AccessKey
 				//AWS::IAM::Group
@@ -182,19 +182,19 @@ var AvailableResources = {
 			}
 		},
 		Kinesis: {
-			//icon: '',
+			icon: 'Analytics_Kinesis',
 			types: {
 				//AWS::Kinesis::Stream
 			}
 		},
 		KMS: {
-			//icon: '',
+			icon: 'SecurityIdentity_KeyManagementService',
 			types: {
 				//AWS::KMS::Key
 			}
 		},
 		Lambda: {
-			//icon: '',
+			icon: 'Compute_Lambda',
 			types: {
 				//AWS::Lambda::EventSourceMapping
 				//AWS::Lambda::Function
@@ -202,7 +202,7 @@ var AvailableResources = {
 			}
 		},
 		Logs: {
-			//icon: '',
+			icon: 'Compute_AmazonEC2_CloudWatch',
 			types: {
 				//AWS::Logs::Destination
 				//AWS::Logs::LogGroup
@@ -212,7 +212,7 @@ var AvailableResources = {
 			}
 		},
 		OpsWorks: {
-			//icon: '',
+			icon: 'ManagementTools_OpsWorks',
 			types: {
 				//AWS::OpsWorks::App
 				//AWS::OpsWorks::ElasticLoadBalancerAttachment
@@ -222,7 +222,7 @@ var AvailableResources = {
 			}
 		},
 		RDS: {
-			//icon: '',
+			icon: 'Database_AmazonRDS',
 			types: {
 				//AWS::RDS::DBCluster
 				//AWS::RDS::DBClusterParameterGroup
@@ -236,7 +236,7 @@ var AvailableResources = {
 			}
 		},
 		Redshift: {
-			//icon: '',
+			icon: 'Database_AmazonRedShift',
 			types: {
 				//AWS::Redshift::Cluster
 				//AWS::Redshift::ClusterParameterGroup
@@ -246,7 +246,7 @@ var AvailableResources = {
 			}
 		},
 		Route53: {
-			//icon: '',
+			icon: 'Networking_Route53',
 			types: {
 				//AWS::Route53::HealthCheck
 				//AWS::Route53::HostedZone
@@ -262,33 +262,33 @@ var AvailableResources = {
 			}
 		},
 		SDB: {
-			//icon: '',
+			icon: '',
 			types: {
 				//AWS::SDB::Domain
 			}
 		},
 		SNS: {
-			//icon: '',
+			icon: 'MobileServices_SNS',
 			types: {
 				//AWS::SNS::Topic
 				//AWS::SNS::TopicPolicy
 			}
 		},
 		SQS: {
-			//icon: '',
+			icon: 'ApplicationServices_AmazonSQS',
 			types: {
 				//AWS::SQS::Queue
 				//AWS::SQS::QueuePolicy
 			}
 		},
 		SSM: {
-			//icon: '',
+			icon: '',
 			types: {
 				//AWS::SSM::Document
 			}
 		},
 		WAF: {
-			//icon: '',
+			icon: '',
 			types: {
 				//AWS::WAF::ByteMatchSet
 				//AWS::WAF::IPSet
@@ -298,7 +298,7 @@ var AvailableResources = {
 			}
 		},
 		WorkSpaces: {
-			//icon: '',
+			icon: 'AmazonWorkSpaces',
 			types: {
 				//AWS::WorkSpaces::Workspace
 			}
