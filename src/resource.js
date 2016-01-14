@@ -12,6 +12,7 @@ var P = require('bluebird');
 
 var ec2 = P.promisifyAll(new AWS.EC2());
 var ASG = P.promisifyAll(new AWS.AutoScaling());
+var S3 = P.promisifyAll(new AWS.S3());
 
 var buildName = function(name) {
 	name = name.replace( /\W/g , '');
@@ -30,7 +31,7 @@ var Resource = {
 	resources: {
 		AutoScaling: {
 			AutoScalingGroup: {
-				call: ASG.describeAutoScalingGroupsAsync({}),
+				call: function() { return ASG.describeAutoScalingGroupsAsync({}) },
 				resBlock: 'AutoScalingGroups',
 				rName: 'AutoScalingGroupName',
 				construct: function (name, body) {
@@ -59,7 +60,7 @@ var Resource = {
 				}
 			},
 			LaunchConfiguration: {
-				call: ASG.describeLaunchConfigurationsAsync({}),
+				call: function() { return ASG.describeLaunchConfigurationsAsync({}) },
 				resBlock: 'LaunchConfigurations',
 				rName: 'LaunchConfigurationName',
 				construct: function (name, body) {
@@ -90,6 +91,7 @@ var Resource = {
 			},
 			LifecycleHook: {
 				call: function () {
+					console.log('LifecycleHooks');
 					return ASG
 						.describeAutoScalingGroupsAsync({})
 						.then(function (data) {
@@ -97,7 +99,7 @@ var Resource = {
 								return ASG.describeLifecycleHooksAsync({AutoScalingGroupName: group.AutoScalingGroupName});
 							});
 						})
-				}(),
+				},
 				resBlock: 'LifecycleHooks',
 				rName: 'LifecycleHookName',
 				preHook: function (data) {
@@ -124,7 +126,7 @@ var Resource = {
 				}
 			},
 			ScalingPolicy: {
-				call: ASG.describePoliciesAsync({}),
+				call: function() { return ASG.describePoliciesAsync({}) },
 				resBlock: 'ScalingPolicies',
 				rName: 'PolicyName',
 				construct: function (name, body) {
@@ -146,7 +148,7 @@ var Resource = {
 				}
 			},
 			ScheduledAction: {
-				call: ASG.describeScheduledActionsAsync({}),
+				call: function() { return ASG.describeScheduledActionsAsync({}) },
 				resBlock: 'ScheduledUpdateGroupActions',
 				rName: 'ScheduledActionName',
 				construct: function (name, body) {
@@ -210,7 +212,7 @@ var Resource = {
 		},
 		EC2: {
 			CustomerGateway: {
-				call: ec2.describeCustomerGatewaysAsync({}),
+				call: function() { return ec2.describeCustomerGatewaysAsync({}) },
 				resBlock: 'CustomerGateways',
 				rName: 'CustomerGatewayId',
 				construct: function (name, body) {
@@ -227,7 +229,7 @@ var Resource = {
 				}
 			},
 			DHCPOptions: {
-				call: ec2.describeDhcpOptionsAsync({}),
+				call: function() { return ec2.describeDhcpOptionsAsync({}) },
 				resBlock: 'DhcpOptions',
 				rName: 'DhcpOptionsId',
 				construct: function (name, body) {
@@ -246,7 +248,7 @@ var Resource = {
 				}
 			},
 			EIP: {
-				call: ec2.describeAddressesAsync({}),
+				call: function() { return ec2.describeAddressesAsync({}) },
 				resBlock: 'Addresses',
 				rName: 'PublicIp',
 				construct: function (name, body) {
@@ -270,7 +272,7 @@ var Resource = {
 			//}
 			//},
 			Instance: {
-				call: ec2.describeInstancesAsync({}),
+				call: function() { return ec2.describeInstancesAsync({}) },
 				resBlock: 'Instances',
 				rName: 'InstanceId',
 				preHook: function (data) {
@@ -317,7 +319,7 @@ var Resource = {
 				}
 			},
 			InternetGateway: {
-				call: ec2.describeInternetGatewaysAsync({}),
+				call: function() { return ec2.describeInternetGatewaysAsync({}) },
 				resBlock: 'InternetGateways',
 				rName: 'InternetGatewayId',
 				construct: function (name, body) {
@@ -331,7 +333,7 @@ var Resource = {
 				}
 			},
 			NetworkAcl: {
-				call: ec2.describeNetworkAclsAsync({}),
+				call: function() { return ec2.describeNetworkAclsAsync({}) },
 				resBlock: 'NetworkAcls',
 				rName: 'NetworkAclId',
 				construct: function (name, body) {
@@ -355,7 +357,7 @@ var Resource = {
 			//}
 			//},
 			NetworkInterface: {
-				call: ec2.describeNetworkInterfacesAsync({}),
+				call: function() { return ec2.describeNetworkInterfacesAsync({}) },
 				resBlock: 'NetworkInterfaces',
 				rName: 'NetworkInterfaceId',
 				construct: function (name, body) {
@@ -386,7 +388,7 @@ var Resource = {
 			//}
 			//},
 			PlacementGroup: {
-				call: ec2.describePlacementGroupsAsync({}),
+				call: function() { return ec2.describePlacementGroupsAsync({}) },
 				resBlock: 'PlacementGroups',
 				rName: 'GroupName',
 				construct: function (name, body) {
@@ -409,7 +411,7 @@ var Resource = {
 			//}
 			//},
 			RouteTable: {
-				call: ec2.describeRouteTablesAsync({}),
+				call: function() { return ec2.describeRouteTablesAsync({}) },
 				resBlock: 'RouteTables',
 				rName: 'RouteTableId',
 				construct: function (name, body) {
@@ -424,7 +426,7 @@ var Resource = {
 				}
 			},
 			SecurityGroup: {
-				call: ec2.describeSecurityGroupsAsync({}),
+				call: function() { return ec2.describeSecurityGroupsAsync({}) },
 				resBlock: 'SecurityGroups',
 				rName: 'GroupId',
 				construct: function (name, body) {
@@ -460,7 +462,7 @@ var Resource = {
 			//}
 			//},
 			SpotFleet: {
-				call: ec2.describeSpotFleetRequestsAsync({}),
+				call: function() { return ec2.describeSpotFleetRequestsAsync({}) },
 				resBlock: 'SpotFleetRequestConfigs',
 				rName: 'SpotFleetRequestId',
 				construct: function (name, body) {
@@ -474,7 +476,7 @@ var Resource = {
 				}
 			},
 			Subnet: {
-				call: ec2.describeSubnetsAsync({}),
+				call: function() { return ec2.describeSubnetsAsync({}) },
 				resBlock: 'Subnets',
 				rName: 'SubnetId',
 				construct: function (name, body) {
@@ -511,7 +513,7 @@ var Resource = {
 			//}
 			//},
 			Volume: {
-				call: ec2.describeVolumesAsync({}),
+				call: function() { return ec2.describeVolumesAsync({}) },
 				resBlock: 'Volumes',
 				rName: 'VolumeId',
 				construct: function (name, body) {
@@ -542,7 +544,7 @@ var Resource = {
 			//}
 			//},
 			VPC: {
-				call: ec2.describeVpcsAsync({}),
+				call: function() { return ec2.describeVpcsAsync({}) },
 				resBlock: 'Vpcs',
 				rName: 'VpcId',
 				construct: function (name, body) {
@@ -569,7 +571,7 @@ var Resource = {
 			//}
 			//},
 			VPCEndpoint: {
-				call: ec2.describeVpcEndpointsAsync({}),
+				call: function() { return ec2.describeVpcEndpointsAsync({}) },
 				resBlock: 'VpcEndpoints',
 				rName: 'VpcEndpointId',
 				construct: function (name, body) {
@@ -595,7 +597,7 @@ var Resource = {
 			//}
 			//},
 			VPCPeeringConnection: {
-				call: ec2.describeVpcPeeringConnectionsAsync({}),
+				call: function() { return ec2.describeVpcPeeringConnectionsAsync({}) },
 				resBlock: 'VpcPeeringConnections',
 				rName: 'VpcPeeringConnectionId',
 				construct: function (name, body) {
@@ -611,7 +613,7 @@ var Resource = {
 				}
 			},
 			VPNConnection: {
-				call: ec2.describeVpnConnectionsAsync({}),
+				call: function() { return ec2.describeVpnConnectionsAsync({}) },
 				resBlock: 'VpnConnections',
 				rName: 'VpnConnectionId',
 				construct: function (name, body) {
@@ -638,7 +640,7 @@ var Resource = {
 			//}
 			//},
 			VPNGateway: {
-				call: ec2.describeVpnGatewaysAsync({}),
+				call: function() { return ec2.describeVpnGatewaysAsync({}) },
 				resBlock: 'VpnGateways',
 				rName: 'VpnGatewayId',
 				construct: function (name, body) {
@@ -748,8 +750,68 @@ var Resource = {
 			//AWS::Route53::RecordSetGroup
 		},
 		S3: {
-			//AWS::S3::Bucket
-			//AWS::S3::BucketPolicy
+			Bucket: {
+				call: function () {
+					console.log('BUCKETS');
+					return S3
+						.listBucketsAsync({})
+						.then(function (data) {
+							console.log(data.Buckets);
+							var finalBuckets = [];
+							return P
+								.map(data.Buckets, function(bucket) {
+									return S3
+										.getBucketVersioningAsync({ Bucket: bucket.Name })
+										.then(function(versionData) {
+											bucket.VersioningConfiguration = versionData;
+										})
+										.then(function() {
+											finalBuckets.push(bucket);
+										})
+								})
+								.then(function() {
+									console.log('finalBuckets');
+									console.log(finalBuckets);
+									return { Buckets: finalBuckets };
+								});
+						})
+				},
+				resBlock: 'Buckets',
+				rName: 'Name',
+				construct: function (name, body) {
+					baseConstruct(this, name, body);
+					this.block = {
+						"Type": "AWS::S3::Bucket",
+						"Properties": {
+							"AccessControl": "String",
+							"BucketName": "String",
+							"CorsConfiguration": "CORS Configuration",
+							"LifecycleConfiguration": "Lifecycle Configuration",
+							"LoggingConfiguration": "Logging Configuration",
+							"NotificationConfiguration" : "Notification Configuration",
+							"ReplicationConfiguration" : "Replication Configuration",
+							"Tags": [],
+							"VersioningConfiguration": "Versioning Configuration",
+							"WebsiteConfiguration": "Website Configuration Type"
+						}
+					};
+				}
+			},
+			BucketPolicy: {
+				call: function() { return ec2.describeSubnetsAsync({}) },
+				resBlock: 'Subnets',
+				rName: 'SubnetId',
+				construct: function (name, body) {
+					baseConstruct(this, name, body);
+					this.block = {
+						"Type": "AWS::S3::BucketPolicy",
+						"Properties": {
+							"Bucket": "String",
+							"PolicyDocument": "JSON"
+						}
+					};
+				}
+			},
 		},
 		SDB: {
 			//AWS::SDB::Domain

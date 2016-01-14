@@ -255,10 +255,10 @@ var AvailableResources = {
 			}
 		},
 		S3: {
-			//icon: '',
+			icon: 'StorageContentDelivery_AmazonS3',
 			types: {
-				//AWS::S3::Bucket
-				//AWS::S3::BucketPolicy
+				Bucket: {},
+				BucketPolicy: {}
 			}
 		},
 		SDB: {

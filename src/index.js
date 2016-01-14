@@ -59,7 +59,7 @@ ipcMain.on('refresh-resources', function(event) {
 function updateResource(primary, secondary) {
 	var resource = Resource.resources[primary][secondary];
 	return resource
-		.call
+		.call()
 		.then(function(data) {
 			//logger.log(data);
 			if(resource.preHook) {

@@ -39,13 +39,13 @@ var MockResource2 = function(name, body) {
 	};
 };
 
-var mockResource1 = new MockResource('mock1', {
+var mockResource1 = new MockResource('mock-1', {
 	Description: "Mock Resource 1",
 	PropertyInteger: 1,
-	"MockResource2": "mock2"
+	"MockResource2": "mock-2"
 });
 
-var mockResource2 = new MockResource2('mock2', {
+var mockResource2 = new MockResource2('mock-2', {
 	Description: "Mock Resource 2",
 	PropertyInteger: 1,
 	"PropertyArray": [],
@@ -99,12 +99,12 @@ describe('template', function () {
 			"AWSTemplateFormatVersion": "2010-09-09",
 			"Parameters": {},
 			"Resources": {
-				"mock1Resource": {
+				"mock-1Resource": {
 					"Type": "AWS::Mock::Resource",
 					"Properties": {
 						"Description": "Mock Resource 1",
 						"PropertyInteger": 1,
-						"MockResource2": "mock2"
+						"MockResource2": "mock-2"
 					}
 				}
 			}
@@ -114,15 +114,15 @@ describe('template', function () {
 				"AWSTemplateFormatVersion": "2010-09-09",
 				"Parameters": {},
 				"Resources": {
-					"mock1Resource": {
+					"mock-1Resource": {
 						"Type": "AWS::Mock::Resource",
 						"Properties": {
 							"Description": "Mock Resource 1",
 							"PropertyInteger": 1,
-							"MockResource2": { "Ref": "mock2Resource" }
+							"MockResource2": { "Ref": "mock-2Resource" }
 						}
 					},
-					"mock2Resource": {
+					"mock-2Resource": {
 						"Type": "AWS::Mock::Resource2",
 						"Properties": {
 							"Description": "Mock Resource 2",
@@ -142,12 +142,12 @@ describe('template', function () {
 			"AWSTemplateFormatVersion": "2010-09-09",
 			"Parameters": {},
 			"Resources": {
-				"mock1Resource": {
+				"mock-1Resource": {
 					"Type": "AWS::Mock::Resource",
 					"Properties": {
 						"Description": "Mock Resource 1",
 						"PropertyInteger": 1,
-						"MockResource2": "mock2"
+						"MockResource2": "mock-2"
 					}
 				}
 			}
@@ -162,7 +162,7 @@ describe('template', function () {
 			"AWSTemplateFormatVersion": "2010-09-09",
 			"Parameters": {},
 			"Resources": {
-				"mock2Resource": {
+				"mock-2Resource": {
 					"Type": "AWS::Mock::Resource2",
 					"Properties": {
 						"Description": "Mock Resource 2",
@@ -178,15 +178,15 @@ describe('template', function () {
 				"AWSTemplateFormatVersion": "2010-09-09",
 				"Parameters": {},
 				"Resources": {
-					"mock1Resource": {
+					"mock-1Resource": {
 						"Type": "AWS::Mock::Resource",
 						"Properties": {
 							"Description": "Mock Resource 1",
 							"PropertyInteger": 1,
-							"MockResource2": { "Ref": "mock2Resource" }
+							"MockResource2": { "Ref": "mock-2Resource" }
 						}
 					},
-					"mock2Resource": {
+					"mock-2Resource": {
 						"Type": "AWS::Mock::Resource2",
 						"Properties": {
 							"Description": "Mock Resource 2",
@@ -206,7 +206,7 @@ describe('template', function () {
 			"AWSTemplateFormatVersion": "2010-09-09",
 			"Parameters": {},
 			"Resources": {
-				"mock2Resource": {
+				"mock-2Resource": {
 					"Type": "AWS::Mock::Resource2",
 					"Properties": {
 						"Description": "Mock Resource 2",

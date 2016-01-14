@@ -132,7 +132,7 @@ This list will be updated as support for more resources is added. Fully supporte
 - ~~AWS::Route53::HostedZone~~
 - ~~AWS::Route53::RecordSet~~
 - ~~AWS::Route53::RecordSetGroup~~
-- ~~AWS::S3::Bucket~~
+- *AWS::S3::Bucket*
 - ~~AWS::S3::BucketPolicy~~
 - ~~AWS::SDB::Domain~~
 - ~~AWS::SNS::Topic~~

@@ -19,7 +19,7 @@ var ASG = P.promisifyAll(new AWS.AutoScaling());
 
 function testCall(res, cb) {
 	return res
-		.call
+		.call()
 		.then(function(data) {
 			if(data.ResponseMetadata) {
 				assert(data.ResponseMetadata.RequestId);
