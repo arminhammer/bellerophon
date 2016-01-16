@@ -35,7 +35,7 @@ This list will be updated as support for more resources is added. Fully supporte
 
 - *AWS::CloudTrail::Trail*
 
-- ~~AWS::CloudWatch::Alarm~~
+- *AWS::CloudWatch::Alarm*
 
 - ~~AWS::CodeDeploy::Application~~
 - ~~AWS::CodeDeploy::DeploymentConfig~~

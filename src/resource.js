@@ -15,6 +15,7 @@ var ASG = P.promisifyAll(new AWS.AutoScaling());
 var S3 = P.promisifyAll(new AWS.S3());
 var cloudfront = P.promisifyAll(new AWS.CloudFront());
 var cloudtrail = P.promisifyAll(new AWS.CloudTrail());
+var cloudwatch = P.promisifyAll(new AWS.CloudWatch());
 
 var buildName = function(name) {
 	name = name.replace( /\W/g , '');
@@ -247,7 +248,34 @@ var Resource = {
 			}
 		},
 		CloudWatch: {
-			//Alarm
+			Alarm: {
+				call: function() { return cloudwatch.describeAlarmsAsync({}) },
+				resBlock: 'MetricAlarms',
+				rName: 'AlarmName',
+				construct: function (name, body) {
+					baseConstruct(this, name, body);
+					this.block = {
+						"Type" : "AWS::CloudWatch::Alarm",
+						"Properties" : {
+							"ActionsEnabled" : 'Boolean',
+							"AlarmActions" : [],
+							"AlarmDescription" : 'String',
+							"AlarmName" : 'String',
+							"ComparisonOperator" : 'String',
+							"Dimensions" : [],
+							"EvaluationPeriods" : 'String',
+							"InsufficientDataActions" : [],
+							"MetricName" : 'String',
+							"Namespace" : 'String',
+							"OKActions" : [],
+							"Period" : 'String',
+							"Statistic" : 'String',
+							"Threshold" : 'String',
+							"Unit" : 'String'
+						}
+					}
+				}
+			}
 		},
 		CodeDeploy: {
 			//Application
