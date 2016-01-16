@@ -16,6 +16,7 @@ var S3 = P.promisifyAll(new AWS.S3());
 var cloudfront = P.promisifyAll(new AWS.CloudFront());
 var cloudtrail = P.promisifyAll(new AWS.CloudTrail());
 var cloudwatch = P.promisifyAll(new AWS.CloudWatch());
+var dynamodb = P.promisifyAll(new AWS.DynamoDB());
 
 var buildName = function(name) {
 	name = name.replace( /\W/g , '');
@@ -299,7 +300,26 @@ var Resource = {
 			//SimpleAD
 		},
 		DynamoDB: {
-			//Table
+			/*Table: {
+				call: function() { return dynamodb.listTablesAsync({}) },
+				resBlock: 'TableNames',
+				rName: '',
+				construct: function (name, body) {
+					baseConstruct(this, name, body);
+					this.block = {
+						"Type" : "AWS::DynamoDB::Table",
+						"Properties" : {
+							"AttributeDefinitions" : [ AttributeDefinitions, ... ],
+							"GlobalSecondaryIndexes" : [ GlobalSecondaryIndexes, ... ],
+							"KeySchema" : [ KeySchema, ... ],
+							"LocalSecondaryIndexes" : [ LocalSecondaryIndexes, ... ],
+							"ProvisionedThroughput" : ProvisionedThroughput,
+							"StreamSpecification" : ProvisionedThroughput,
+							"TableName" : String
+						}
+					}
+				}
+			}*/
 		},
 		EC2: {
 			CustomerGateway: {
