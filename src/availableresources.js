@@ -34,7 +34,7 @@ var AvailableResources = {
 		CloudFront: {
 			icon: 'StorageContentDelivery_AmazonCloudFront',
 			types: {
-				//AWS::CloudFront::Distribution
+				Distribution: {}
 			}
 		},
 		CloudTrail: {

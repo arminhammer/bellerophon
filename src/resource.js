@@ -13,6 +13,7 @@ var P = require('bluebird');
 var ec2 = P.promisifyAll(new AWS.EC2());
 var ASG = P.promisifyAll(new AWS.AutoScaling());
 var S3 = P.promisifyAll(new AWS.S3());
+var cloudfront = P.promisifyAll(new AWS.CloudFront());
 
 var buildName = function(name) {
 	name = name.replace( /\W/g , '');
@@ -177,7 +178,38 @@ var Resource = {
 			//AWS::CloudFormation::WaitConditionHandle
 		},
 		CloudFront: {
-			//AWS::CloudFront::Distribution
+			Distribution: {
+				call: function() {
+					return cloudfront
+						.listDistributionsAsync({})
+				},
+				resBlock: 'Items',
+				rName: 'Id',
+				construct: function (name, body) {
+					baseConstruct(this, name, body);
+					this.block = {
+						"Type" : "AWS::CloudFront::Distribution",
+						"Properties" : {
+							"DistributionConfig" : {
+								"Aliases" : [],
+								"CacheBehaviors" : [],
+								"Comment" : 'String',
+								"CustomErrorResponses" : [],
+								"DefaultCacheBehavior" : 'String',
+								"DefaultRootObject" : 'String',
+								"Enabled" : 'Boolean',
+								"Logging" : 'String',
+								"Origins" : [],
+								"PriceClass" : 'String',
+								"Restrictions" : 'Restriction',
+								"ViewerCertificate" : 'ViewerCertificate',
+								"WebACLId" : 'String'
+							}
+						}
+					}
+				}
+			}
+
 		},
 		CloudTrail: {
 			//AWS::CloudTrail::Trail

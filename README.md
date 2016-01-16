@@ -31,7 +31,7 @@ This list will be updated as support for more resources is added. Fully supporte
 - ~~AWS::CloudFormation::WaitCondition~~
 - ~~AWS::CloudFormation::WaitConditionHandle~~
 
-- ~~AWS::CloudFront::Distribution~~
+- *AWS::CloudFront::Distribution*
 
 - ~~AWS::CloudTrail::Trail~~
 
