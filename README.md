@@ -33,7 +33,7 @@ This list will be updated as support for more resources is added. Fully supporte
 
 - *AWS::CloudFront::Distribution*
 
-- ~~AWS::CloudTrail::Trail~~
+- *AWS::CloudTrail::Trail*
 
 - ~~AWS::CloudWatch::Alarm~~
 

@@ -14,6 +14,7 @@ var ec2 = P.promisifyAll(new AWS.EC2());
 var ASG = P.promisifyAll(new AWS.AutoScaling());
 var S3 = P.promisifyAll(new AWS.S3());
 var cloudfront = P.promisifyAll(new AWS.CloudFront());
+var cloudtrail = P.promisifyAll(new AWS.CloudTrail());
 
 var buildName = function(name) {
 	name = name.replace( /\W/g , '');
@@ -38,7 +39,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::AutoScaling::AutoScalingGroup',
+						'Type': 'AutoScalingGroup',
 						'Properties': {
 							'AvailabilityZones': [],
 							'Cooldown': 'String',
@@ -67,7 +68,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::AutoScaling::LaunchConfiguration',
+						'Type': 'LaunchConfiguration',
 						'Properties': {
 							'AssociatePublicIpAddress': 'Boolean',
 							'BlockDeviceMappings': [],
@@ -112,7 +113,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::AutoScaling::LifecycleHook',
+						'Type': 'LifecycleHook',
 						'Properties': {
 							'AutoScalingGroupName': 'String',
 							'DefaultResult': 'String',
@@ -132,7 +133,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::AutoScaling::ScalingPolicy',
+						'Type': 'ScalingPolicy',
 						'Properties': {
 							'AdjustmentType': 'String',
 							'AutoScalingGroupName': 'String',
@@ -154,7 +155,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::AutoScaling::ScheduledAction',
+						'Type': 'ScheduledAction',
 						'Properties': {
 							'AutoScalingGroupName': 'String',
 							'DesiredCapacity': 'Integer',
@@ -169,13 +170,13 @@ var Resource = {
 			}
 		},
 		CloudFormation : {
-			//AWS::CloudFormation::Authentication
-			//AWS::CloudFormation::CustomResource
-			//AWS::CloudFormation::Init
-			//AWS::CloudFormation::Interface
-			//AWS::CloudFormation::Stack
-			//AWS::CloudFormation::WaitCondition
-			//AWS::CloudFormation::WaitConditionHandle
+			//Authentication
+			//CustomResource
+			//Init
+			//Interface
+			//Stack
+			//WaitCondition
+			//WaitConditionHandle
 		},
 		CloudFront: {
 			Distribution: {
@@ -188,7 +189,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type" : "AWS::CloudFront::Distribution",
+						"Type" : "Distribution",
 						"Properties" : {
 							"DistributionConfig" : {
 								"Aliases" : [],
@@ -212,34 +213,65 @@ var Resource = {
 
 		},
 		CloudTrail: {
-			//AWS::CloudTrail::Trail
+			/*: {
+			 call: function() { return .Async({}) },
+			 resBlock: '',
+			 rName: '',
+			 construct: function (name, body) {
+			 baseConstruct(this, name, body);
+			 this.block =
+			 }
+			 }*/
+			Trail: {
+				call: function() { return cloudtrail.describeTrailsAsync({}) },
+				resBlock: 'trailList',
+				rName: 'Name',
+				construct: function (name, body) {
+					baseConstruct(this, name, body);
+					this.block = {
+						"Type" : "AWS::CloudTrail::Trail",
+						"Properties" : {
+							"CloudWatchLogsLogGroupArn" : 'String',
+							"CloudWatchLogsRoleArn" : 'String',
+							"EnableLogFileValidation" : 'Boolean',
+							"IncludeGlobalServiceEvents" : 'Boolean',
+							"IsLogging" : 'Boolean',
+							"KMSKeyId" : 'String',
+							"S3BucketName" : 'String',
+							"S3KeyPrefix" : 'String',
+							"SnsTopicName" : 'String',
+							"Tags" : []
+						}
+					}
+				}
+			}
 		},
 		CloudWatch: {
-			//AWS::CloudWatch::Alarm
+			//Alarm
 		},
 		CodeDeploy: {
-			//AWS::CodeDeploy::Application
-			//AWS::CodeDeploy::DeploymentConfig
-			//AWS::CodeDeploy::DeploymentGroup
+			//Application
+			//DeploymentConfig
+			//DeploymentGroup
 		},
 		CodePipeline: {
-			//AWS::CodePipeline::CustomActionType
-			//AWS::CodePipeline::Pipeline
+			//CustomActionType
+			//Pipeline
 		},
 		Config: {
-			//AWS::Config::ConfigRule
-			//AWS::Config::ConfigurationRecorder
-			//AWS::Config::DeliveryChannel
+			//ConfigRule
+			//ConfigurationRecorder
+			//DeliveryChannel
 		},
 		DataPipeline: {
-			//AWS::DataPipeline::Pipeline
+			//Pipeline
 		},
 		DirectoryService: {
-			//AWS::DirectoryService::MicrosoftAD
-			//AWS::DirectoryService::SimpleAD
+			//MicrosoftAD
+			//SimpleAD
 		},
 		DynamoDB: {
-			//AWS::DynamoDB::Table
+			//Table
 		},
 		EC2: {
 			CustomerGateway: {
@@ -249,7 +281,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::CustomerGateway',
+						'Type': 'CustomerGateway',
 						'Properties': {
 							'BgpAsn': 'Number',
 							'IpAddress': 'String',
@@ -266,7 +298,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::DHCPOptions',
+						'Type': 'DHCPOptions',
 						'Properties': {
 							'DomainName': 'String',
 							'DomainNameServers': [],
@@ -285,7 +317,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::EIP',
+						'Type': 'EIP',
 						'Properties': {
 							'InstanceId': 'String',
 							'Domain': 'String'
@@ -318,7 +350,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::Instance',
+						'Type': 'Instance',
 						'Properties': {
 							'AvailabilityZone': 'String',
 							'BlockDeviceMappings': [],
@@ -356,7 +388,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::InternetGateway',
+						'Type': 'InternetGateway',
 						'Properties': {
 							'Tags': []
 						}
@@ -370,7 +402,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::NetworkAcl',
+						'Type': 'NetworkAcl',
 						'Properties': {
 							'Tags': [],
 							'VpcId': 'String'
@@ -394,7 +426,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::NetworkInterface',
+						'Type': 'NetworkInterface',
 						'Properties': {
 							'Description': 'String',
 							'GroupSet': ['String'],
@@ -425,7 +457,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::PlacementGroup',
+						'Type': 'PlacementGroup',
 						'Properties': {
 							'Strategy': 'String'
 						}
@@ -448,7 +480,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::RouteTable',
+						'Type': 'RouteTable',
 						'Properties': {
 							'VpcId': 'String',
 							'Tags': []
@@ -463,7 +495,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::SecurityGroup',
+						'Type': 'SecurityGroup',
 						'Properties': {
 							'GroupDescription': 'String',
 							'SecurityGroupEgress': [],
@@ -499,7 +531,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::SpotFleet',
+						'Type': 'SpotFleet',
 						'Properties': {
 							'SpotFleetRequestConfigData': 'SpotFleetRequestConfigData'
 						}
@@ -513,7 +545,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::Subnet',
+						'Type': 'Subnet',
 						'Properties': {
 							'AvailabilityZone': 'String',
 							'CidrBlock': 'String',
@@ -550,7 +582,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::Volume',
+						'Type': 'Volume',
 						'Properties': {
 							'AutoEnableIO': 'Boolean',
 							'AvailabilityZone': 'String',
@@ -581,7 +613,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::VPC',
+						'Type': 'VPC',
 						'Properties': {
 							'CidrBlock': 'String',
 							'EnableDnsSupport': 'Boolean',
@@ -608,7 +640,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::VPCEndpoint',
+						'Type': 'VPCEndpoint',
 						'Properties': {
 							'PolicyDocument': {},
 							'RouteTableIds': [],
@@ -634,7 +666,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::VPCPeeringConnection',
+						'Type': 'VPCPeeringConnection',
 						'Properties': {
 							'PeerVpcId': 'String',
 							'Tags': [],
@@ -650,7 +682,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::VPNConnection',
+						'Type': 'VPNConnection',
 						'Properties': {
 							'Type': 'String',
 							'CustomerGatewayId': 'GatewayID',
@@ -677,7 +709,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::EC2::VPNGateway',
+						'Type': 'VPNGateway',
 						'Properties': {
 							'Type': 'String',
 							'Tags': []
@@ -696,89 +728,89 @@ var Resource = {
 			//}
 		},
 		ECS: {
-			//AWS::ECS::Cluster
-			//AWS::ECS::Service
-			//AWS::ECS::TaskDefinition
+			//Cluster
+			//Service
+			//TaskDefinition
 		},
 		EFS: {
-			//AWS::EFS::FileSystem
-			//AWS::EFS::MountTarget
+			//FileSystem
+			//MountTarget
 		},
 		ElastiCache: {
-			//AWS::ElastiCache::CacheCluster
-			//AWS::ElastiCache::ParameterGroup
-			//AWS::ElastiCache::ReplicationGroup
-			//AWS::ElastiCache::SecurityGroup
-			//AWS::ElastiCache::SecurityGroupIngress
-			//AWS::ElastiCache::SubnetGroup
+			//CacheCluster
+			//ParameterGroup
+			//ReplicationGroup
+			//SecurityGroup
+			//SecurityGroupIngress
+			//SubnetGroup
 		},
 		ElasticBeanstalk: {
-			//AWS::ElasticBeanstalk::Application
-			//AWS::ElasticBeanstalk::ApplicationVersion
-			//AWS::ElasticBeanstalk::ConfigurationTemplate
-			//AWS::ElasticBeanstalk::Environment
+			//Application
+			//ApplicationVersion
+			//ConfigurationTemplate
+			//Environment
 		},
 		ElasticLoadBalancing: {
-			//AWS::ElasticLoadBalancing::LoadBalancer
+			//LoadBalancer
 		},
 		IAM: {
-			//AWS::IAM::AccessKey
-			//AWS::IAM::Group
-			//AWS::IAM::InstanceProfile
-			//AWS::IAM::ManagedPolicy
-			//AWS::IAM::Policy
-			//AWS::IAM::Role
-			//AWS::IAM::User
-			//AWS::IAM::UserToGroupAddition
+			//AccessKey
+			//Group
+			//InstanceProfile
+			//ManagedPolicy
+			//Policy
+			//Role
+			//User
+			//UserToGroupAddition
 		},
 		Kinesis: {
-			//AWS::Kinesis::Stream
+			//Stream
 		},
 		KMS: {
-			//AWS::KMS::Key
+			//Key
 		},
 		Lambda: {
-			//AWS::Lambda::EventSourceMapping
-			//AWS::Lambda::Function
-			//AWS::Lambda::Permission
+			//EventSourceMapping
+			//Function
+			//Permission
 		},
 		Logs: {
-			//AWS::Logs::Destination
-			//AWS::Logs::LogGroup
-			//AWS::Logs::LogStream
-			//AWS::Logs::MetricFilter
-			//AWS::Logs::SubscriptionFilter
+			//Destination
+			//LogGroup
+			//LogStream
+			//MetricFilter
+			//SubscriptionFilter
 		},
 		OpsWorks: {
-			//AWS::OpsWorks::App
-			//AWS::OpsWorks::ElasticLoadBalancerAttachment
-			//AWS::OpsWorks::Instance
-			//AWS::OpsWorks::Layer
-			//AWS::OpsWorks::Stack
+			//App
+			//ElasticLoadBalancerAttachment
+			//Instance
+			//Layer
+			//Stack
 		},
 		RDS: {
-			//AWS::RDS::DBCluster
-			//AWS::RDS::DBClusterParameterGroup
-			//AWS::RDS::DBInstance
-			//AWS::RDS::DBParameterGroup
-			//AWS::RDS::DBSecurityGroup
-			//AWS::RDS::DBSecurityGroupIngress
-			//AWS::RDS::DBSubnetGroup
-			//AWS::RDS::EventSubscription
-			//AWS::RDS::OptionGroup
+			//DBCluster
+			//DBClusterParameterGroup
+			//DBInstance
+			//DBParameterGroup
+			//DBSecurityGroup
+			//DBSecurityGroupIngress
+			//DBSubnetGroup
+			//EventSubscription
+			//OptionGroup
 		},
 		Redshift: {
-			//AWS::Redshift::Cluster
-			//AWS::Redshift::ClusterParameterGroup
-			//AWS::Redshift::ClusterSecurityGroup
-			//AWS::Redshift::ClusterSecurityGroupIngress
-			//AWS::Redshift::ClusterSubnetGroup
+			//Cluster
+			//ClusterParameterGroup
+			//ClusterSecurityGroup
+			//ClusterSecurityGroupIngress
+			//ClusterSubnetGroup
 		},
 		Route53: {
-			//AWS::Route53::HealthCheck
-			//AWS::Route53::HostedZone
-			//AWS::Route53::RecordSet
-			//AWS::Route53::RecordSetGroup
+			//HealthCheck
+			//HostedZone
+			//RecordSet
+			//RecordSetGroup
 		},
 		S3: {
 			Bucket: {
@@ -808,7 +840,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::S3::Bucket',
+						'Type': 'Bucket',
 						'Properties': {
 							'AccessControl': 'String',
 							'BucketName': 'String',
@@ -852,7 +884,7 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						'Type': 'AWS::S3::BucketPolicy',
+						'Type': 'BucketPolicy',
 						'Properties': {
 							'Bucket': 'String',
 							'PolicyDocument': 'JSON'
@@ -862,28 +894,28 @@ var Resource = {
 			}
 		},
 		SDB: {
-			//AWS::SDB::Domain
+			//Domain
 		},
 		SNS: {
-			//AWS::SNS::Topic
-			//AWS::SNS::TopicPolicy
+			//Topic
+			//TopicPolicy
 		},
 		SQS: {
-			//AWS::SQS::Queue
-			//AWS::SQS::QueuePolicy
+			//Queue
+			//QueuePolicy
 		},
 		SSM: {
-			//AWS::SSM::Document
+			//Document
 		},
 		WAF: {
-			//AWS::WAF::ByteMatchSet
-			//AWS::WAF::IPSet
-			//AWS::WAF::Rule
-			//AWS::WAF::SqlInjectionMatchSet
-			//AWS::WAF::WebACL
+			//ByteMatchSet
+			//IPSet
+			//Rule
+			//SqlInjectionMatchSet
+			//WebACL
 		},
 		WorkSpaces: {
-			//AWS::WorkSpaces::Workspace
+			//Workspace
 		}
 	}
 };
