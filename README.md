@@ -166,10 +166,10 @@ This list will be updated as support for more resources is added. Fully supporte
 
 - ~~AWS::SDB::Domain~~
 
-- ~~AWS::SNS::Topic~~
+- *AWS::SNS::Topic*
 - ~~AWS::SNS::TopicPolicy~~
 
-- ~~AWS::SQS::Queue~~
+- *AWS::SQS::Queue*
 - ~~AWS::SQS::QueuePolicy~~
 
 - ~~AWS::SSM::Document~~

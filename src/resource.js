@@ -20,6 +20,8 @@ var cloudtrail = P.promisifyAll(new AWS.CloudTrail());
 var cloudwatch = P.promisifyAll(new AWS.CloudWatch());
 var dynamodb = P.promisifyAll(new AWS.DynamoDB());
 var elb = P.promisifyAll(new AWS.ELB());
+var sns = P.promisifyAll(new AWS.SNS());
+var sqs = P.promisifyAll(new AWS.SQS());
 
 var buildName = function(name) {
 	name = name.replace( /\W/g , '');
@@ -976,11 +978,53 @@ var Resource = {
 			//Domain
 		},
 		SNS: {
-			//Topic
+			Topic: {
+				call: function() { return sns.listTopicsAsync({}) },
+				resBlock: 'Topics',
+				rName: 'TopicArn',
+				construct: function (name, body) {
+					baseConstruct(this, name, body);
+					this.block = {
+						"Type" : "AWS::SNS::Topic",
+						"Properties" : {
+							"DisplayName" : 'String',
+							"Subscription" : [],
+							"TopicName" : 'String'
+						}
+					}
+				}
+			}
 			//TopicPolicy
 		},
 		SQS: {
-			//Queue
+			Queue: {
+				call: function() { return sqs
+					.listQueuesAsync({})
+					.then(function(data) {
+						var finalQueueList = { QueueUrls: [] }
+						_.each(data.QueueUrls, function(queue) {
+							finalQueueList.QueueUrls.push({ QueueName: queue });
+						});
+						return finalQueueList;
+					})},
+				resBlock: 'QueueUrls',
+				rName: 'Queue',
+				construct: function (name, body) {
+					baseConstruct(this, name, body);
+					this.block = {
+						"Type": "AWS::SQS::Queue",
+						"Properties": {
+							"DelaySeconds": 'Integer',
+							"MaximumMessageSize": 'Integer',
+							"MessageRetentionPeriod": 'Integer',
+							"QueueName": 'String',
+							"ReceiveMessageWaitTimeSeconds": 'Integer',
+							"RedrivePolicy": 'RedrivePolicy',
+							"VisibilityTimeout": 'Integer'
+						}
+					}
+				}
+			}
 			//QueuePolicy
 		},
 		SSM: {
