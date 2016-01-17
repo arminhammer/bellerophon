@@ -42,20 +42,6 @@ var dialog = electron.dialog;
 var template = new Template();
 var availableResources = AvailableResources.getBlankAvailableResources();
 
-/*
-var cleanupAvailableResource = function(available) {
-	return available;
-};
-
-ipcMain.on('refresh-resources', function(event) {
-	availableResources = AvailableResources.getBlankAvailableResources();
-	updateResources()
-		.then(function() {
-			logger.log('REFRESHING');
-			event.sender.send('update-resources', cleanupAvailableResource(availableResources));
-		});
-});*/
-
 function updateResource(primary, secondary) {
 	var resource = Resource.resources[primary][secondary];
 	return resource
@@ -95,21 +81,6 @@ function updateResources(primaryKey) {
 	return P.all(resArray);
 }
 
-/*function updateAllResources() {
-	var resArray = [];
-	_.each(Resource.resources, function(primaryBlock, primaryKey) {
-		_.each(Resource.resources[primaryKey], function(resource, secondaryKey) {
-			resArray.push(updateResource(primaryKey, secondaryKey));
-		});
-	});
-	return P.all(resArray);
-}*/
-
-/*ipcMain.on('update-resource-old', function(event, res) {
-	logger.log('Got update-resource-old request');
-	updateResources(res.primary, res.secondary);
-});*/
-
 ipcMain.on('update-resource', function(event, res) {
 	logger.log('Got update-resource request');
 	//logger.log(res.primary);
@@ -121,15 +92,6 @@ ipcMain.on('update-resource', function(event, res) {
 		event.sender.send('update-resources', { resources: availableResources, primary: res.primary });
 	});
 });
-
-/*ipcMain.on('update-resources', function(event) {
-	logger.log('Got update-resources request');
-	updateAllResources()
-	.then(function() {
-		logger.log('SENDING');
-		event.sender.send('update-resources', cleanupAvailableResource(availableResources));
-	});
-});*/
 
 ipcMain.on('send-log', function(event, arg) {
 	logger.log('Received log request');
@@ -175,8 +137,8 @@ ipcMain.on('add-to-template-request', function(event, res) {
 	logger.log('Adding resource to template');
 	//logger.log(availableResources);
 	availableResources[res.key].types[res.subKey][res.resource.id].inTemplate = true;
-	logger.log('avail');
-	logger.log(JSON.stringify(availableResources));
+	logger.log('avail after add');
+	logger.log(availableResources[res.key].types[res.subKey][res.resource.id]);
 	template.addResource(res.resource);
 	if(templateWindow) {
 		templateWindow.webContents.send('update-template', template.body);
@@ -187,7 +149,8 @@ ipcMain.on('add-to-template-request', function(event, res) {
 ipcMain.on('remove-from-template-request', function(event, res) {
 	logger.log('Removed resource from template');
 	availableResources[res.key].types[res.subKey][res.resource.id].inTemplate = false;
-	logger.log(availableResources[res.key].types[res.subKey][res.resource.id].inTemplate);
+	logger.log('avail after remove');
+	logger.log(availableResources[res.key].types[res.subKey][res.resource.id]);
 	template.removeResource(res.resource);
 	if(templateWindow) {
 		templateWindow.webContents.send('update-template', template.body);

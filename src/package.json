@@ -1,6 +1,6 @@
 {
   "name": "Bellerophon",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "main": "index.js",
   "dependencies": {
     "aws-sdk": "^2.2.22",

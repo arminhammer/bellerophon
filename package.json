@@ -1,8 +1,8 @@
 {
   "name": "Bellerophon",
   "productName": "Bellerophon",
-  "version": "0.1.0",
-  "description": "My badass app",
+  "version": "0.1.2",
+  "description": "AWS CloudFormation generator based off of existing account resources.",
   "license": "MIT",
   "repository": "arminhammer/bellerophon",
   "author": {
@@ -10,7 +10,7 @@
     "email": "arminhammer@gmail.com",
     "url": "github.com/arminhammer/bellerophon"
   },
-  "electronVersion": "0.35.0",
+  "electronVersion": "0.36.0",
   "scripts": {
     "test": "xo",
     "start": "electron --debug src",

@@ -58,12 +58,17 @@ var PanelComponent = {
 							m('th.col-xs-7', 'Value')
 						]),
 						_.map(controller.resource.body, function(pVal, pKey) {
+							var disabled = "disabled";
+							if(controller.resource.inTemplate) {
+								console.log('Resource now in template, enabling param...');
+								disabled = ""
+							}
 							var formattedPVal = pVal;
 							if(_.isObject(pVal)) {
 								formattedPVal = JSON.stringify(pVal, null, '');
 								pVal = JSON.stringify(pVal, null, '');
 							}
-							var paramCheckbox = m('input[type=checkbox]', {
+							var paramCheckbox = m('input', { type: 'checkbox', disabled: disabled }, {
 								checked: controller.resource.templateParams[pKey],
 								onclick: m.withAttr('checked', function() {
 									controller.log('Checked ' + controller.resource);
