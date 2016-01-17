@@ -17,6 +17,7 @@ var cloudfront = P.promisifyAll(new AWS.CloudFront());
 var cloudtrail = P.promisifyAll(new AWS.CloudTrail());
 var cloudwatch = P.promisifyAll(new AWS.CloudWatch());
 var dynamodb = P.promisifyAll(new AWS.DynamoDB());
+var elb = P.promisifyAll(new AWS.ELB());
 
 var buildName = function(name) {
 	name = name.replace( /\W/g , '');
@@ -301,25 +302,25 @@ var Resource = {
 		},
 		DynamoDB: {
 			/*Table: {
-				call: function() { return dynamodb.listTablesAsync({}) },
-				resBlock: 'TableNames',
-				rName: '',
-				construct: function (name, body) {
-					baseConstruct(this, name, body);
-					this.block = {
-						"Type" : "AWS::DynamoDB::Table",
-						"Properties" : {
-							"AttributeDefinitions" : [ AttributeDefinitions, ... ],
-							"GlobalSecondaryIndexes" : [ GlobalSecondaryIndexes, ... ],
-							"KeySchema" : [ KeySchema, ... ],
-							"LocalSecondaryIndexes" : [ LocalSecondaryIndexes, ... ],
-							"ProvisionedThroughput" : ProvisionedThroughput,
-							"StreamSpecification" : ProvisionedThroughput,
-							"TableName" : String
-						}
-					}
-				}
-			}*/
+			 call: function() { return dynamodb.listTablesAsync({}) },
+			 resBlock: 'TableNames',
+			 rName: '',
+			 construct: function (name, body) {
+			 baseConstruct(this, name, body);
+			 this.block = {
+			 "Type" : "AWS::DynamoDB::Table",
+			 "Properties" : {
+			 "AttributeDefinitions" : [ AttributeDefinitions, ... ],
+			 "GlobalSecondaryIndexes" : [ GlobalSecondaryIndexes, ... ],
+			 "KeySchema" : [ KeySchema, ... ],
+			 "LocalSecondaryIndexes" : [ LocalSecondaryIndexes, ... ],
+			 "ProvisionedThroughput" : ProvisionedThroughput,
+			 "StreamSpecification" : ProvisionedThroughput,
+			 "TableName" : String
+			 }
+			 }
+			 }
+			 }*/
 		},
 		EC2: {
 			CustomerGateway: {
@@ -799,7 +800,35 @@ var Resource = {
 			//Environment
 		},
 		ElasticLoadBalancing: {
-			//LoadBalancer
+			LoadBalancer: {
+				call: function() { return elb.describeLoadBalancersAsync({}) },
+				resBlock: 'LoadBalancerDescriptions',
+				rName: 'LoadBalancerName',
+				construct: function (name, body) {
+					baseConstruct(this, name, body);
+					this.block = {
+						"Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+						"Properties": {
+							"AccessLoggingPolicy" : 'AccessLoggingPolicy',
+							"AppCookieStickinessPolicy" : [],
+							"AvailabilityZones" : [],
+							"ConnectionDrainingPolicy" : 'ConnectionDrainingPolicy',
+							"ConnectionSettings" : 'ConnectionSettings',
+							"CrossZone" : 'Boolean',
+							"HealthCheck" : 'HealthCheck',
+							"Instances" : [],
+							"LBCookieStickinessPolicy" : [],
+							"LoadBalancerName" : 'String',
+							"Listeners" : [],
+							"Policies" : [],
+							"Scheme" : 'String',
+							"SecurityGroups" : [],
+							"Subnets" : [],
+							"Tags" : []
+						}
+					}
+				}
+			}
 		},
 		IAM: {
 			//AccessKey
