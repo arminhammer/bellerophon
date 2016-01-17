@@ -6,7 +6,9 @@
 var _ = require('lodash');
 
 var AWS = require('aws-sdk');
-AWS.config.region = 'us-east-1';
+if(!AWS.config.region) {
+	AWS.config.region = 'us-east-1';
+};
 
 var P = require('bluebird');
 

@@ -7,6 +7,9 @@ Bellerophon will make AWS SDK calls to get information about the resources in yo
 Once the resources are retrieved, you can add them to the CloudFormation template. You can view the template by going to File > Show Template. Once you are
 happy with the design of the template, you can choose File > Save Template.
 
+Bellerophon will use region us-east-1 by default. If you want to use a different region, set your local configuration to use another region. The easiest way
+to configure this is to set the $AWS_REGION env variable.
+
 ## Installation
 1. Make sure you have the awscli installed and configured. Bellerophon assumes that ~/.aws/config and ~/.aws/credentials exist and are configured correctly.
 2. Download Belleraphon from the https://github.com/arminhammer/bellerophon/releases page. Windows, Linux, and OSX are supported.
@@ -106,7 +109,7 @@ This list will be updated as support for more resources is added. Fully supporte
 - ~~AWS::ElasticBeanstalk::ConfigurationTemplate~~
 - ~~AWS::ElasticBeanstalk::Environment~~
 
-- ~~AWS::ElasticLoadBalancing::LoadBalancer~~
+- *AWS::ElasticLoadBalancing::LoadBalancer*
 
 - ~~AWS::IAM::AccessKey~~
 - ~~AWS::IAM::Group~~
