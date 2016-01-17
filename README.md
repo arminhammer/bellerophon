@@ -1,6 +1,6 @@
 # Bellerophon
 
-# ![Bellerophon](https://cdn.rawgit.com/arminhammer/bellerophon/master/src/icons/bellerophon.svg) 
+<img src="https://cdn.rawgit.com/arminhammer/bellerophon/master/src/icons/bellerophon.svg" width="150">
 
 ## Usage
 Bellerophon will make AWS SDK calls to get information about the resources in your AWS environment. 
