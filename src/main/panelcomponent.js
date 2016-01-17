@@ -48,7 +48,7 @@ var PanelComponent = {
 								}
 							})
 						}),
-						m('span[data-toggle="tooltip"][data-placement="left"]', {title: controller.resource.id, config: controller.addTooltip }, _.trunc(controller.resource.id,40))
+						m('span[data-toggle="tooltip"][data-placement="left"]', {title: controller.resource.id, config: controller.addTooltip }, _.truncate(controller.resource.id,40))
 					])
 				]),
 				m('.panel-body', [
