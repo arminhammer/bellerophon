@@ -5,6 +5,7 @@
 'use strict';
 
 var _ = require('lodash');
+var Resource = require('./resource');
 
 var Template = function() {
 
@@ -14,15 +15,16 @@ var Template = function() {
 		_.forIn(object, function (val, key) {
 			if(_.isEqual(val, oldPattern)) {
 				object[key] = newPattern
+			} else if (_.isString(val) && _.isEqual(val.replace(/\W/g, ''), oldPattern)) {
+				object[key] = newPattern;
 			}
-			if (_.isArray(val)) {
+			else if (_.isArray(val)) {
 				val.forEach(function(el) {
 					if (_.isObject(el)) {
 						recursiveReplace(el, newPattern, oldPattern);
 					}
 				});
-			}
-			if (_.isObject(object[key])) {
+			} else if (_.isObject(object[key])) {
 				recursiveReplace(object[key], newPattern, oldPattern);
 			}
 		});
@@ -31,7 +33,7 @@ var Template = function() {
 	function populateBlock(block, body) {
 		block.Properties = _.reduce(block.Properties, function(result, n, key) {
 			if(body[key]) {
-			result[key] = body[key];
+				result[key] = body[key];
 			}
 			return result;
 		}, {});
