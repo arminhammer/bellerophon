@@ -35,7 +35,8 @@ var PanelComponent = {
 			[m('.panel.panel-warning', [
 				m('.panel-heading', [
 					m('h3.panel-title', [
-						m('input[type=checkbox]', {
+						m('input', {
+							type: 'checkbox',
 							checked: controller.resource.inTemplate,
 							name: controller.resource.id,
 							onclick: m.withAttr('checked', function(check) {
@@ -58,19 +59,16 @@ var PanelComponent = {
 							m('th.col-xs-7', 'Value')
 						]),
 						_.map(controller.resource.body, function(pVal, pKey) {
-							var disabled = "disabled";
-							if(controller.resource.inTemplate) {
-								console.log('Resource now in template, enabling param...');
-								disabled = ""
-							}
 							var formattedPVal = pVal;
 							if(_.isObject(pVal)) {
 								formattedPVal = JSON.stringify(pVal, null, '');
 								pVal = JSON.stringify(pVal, null, '');
 							}
-							var paramCheckbox = m('input', { type: 'checkbox', disabled: disabled }, {
+							var paramCheckbox = m('input', {
+								type: 'checkbox',
 								checked: controller.resource.templateParams[pKey],
-								onclick: m.withAttr('checked', function() {
+								onclick: m.withAttr('checked', function(check) {
+									console.log('Checked param ' + check);
 									controller.log('Checked ' + controller.resource);
 									controller.toggleParamInTemplate({resource: controller.resource, key: controller.key, subKey: controller.subKey, pKey: pKey });
 								})

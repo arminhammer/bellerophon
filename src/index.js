@@ -138,8 +138,11 @@ ipcMain.on('add-to-template-request', function(event, res) {
 	//logger.log(availableResources);
 	availableResources[res.key].types[res.subKey][res.resource.id].inTemplate = true;
 	logger.log('avail after add');
-	logger.log(availableResources[res.key].types[res.subKey][res.resource.id]);
+	logger.log(availableResources[res.key].types[res.subKey][res.resource.id].templateParams);
 	template.addResource(res.resource);
+	_.each(availableResources[res.key].types[res.subKey][res.resource.id].templateParams, function(param, key) {
+		if(param) { template.addParam(res.resource, key) }
+	});
 	if(templateWindow) {
 		templateWindow.webContents.send('update-template', template.body);
 	}
@@ -151,6 +154,9 @@ ipcMain.on('remove-from-template-request', function(event, res) {
 	availableResources[res.key].types[res.subKey][res.resource.id].inTemplate = false;
 	logger.log('avail after remove');
 	logger.log(availableResources[res.key].types[res.subKey][res.resource.id]);
+	_.each(availableResources[res.key].types[res.subKey][res.resource.id].templateParams, function(param, key) {
+		if(param) { template.removeParam(res.resource, key) };
+	});
 	template.removeResource(res.resource);
 	if(templateWindow) {
 		templateWindow.webContents.send('update-template', template.body);
