@@ -26,13 +26,7 @@ This list will be updated as support for more resources is added. Fully supporte
 - **AWS::AutoScaling::ScalingPolicy**
 - **AWS::AutoScaling::ScheduledAction**
 
-- ~~AWS::CloudFormation::Authentication~~
-- ~~AWS::CloudFormation::CustomResource~~
-- ~~AWS::CloudFormation::Init~~
-- ~~AWS::CloudFormation::Interface~~
-- ~~AWS::CloudFormation::Stack~~
-- ~~AWS::CloudFormation::WaitCondition~~
-- ~~AWS::CloudFormation::WaitConditionHandle~~
+- *AWS::CloudFormation::Stack*
 
 - *AWS::CloudFront::Distribution*
 

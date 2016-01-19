@@ -22,6 +22,7 @@ var dynamodb = P.promisifyAll(new AWS.DynamoDB());
 var elb = P.promisifyAll(new AWS.ELB());
 var sns = P.promisifyAll(new AWS.SNS());
 var sqs = P.promisifyAll(new AWS.SQS());
+var cloudformation = P.promisifyAll(new AWS.CloudFormation());
 
 var buildName = function(name) {
 	name = name.replace( /\W/g , '');
@@ -181,7 +182,23 @@ var Resource = {
 			//CustomResource
 			//Init
 			//Interface
-			//Stack
+			Stack: {
+				call: function() { return cloudformation.describeStacksAsync({}) },
+				resBlock: 'Stacks',
+				rName: 'StackName',
+				construct: function (name, body) {
+					baseConstruct(this, name, body);
+					this.block = {
+						"Type" : "AWS::CloudFormation::Stack",
+						"Properties" : {
+							"NotificationARNs" : [],
+							"Parameters" : {},
+							"TemplateURL" : 'String',
+							"TimeoutInMinutes" : 'String'
+						}
+					}
+				}
+			}
 			//WaitCondition
 			//WaitConditionHandle
 		},
