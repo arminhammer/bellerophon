@@ -105,13 +105,13 @@ This list will be updated as support for more resources is added. Fully supporte
 
 - *AWS::ElasticLoadBalancing::LoadBalancer*
 
-- ~~AWS::IAM::AccessKey~~
-- ~~AWS::IAM::Group~~
-- ~~AWS::IAM::InstanceProfile~~
-- ~~AWS::IAM::ManagedPolicy~~
-- ~~AWS::IAM::Policy~~
-- ~~AWS::IAM::Role~~
-- ~~AWS::IAM::User~~
+- *AWS::IAM::AccessKey*
+- *AWS::IAM::Group*
+- *AWS::IAM::InstanceProfile*
+- *AWS::IAM::ManagedPolicy*
+- ~~AWS::IAM::Policy*
+- *AWS::IAM::Role*
+- *AWS::IAM::User*
 - ~~AWS::IAM::UserToGroupAddition~~
 
 - ~~AWS::Kinesis::Stream~~
