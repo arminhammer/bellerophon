@@ -150,8 +150,8 @@ This list will be updated as support for more resources is added. Fully supporte
 - ~~AWS::Redshift::ClusterSecurityGroupIngress~~
 - ~~AWS::Redshift::ClusterSubnetGroup~~
 
-- ~~AWS::Route53::HealthCheck~~
-- ~~AWS::Route53::HostedZone~~
+- *AWS::Route53::HealthCheck*
+- *AWS::Route53::HostedZone*
 - ~~AWS::Route53::RecordSet~~
 - ~~AWS::Route53::RecordSetGroup~~
 

@@ -23,6 +23,7 @@ var elb = P.promisifyAll(new AWS.ELB());
 var sns = P.promisifyAll(new AWS.SNS());
 var sqs = P.promisifyAll(new AWS.SQS());
 var cloudformation = P.promisifyAll(new AWS.CloudFormation());
+var route53 = P.promisifyAll(new AWS.Route53());
 
 var buildName = function(name) {
 	name = name.replace( /\W/g , '');
@@ -905,10 +906,56 @@ var Resource = {
 			//ClusterSubnetGroup
 		},
 		Route53: {
-			//HealthCheck
-			//HostedZone
-			//RecordSet
-			//RecordSetGroup
+			HealthCheck: {
+				call: function() { return route53.listHealthChecksAsync({}) },
+				resBlock: 'HealthChecks',
+				rName: 'Id',
+				construct: function (name, body) {
+					baseConstruct(this, name, body);
+					this.block = {
+						"Type" : "AWS::Route53::HealthCheck",
+						"Properties" : {
+							"HealthCheckConfig" : {},
+							"HealthCheckTags" : []
+						}
+					}
+				}
+			},
+			HostedZone: {
+				call: function() { return route53.listHostedZonesAsync({}) },
+				resBlock: 'HostedZones',
+				rName: 'Id',
+				construct: function (name, body) {
+					baseConstruct(this, name, body);
+					this.block = {
+						"Type" : "AWS::Route53::HostedZone",
+						"Properties" : {
+							"HostedZoneConfig" : {},
+							"HostedZoneTags" : [],
+							"Name" : 'String',
+							"VPCs" : []
+						}
+					}
+				}
+			}
+			/*RecordSet: {
+				call: function() { return route53.listResourceRecordSetsAsync({}) },
+				resBlock: '',
+				rName: '',
+				construct: function (name, body) {
+					baseConstruct(this, name, body);
+					this.block =
+				}
+			},
+			RecordSetGroup: {
+				call: function() { return .Async({}) },
+				resBlock: '',
+				rName: '',
+				construct: function (name, body) {
+					baseConstruct(this, name, body);
+					this.block =
+				}
+			}*/
 		},
 		S3: {
 			Bucket: {
