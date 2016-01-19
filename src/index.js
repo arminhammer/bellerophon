@@ -155,7 +155,7 @@ ipcMain.on('remove-from-template-request', function(event, res) {
 	logger.log('avail after remove');
 	logger.log(availableResources[res.key].types[res.subKey][res.resource.id]);
 	_.each(availableResources[res.key].types[res.subKey][res.resource.id].templateParams, function(param, key) {
-		if(param) { template.removeParam(res.resource, key) };
+		if(param) { template.removeParam(res.resource, key) }
 	});
 	template.removeResource(res.resource);
 	if(templateWindow) {

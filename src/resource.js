@@ -8,7 +8,7 @@ var _ = require('lodash');
 var AWS = require('aws-sdk');
 if(!AWS.config.region) {
 	AWS.config.region = 'us-east-1';
-};
+}
 
 var P = require('bluebird');
 
@@ -18,7 +18,7 @@ var S3 = P.promisifyAll(new AWS.S3());
 var cloudfront = P.promisifyAll(new AWS.CloudFront());
 var cloudtrail = P.promisifyAll(new AWS.CloudTrail());
 var cloudwatch = P.promisifyAll(new AWS.CloudWatch());
-var dynamodb = P.promisifyAll(new AWS.DynamoDB());
+//var dynamodb = P.promisifyAll(new AWS.DynamoDB());
 var elb = P.promisifyAll(new AWS.ELB());
 var sns = P.promisifyAll(new AWS.SNS());
 var sqs = P.promisifyAll(new AWS.SQS());
@@ -191,12 +191,12 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type" : "AWS::CloudFormation::Stack",
-						"Properties" : {
-							"NotificationARNs" : [],
-							"Parameters" : {},
-							"TemplateURL" : 'String',
-							"TimeoutInMinutes" : 'String'
+						'Type' : 'AWS::CloudFormation::Stack',
+						'Properties' : {
+							'NotificationARNs' : [],
+							'Parameters' : {},
+							'TemplateURL' : 'String',
+							'TimeoutInMinutes' : 'String'
 						}
 					}
 				}
@@ -215,22 +215,22 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type" : "Distribution",
-						"Properties" : {
-							"DistributionConfig" : {
-								"Aliases" : [],
-								"CacheBehaviors" : [],
-								"Comment" : 'String',
-								"CustomErrorResponses" : [],
-								"DefaultCacheBehavior" : 'String',
-								"DefaultRootObject" : 'String',
-								"Enabled" : 'Boolean',
-								"Logging" : 'String',
-								"Origins" : [],
-								"PriceClass" : 'String',
-								"Restrictions" : 'Restriction',
-								"ViewerCertificate" : 'ViewerCertificate',
-								"WebACLId" : 'String'
+						'Type' : 'Distribution',
+						'Properties' : {
+							'DistributionConfig' : {
+								'Aliases' : [],
+								'CacheBehaviors' : [],
+								'Comment' : 'String',
+								'CustomErrorResponses' : [],
+								'DefaultCacheBehavior' : 'String',
+								'DefaultRootObject' : 'String',
+								'Enabled' : 'Boolean',
+								'Logging' : 'String',
+								'Origins' : [],
+								'PriceClass' : 'String',
+								'Restrictions' : 'Restriction',
+								'ViewerCertificate' : 'ViewerCertificate',
+								'WebACLId' : 'String'
 							}
 						}
 					}
@@ -255,18 +255,18 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type" : "AWS::CloudTrail::Trail",
-						"Properties" : {
-							"CloudWatchLogsLogGroupArn" : 'String',
-							"CloudWatchLogsRoleArn" : 'String',
-							"EnableLogFileValidation" : 'Boolean',
-							"IncludeGlobalServiceEvents" : 'Boolean',
-							"IsLogging" : 'Boolean',
-							"KMSKeyId" : 'String',
-							"S3BucketName" : 'String',
-							"S3KeyPrefix" : 'String',
-							"SnsTopicName" : 'String',
-							"Tags" : []
+						'Type' : 'AWS::CloudTrail::Trail',
+						'Properties' : {
+							'CloudWatchLogsLogGroupArn' : 'String',
+							'CloudWatchLogsRoleArn' : 'String',
+							'EnableLogFileValidation' : 'Boolean',
+							'IncludeGlobalServiceEvents' : 'Boolean',
+							'IsLogging' : 'Boolean',
+							'KMSKeyId' : 'String',
+							'S3BucketName' : 'String',
+							'S3KeyPrefix' : 'String',
+							'SnsTopicName' : 'String',
+							'Tags' : []
 						}
 					}
 				}
@@ -280,23 +280,23 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type" : "AWS::CloudWatch::Alarm",
-						"Properties" : {
-							"ActionsEnabled" : 'Boolean',
-							"AlarmActions" : [],
-							"AlarmDescription" : 'String',
-							"AlarmName" : 'String',
-							"ComparisonOperator" : 'String',
-							"Dimensions" : [],
-							"EvaluationPeriods" : 'String',
-							"InsufficientDataActions" : [],
-							"MetricName" : 'String',
-							"Namespace" : 'String',
-							"OKActions" : [],
-							"Period" : 'String',
-							"Statistic" : 'String',
-							"Threshold" : 'String',
-							"Unit" : 'String'
+						'Type' : 'AWS::CloudWatch::Alarm',
+						'Properties' : {
+							'ActionsEnabled' : 'Boolean',
+							'AlarmActions' : [],
+							'AlarmDescription' : 'String',
+							'AlarmName' : 'String',
+							'ComparisonOperator' : 'String',
+							'Dimensions' : [],
+							'EvaluationPeriods' : 'String',
+							'InsufficientDataActions' : [],
+							'MetricName' : 'String',
+							'Namespace' : 'String',
+							'OKActions' : [],
+							'Period' : 'String',
+							'Statistic' : 'String',
+							'Threshold' : 'String',
+							'Unit' : 'String'
 						}
 					}
 				}
@@ -331,15 +331,15 @@ var Resource = {
 			 construct: function (name, body) {
 			 baseConstruct(this, name, body);
 			 this.block = {
-			 "Type" : "AWS::DynamoDB::Table",
-			 "Properties" : {
-			 "AttributeDefinitions" : [ AttributeDefinitions, ... ],
-			 "GlobalSecondaryIndexes" : [ GlobalSecondaryIndexes, ... ],
-			 "KeySchema" : [ KeySchema, ... ],
-			 "LocalSecondaryIndexes" : [ LocalSecondaryIndexes, ... ],
-			 "ProvisionedThroughput" : ProvisionedThroughput,
-			 "StreamSpecification" : ProvisionedThroughput,
-			 "TableName" : String
+			 'Type' : 'AWS::DynamoDB::Table',
+			 'Properties' : {
+			 'AttributeDefinitions' : [ AttributeDefinitions, ... ],
+			 'GlobalSecondaryIndexes' : [ GlobalSecondaryIndexes, ... ],
+			 'KeySchema' : [ KeySchema, ... ],
+			 'LocalSecondaryIndexes' : [ LocalSecondaryIndexes, ... ],
+			 'ProvisionedThroughput' : ProvisionedThroughput,
+			 'StreamSpecification' : ProvisionedThroughput,
+			 'TableName' : String
 			 }
 			 }
 			 }
@@ -830,24 +830,24 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type": "AWS::ElasticLoadBalancing::LoadBalancer",
-						"Properties": {
-							"AccessLoggingPolicy" : 'AccessLoggingPolicy',
-							"AppCookieStickinessPolicy" : [],
-							"AvailabilityZones" : [],
-							"ConnectionDrainingPolicy" : 'ConnectionDrainingPolicy',
-							"ConnectionSettings" : 'ConnectionSettings',
-							"CrossZone" : 'Boolean',
-							"HealthCheck" : 'HealthCheck',
-							"Instances" : [],
-							"LBCookieStickinessPolicy" : [],
-							"LoadBalancerName" : 'String',
-							"Listeners" : [],
-							"Policies" : [],
-							"Scheme" : 'String',
-							"SecurityGroups" : [],
-							"Subnets" : [],
-							"Tags" : []
+						'Type': 'AWS::ElasticLoadBalancing::LoadBalancer',
+						'Properties': {
+							'AccessLoggingPolicy' : 'AccessLoggingPolicy',
+							'AppCookieStickinessPolicy' : [],
+							'AvailabilityZones' : [],
+							'ConnectionDrainingPolicy' : 'ConnectionDrainingPolicy',
+							'ConnectionSettings' : 'ConnectionSettings',
+							'CrossZone' : 'Boolean',
+							'HealthCheck' : 'HealthCheck',
+							'Instances' : [],
+							'LBCookieStickinessPolicy' : [],
+							'LoadBalancerName' : 'String',
+							'Listeners' : [],
+							'Policies' : [],
+							'Scheme' : 'String',
+							'SecurityGroups' : [],
+							'Subnets' : [],
+							'Tags' : []
 						}
 					}
 				}
@@ -862,11 +862,11 @@ var Resource = {
 					baseConstruct(this, name, body);
 					this.block =
 					{
-						"Type": "AWS::IAM::AccessKey",
-						"Properties": {
-							"Serial": 'Integer',
-							"Status": 'String',
-							"UserName": 'String'
+						'Type': 'AWS::IAM::AccessKey',
+						'Properties': {
+							'Serial': 'Integer',
+							'Status': 'String',
+							'UserName': 'String'
 						}
 					}
 				}
@@ -878,11 +878,11 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type": "AWS::IAM::Group",
-						"Properties": {
-							"ManagedPolicyArns": [],
-							"Path": 'String',
-							"Policies": []
+						'Type': 'AWS::IAM::Group',
+						'Properties': {
+							'ManagedPolicyArns': [],
+							'Path': 'String',
+							'Policies': []
 						}
 					}
 				}
@@ -894,10 +894,10 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type": "AWS::IAM::InstanceProfile",
-						"Properties": {
-							"Path": 'String',
-							"Roles": []
+						'Type': 'AWS::IAM::InstanceProfile',
+						'Properties': {
+							'Path': 'String',
+							'Roles': []
 						}
 					}
 				}
@@ -909,14 +909,14 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type": "AWS::IAM::ManagedPolicy",
-						"Properties": {
-							"Description" : 'String',
-							"Groups" : [],
-							"Path" : 'String',
-							"PolicyDocument" : {},
-							"Roles" : [],
-							"Users" : []
+						'Type': 'AWS::IAM::ManagedPolicy',
+						'Properties': {
+							'Description' : 'String',
+							'Groups' : [],
+							'Path' : 'String',
+							'PolicyDocument' : {},
+							'Roles' : [],
+							'Users' : []
 						}
 					}
 				}
@@ -928,13 +928,13 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type": "AWS::IAM::Policy",
-						"Properties": {
-							"Groups" : [],
-							"PolicyDocument" : {},
-							"PolicyName" : 'String',
-							"Roles" : [],
-							"Users" : []
+						'Type': 'AWS::IAM::Policy',
+						'Properties': {
+							'Groups' : [],
+							'PolicyDocument' : {},
+							'PolicyName' : 'String',
+							'Roles' : [],
+							'Users' : []
 						}
 					}
 				}
@@ -946,12 +946,12 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type": "AWS::IAM::Role",
-						"Properties": {
-							"AssumeRolePolicyDocument": {},
-							"ManagedPolicyArns": [],
-							"Path": 'String',
-							"Policies": []
+						'Type': 'AWS::IAM::Role',
+						'Properties': {
+							'AssumeRolePolicyDocument': {},
+							'ManagedPolicyArns': [],
+							'Path': 'String',
+							'Policies': []
 						}
 					}
 				}
@@ -963,17 +963,17 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type": "AWS::IAM::User",
-						"Properties": {
-							"Groups": [],
-							"LoginProfile": 'LoginProfile Type',
-							"ManagedPolicyArns": [],
-							"Path": 'String',
-							"Policies": []
+						'Type': 'AWS::IAM::User',
+						'Properties': {
+							'Groups': [],
+							'LoginProfile': 'LoginProfile Type',
+							'ManagedPolicyArns': [],
+							'Path': 'String',
+							'Policies': []
 						}
 					}
 				}
-			},
+			}
 			/*UserToGroupAddition: {
 				call: function() { return .Async({}) },
 				resBlock: '',
@@ -981,10 +981,10 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type": "AWS::IAM::UserToGroupAddition",
-						"Properties": {
-							"GroupName": String,
-							"Users": [ User1, ... ]
+						'Type': 'AWS::IAM::UserToGroupAddition',
+						'Properties': {
+							'GroupName': String,
+							'Users': [ User1, ... ]
 						}
 					}
 				}
@@ -1041,10 +1041,10 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type" : "AWS::Route53::HealthCheck",
-						"Properties" : {
-							"HealthCheckConfig" : {},
-							"HealthCheckTags" : []
+						'Type' : 'AWS::Route53::HealthCheck',
+						'Properties' : {
+							'HealthCheckConfig' : {},
+							'HealthCheckTags' : []
 						}
 					}
 				}
@@ -1056,12 +1056,12 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type" : "AWS::Route53::HostedZone",
-						"Properties" : {
-							"HostedZoneConfig" : {},
-							"HostedZoneTags" : [],
-							"Name" : 'String',
-							"VPCs" : []
+						'Type' : 'AWS::Route53::HostedZone',
+						'Properties' : {
+							'HostedZoneConfig' : {},
+							'HostedZoneTags' : [],
+							'Name' : 'String',
+							'VPCs' : []
 						}
 					}
 				}
@@ -1177,11 +1177,11 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type" : "AWS::SNS::Topic",
-						"Properties" : {
-							"DisplayName" : 'String',
-							"Subscription" : [],
-							"TopicName" : 'String'
+						'Type' : 'AWS::SNS::Topic',
+						'Properties' : {
+							'DisplayName' : 'String',
+							'Subscription' : [],
+							'TopicName' : 'String'
 						}
 					}
 				}
@@ -1204,15 +1204,15 @@ var Resource = {
 				construct: function (name, body) {
 					baseConstruct(this, name, body);
 					this.block = {
-						"Type": "AWS::SQS::Queue",
-						"Properties": {
-							"DelaySeconds": 'Integer',
-							"MaximumMessageSize": 'Integer',
-							"MessageRetentionPeriod": 'Integer',
-							"QueueName": 'String',
-							"ReceiveMessageWaitTimeSeconds": 'Integer',
-							"RedrivePolicy": 'RedrivePolicy',
-							"VisibilityTimeout": 'Integer'
+						'Type': 'AWS::SQS::Queue',
+						'Properties': {
+							'DelaySeconds': 'Integer',
+							'MaximumMessageSize': 'Integer',
+							'MessageRetentionPeriod': 'Integer',
+							'QueueName': 'String',
+							'ReceiveMessageWaitTimeSeconds': 'Integer',
+							'RedrivePolicy': 'RedrivePolicy',
+							'VisibilityTimeout': 'Integer'
 						}
 					}
 				}

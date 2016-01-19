@@ -5,7 +5,6 @@
 'use strict';
 
 var _ = require('lodash');
-var Resource = require('./resource');
 
 var Template = function() {
 

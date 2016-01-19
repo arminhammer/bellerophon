@@ -208,7 +208,7 @@ var AvailableResources = {
 				LogGroup: {},
 				LogStream: {},
 				MetricFilter: {},
-				SubscriptionFilter: {},
+				SubscriptionFilter: {}
 			}
 		},
 		OpsWorks: {

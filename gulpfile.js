@@ -100,4 +100,4 @@ gulp.task('electron', function() {
 
 gulp.task('prepublish', ['nsp']);
 gulp.task('default', ['lint','static', 'test']);
-gulp.task('publish', ['electron']);
+gulp.task('publish', ['lint', 'static', 'test', 'electron']);

@@ -67,8 +67,7 @@ var PanelComponent = {
 							var paramCheckbox = m('input', {
 								type: 'checkbox',
 								checked: controller.resource.templateParams[pKey],
-								onclick: m.withAttr('checked', function(check) {
-									console.log('Checked param ' + check);
+								onclick: m.withAttr('checked', function() {
 									controller.log('Checked ' + controller.resource);
 									controller.toggleParamInTemplate({resource: controller.resource, key: controller.key, subKey: controller.subKey, pKey: pKey });
 								})
