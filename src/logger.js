@@ -7,13 +7,15 @@ var os = require('os');
 
 var Logger = function() {
 	var self = this;
-	self.logger = new winston.Logger({
-		level: 'info',
-		transports: [
-			new (winston.transports.Console)(),
-			new (winston.transports.File)({ filename: os.homedir() + '/.bellerophon.log' })
-		]
-	});
+	if(process.env['BELLEROPHON_LOG'] === 'debug') {
+		self.logger = new winston.Logger({
+			level: 'info',
+			transports: [
+				new (winston.transports.Console)(),
+				new (winston.transports.File)({filename: os.homedir() + '/.bellerophon.log'})
+			]
+		});
+	}
 
 	self.log = function(msg, level, from) {
 		if(!level) {
@@ -22,7 +24,9 @@ var Logger = function() {
 		if(!from) {
 			from = 'SERVER:'
 		}
-		self.logger.log(level, from, msg);
+		if(process.env['BELLEROPHON_LOG'] === 'debug') {
+			self.logger.log(level, from, msg);
+		}
 	};
 };
 

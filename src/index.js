@@ -85,12 +85,12 @@ ipcMain.on('update-resource', function(event, res) {
 	logger.log('Got update-resource request');
 	//logger.log(res.primary);
 	updateResources(res.primary)
-	.then(function() {
-		logger.log('SENDING');
-		//var resources = AvailableResources.getBlankAvailableResources();
-		//resources[res.primary] = availableResources[res.primary];
-		event.sender.send('update-resources', { resources: availableResources, primary: res.primary });
-	});
+		.then(function() {
+			logger.log('SENDING');
+			//var resources = AvailableResources.getBlankAvailableResources();
+			//resources[res.primary] = availableResources[res.primary];
+			event.sender.send('update-resources', { resources: availableResources, primary: res.primary });
+		});
 });
 
 ipcMain.on('send-log', function(event, arg) {
@@ -291,54 +291,52 @@ app.on('ready', function() {
 		}
 	];
 
-	if (process.platform == 'darwin') {
-		var name = require('electron').app.getName();
-		menuTemplate.unshift({
-			label: name,
-			submenu: [
-				{
-					label: 'About ' + name,
-					role: 'about'
-				},
-				{
-					type: 'separator'
-				},
-				{
-					label: 'Show Template',
-					accelerator: 'Command + T',
-					click: function() {
-						if(!templateWindow) {
-							templateWindow = createTemplateWindow();
-						}
-					}
-				},
-				{
-					label: 'Save Template',
-					accelerator: 'Command + S',
-					click: function() {
-						showSaveDialog();
-					}
-				},
-				{
-					type: 'separator'
-				},
-				{
-					label: 'Quit',
-					accelerator: 'Command+Q',
-					click: function() { app.quit(); }
-				}
-			]
-		});
-		menuTemplate[3].submenu.push(
+	var name = require('electron').app.getName();
+	menuTemplate.unshift({
+		label: name,
+		submenu: [
+			{
+				label: 'About ' + name,
+				role: 'about'
+			},
 			{
 				type: 'separator'
 			},
 			{
-				label: 'Bring All to Front',
-				role: 'front'
+				label: 'Show Template',
+				accelerator: 'Command + T',
+				click: function() {
+					if(!templateWindow) {
+						templateWindow = createTemplateWindow();
+					}
+				}
+			},
+			{
+				label: 'Save Template',
+				accelerator: 'Command + S',
+				click: function() {
+					showSaveDialog();
+				}
+			},
+			{
+				type: 'separator'
+			},
+			{
+				label: 'Quit',
+				accelerator: 'Command+Q',
+				click: function() { app.quit(); }
 			}
-		);
-	}
+		]
+	});
+	menuTemplate[3].submenu.push(
+		{
+			type: 'separator'
+		},
+		{
+			label: 'Bring All to Front',
+			role: 'front'
+		}
+	);
 
 	menu = Menu.buildFromTemplate(menuTemplate);
 	Menu.setApplicationMenu(menu);

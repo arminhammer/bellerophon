@@ -1,5 +1,5 @@
 {
-  "name": "Bellerophon",
+  "name": "bellerophon",
   "productName": "Bellerophon",
   "version": "0.2.0",
   "description": "AWS CloudFormation generator based off of existing account resources.",

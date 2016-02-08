@@ -181,3 +181,5 @@ Bellerophon uses the following to work:
 - Electron (to package the app as a desktop application): http://electron.atom.io/
 - MithrilJS (for the UI): http://mithril.js.org/
 
+## Debugging
+Set the $BELLEROPHON_LOG to "debug" to capture diagnostic information in stdout and bellerophon.log in the home directory.
