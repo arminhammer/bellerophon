@@ -1,7 +1,7 @@
 {
   "name": "bellerophon",
   "productName": "Bellerophon",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "AWS CloudFormation generator based off of existing account resources.",
   "license": "MIT",
   "repository": "arminhammer/bellerophon",
@@ -24,10 +24,10 @@
     "bellerophon"
   ],
   "devDependencies": {
-    "electron-packager": "^5.2.0",
-    "electron-prebuilt": "0.36.4",
+    "electron-packager": "^5.2.1",
+    "electron-prebuilt": "0.36.7",
     "eslint-config-devenv": "^1.1.0",
-    "gulp": "^3.6.0",
+    "gulp": "^3.9.1",
     "gulp-electron": "0.0.10",
     "gulp-eslint": "^1.0.0",
     "gulp-exclude-gitignore": "^1.0.0",
