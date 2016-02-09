@@ -922,23 +922,23 @@ var Resource = {
 				}
 			},
 			/*Policy: {
-				call: function() { return .Async({}) },
-				resBlock: '',
-				rName: '',
-				construct: function (name, body) {
-					baseConstruct(this, name, body);
-					this.block = {
-						'Type': 'AWS::IAM::Policy',
-						'Properties': {
-							'Groups' : [],
-							'PolicyDocument' : {},
-							'PolicyName' : 'String',
-							'Roles' : [],
-							'Users' : []
-						}
-					}
-				}
-			}*/
+			 call: function() { return .Async({}) },
+			 resBlock: '',
+			 rName: '',
+			 construct: function (name, body) {
+			 baseConstruct(this, name, body);
+			 this.block = {
+			 'Type': 'AWS::IAM::Policy',
+			 'Properties': {
+			 'Groups' : [],
+			 'PolicyDocument' : {},
+			 'PolicyName' : 'String',
+			 'Roles' : [],
+			 'Users' : []
+			 }
+			 }
+			 }
+			 }*/
 			Role: {
 				call: function() { return iam.listRolesAsync({}) },
 				resBlock: 'Roles',
@@ -975,20 +975,20 @@ var Resource = {
 				}
 			}
 			/*UserToGroupAddition: {
-				call: function() { return .Async({}) },
-				resBlock: '',
-				rName: '',
-				construct: function (name, body) {
-					baseConstruct(this, name, body);
-					this.block = {
-						'Type': 'AWS::IAM::UserToGroupAddition',
-						'Properties': {
-							'GroupName': String,
-							'Users': [ User1, ... ]
-						}
-					}
-				}
-			}*/
+			 call: function() { return .Async({}) },
+			 resBlock: '',
+			 rName: '',
+			 construct: function (name, body) {
+			 baseConstruct(this, name, body);
+			 this.block = {
+			 'Type': 'AWS::IAM::UserToGroupAddition',
+			 'Properties': {
+			 'GroupName': String,
+			 'Users': [ User1, ... ]
+			 }
+			 }
+			 }
+			 }*/
 		},
 		Kinesis: {
 			//Stream
@@ -1067,23 +1067,23 @@ var Resource = {
 				}
 			}
 			/*RecordSet: {
-				call: function() { return route53.listResourceRecordSetsAsync({}) },
-				resBlock: '',
-				rName: '',
-				construct: function (name, body) {
-					baseConstruct(this, name, body);
-					this.block =
-				}
-			},
-			RecordSetGroup: {
-				call: function() { return .Async({}) },
-				resBlock: '',
-				rName: '',
-				construct: function (name, body) {
-					baseConstruct(this, name, body);
-					this.block =
-				}
-			}*/
+			 call: function() { return route53.listResourceRecordSetsAsync({}) },
+			 resBlock: '',
+			 rName: '',
+			 construct: function (name, body) {
+			 baseConstruct(this, name, body);
+			 this.block =
+			 }
+			 },
+			 RecordSetGroup: {
+			 call: function() { return .Async({}) },
+			 resBlock: '',
+			 rName: '',
+			 construct: function (name, body) {
+			 baseConstruct(this, name, body);
+			 this.block =
+			 }
+			 }*/
 		},
 		S3: {
 			Bucket: {
@@ -1098,6 +1098,70 @@ var Resource = {
 										.getBucketVersioningAsync({ Bucket: bucket.Name })
 										.then(function(versionData) {
 											bucket.VersioningConfiguration = versionData;
+										})
+										.then(function() {
+											return S3.getBucketAclAsync({ Bucket: bucket.Name });
+										})
+										.then(function(aclData) {
+											bucket.AccessControl = aclData;
+										})
+										.then(function() {
+											return S3.getBucketCorsAsync({ Bucket: bucket.Name });
+										})
+										.then(function(corsData) {
+											bucket.CorsConfiguration = corsData;
+										})
+										.catch(function() {
+											//Silently catch the NoSuchCORSConfiguration
+											return;
+										})
+										.then(function() {
+											return S3.getBucketLifecycleConfigurationAsync({ Bucket: bucket.Name });
+										})
+										.then(function(lifeData) {
+											bucket.LifecycleConfiguration = lifeData;
+										})
+										.catch(function() {
+											//Silently catch the NoSuchLifecycleConfiguration
+											return;
+										})
+										.then(function() {
+											return S3.getBucketLoggingAsync({ Bucket: bucket.Name });
+										})
+										.then(function(data) {
+											bucket.LoggingConfiguration = data;
+										})
+										.then(function() {
+											return S3.getBucketNotificationAsync({ Bucket: bucket.Name });
+										})
+										.then(function(data) {
+											bucket.NotificationConfiguration = data;
+										})
+										.then(function() {
+											return S3.getBucketReplicationAsync({ Bucket: bucket.Name });
+										})
+										.then(function(data) {
+											bucket.ReplicationConfiguration = data;
+										})
+										.then(function() {
+											return S3.getBucketTaggingAsync({ Bucket: bucket.Name });
+										})
+										.then(function(data) {
+											bucket.Tags = data;
+										})
+										.catch(function() {
+											//Silently catch the NoSuchTagSet
+											return;
+										})
+										.then(function() {
+											return S3.getBucketWebsiteAsync({ Bucket: bucket.Name });
+										})
+										.then(function(data) {
+											bucket.WebsiteConfiguration = data;
+										})
+										.catch(function() {
+											//Silently catch the NoSuchWebsiteConfiguration
+											return;
 										})
 										.then(function() {
 											finalBuckets.push(bucket);
