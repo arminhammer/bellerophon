@@ -41,7 +41,7 @@ function baseConstruct(obj, name, body) {
 
 var Resource = {
 	resources: {
-		AutoScaling: require('./resources/autoscaling'),
+		AutoScaling: require('./resources/autoscaling')(AWS),
 		CloudFormation : {
 			//Authentication
 			//CustomResource
