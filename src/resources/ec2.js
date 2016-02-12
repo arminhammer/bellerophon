@@ -70,18 +70,59 @@ var EC2 = function(AWS) {
 		//}
 		//},
 		Instance: {
-			call: function() { return ec2.describeInstancesAsync({}) },
+			call: function() {
+				return ec2
+					.describeInstancesAsync({})
+					.then(function (data) {
+						var returnInstances = [];
+						console.log(data);
+						return P
+							.map(data.Reservations, function(reservation) {
+								console.log(reservation);
+								return P
+									.map(reservation.Instances, function (instance) {
+										console.log('ID:' + instance.InstanceId);
+										return ec2
+											.describeInstanceAttributeAsync({ Attribute: 'userData', InstanceId: instance.InstanceId})
+											.then(function(userData) {
+												console.log('ud');
+												console.log(userData);
+												instance.UserData = userData.UserData.Value;
+											})
+											.then(function() {
+												return ec2.describeInstanceAttributeAsync({ Attribute: 'kernel', InstanceId: instance.InstanceId})
+											})
+											.then(function(kernel) {
+												console.log('kernel');
+												console.log(kernel);
+												instance.UserData = kernel.KernelId.Value;
+											})
+											//"ramdisk"
+											//"disableApiTermination"
+											//"instanceInitiatedShutdownBehavior"
+											//"groupSet"
+											//"sriovNetSupport"
+											.then(function() {
+												returnInstances.push(instance);
+											})
+									})
+							})
+							.then(function() {
+								return { Instances: returnInstances };
+							});
+					})
+			},
 			resBlock: 'Instances',
 			rName: 'InstanceId',
-			preHook: function (data) {
-				var returnInstances = [];
-				_.each(data.Reservations, function (reservation) {
-					_.each(reservation.Instances, function (instance) {
-						returnInstances.push(instance);
-					});
-				});
-				return {Instances: returnInstances};
-			},
+			/*preHook: function (data) {
+			 var returnInstances = [];
+			 _.each(data.Reservations, function (reservation) {
+			 _.each(reservation.Instances, function (instance) {
+			 returnInstances.push(instance);
+			 });
+			 });
+			 return {Instances: returnInstances};
+			 },*/
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
