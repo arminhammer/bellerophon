@@ -3,7 +3,7 @@
 function buildName(name) {
 	name = name.replace( /\W/g , '');
 	return name + 'Resource';
-};
+}
 
 var Util = {
 

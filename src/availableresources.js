@@ -19,7 +19,7 @@ var AvailableResources = {
 				ScheduledAction: {}
 			}
 		},
-		/*CloudFormation : {
+		CloudFormation : {
 			icon: 'ManagementTools_CloudFormation',
 			types: {
 				Authentication: {},
@@ -30,7 +30,7 @@ var AvailableResources = {
 				WaitCondition: {},
 				WaitConditionHandle: {}
 			}
-		},*/
+		},
 		CloudFront: {
 			icon: 'StorageContentDelivery_AmazonCloudFront',
 			types: {
@@ -273,15 +273,15 @@ var AvailableResources = {
 				Topic: {},
 				TopicPolicy: {}
 			}
-		},
-		SQS: {
+		}
+		/*SQS: {
 			icon: 'ApplicationServices_AmazonSQS',
 			types: {
 				Queue: {},
 				QueuePolicy: {}
 			}
 		},
-		/*SSM: {
+		SSM: {
 			icon: '',
 			types: {
 				Document: {}
