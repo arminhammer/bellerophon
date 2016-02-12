@@ -19,7 +19,7 @@ var AvailableResources = {
 				ScheduledAction: {}
 			}
 		},
-		CloudFormation : {
+		/*CloudFormation : {
 			icon: 'ManagementTools_CloudFormation',
 			types: {
 				Authentication: {},
@@ -30,7 +30,7 @@ var AvailableResources = {
 				WaitCondition: {},
 				WaitConditionHandle: {}
 			}
-		},
+		},*/
 		CloudFront: {
 			icon: 'StorageContentDelivery_AmazonCloudFront',
 			types: {
@@ -49,7 +49,7 @@ var AvailableResources = {
 				Alarm: {}
 			}
 		},
-		CodeDeploy: {
+		/*CodeDeploy: {
 			icon: 'DeploymentManagement_CodeDeploy',
 			types: {
 				Application: {},
@@ -90,7 +90,7 @@ var AvailableResources = {
 			types: {
 				Table: {}
 			}
-		},
+		},*/
 		EC2: {
 			icon: 'Compute_AmazonEC2_Instance',
 			types: {
@@ -127,7 +127,7 @@ var AvailableResources = {
 				VPNGatewayRoutePropagation: {}
 			}
 		},
-		ECS: {
+		/*ECS: {
 			icon: 'Compute_AmazonEC2ContainerService',
 			types: {
 				Cluster: {},
@@ -161,7 +161,7 @@ var AvailableResources = {
 				ConfigurationTemplate: {},
 				Environment: {}
 			}
-		},
+		},*/
 		ElasticLoadBalancing: {
 			icon: 'Compute_ElasticLoadBalancing',
 			types: {
@@ -181,7 +181,7 @@ var AvailableResources = {
 				UserToGroupAddition: {}
 			}
 		},
-		Kinesis: {
+		/*Kinesis: {
 			icon: 'Analytics_Kinesis',
 			types: {
 				Stream: {}
@@ -192,7 +192,7 @@ var AvailableResources = {
 			types: {
 				Key: {}
 			}
-		},
+		},*/
 		Lambda: {
 			icon: 'Compute_Lambda',
 			types: {
@@ -211,7 +211,7 @@ var AvailableResources = {
 				SubscriptionFilter: {}
 			}
 		},
-		OpsWorks: {
+		/*OpsWorks: {
 			icon: 'ManagementTools_OpsWorks',
 			types: {
 				App: {},
@@ -220,7 +220,7 @@ var AvailableResources = {
 				Layer: {},
 				Stack: {}
 			}
-		},
+		},*/
 		RDS: {
 			icon: 'Database_AmazonRDS',
 			types: {
@@ -235,7 +235,7 @@ var AvailableResources = {
 				OptionGroup: {}
 			}
 		},
-		Redshift: {
+		/*Redshift: {
 			icon: 'Database_AmazonRedShift',
 			types: {
 				Cluster: {},
@@ -244,7 +244,7 @@ var AvailableResources = {
 				ClusterSecurityGroupIngress: {},
 				ClusterSubnetGroup: {}
 			}
-		},
+		},*/
 		Route53: {
 			icon: 'Networking_Route53',
 			types: {
@@ -261,12 +261,12 @@ var AvailableResources = {
 				BucketPolicy: {}
 			}
 		},
-		SDB: {
+		/*SDB: {
 			icon: '',
 			types: {
 				Domain: {}
 			}
-		},
+		},*/
 		SNS: {
 			icon: 'MobileServices_SNS',
 			types: {
@@ -281,7 +281,7 @@ var AvailableResources = {
 				QueuePolicy: {}
 			}
 		},
-		SSM: {
+		/*SSM: {
 			icon: '',
 			types: {
 				Document: {}
@@ -302,7 +302,7 @@ var AvailableResources = {
 			types: {
 				Workspace: {}
 			}
-		}
+		}*/
 	},
 
 	getBlankAvailableResources: function() {
