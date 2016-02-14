@@ -14,6 +14,7 @@ var MainView = {
 	controller: function() {
 		var self = this;
 		self.resourceName = m.prop('AutoScaling');
+		self.sideList = m.prop();
 		self.resources = m.prop();
 		self.ipcRenderer = require('electron').ipcRenderer;
 		self.log = function(msg, level) {
@@ -26,6 +27,7 @@ var MainView = {
 			m.startComputation();
 			self.log('Updating resources');
 			self.resources(res.resources);
+			self.sideList(res.resources);
 			self.resourceName(res.primary);
 			self.log('Updated resources');
 			m.endComputation();
@@ -36,7 +38,7 @@ var MainView = {
 		return [
 			m('.container-fluid', [
 				m('.row.MainContent', [
-					m.component(SidebarComponent, { resources: controller.resources, resourceName: controller.resourceName }),
+					m.component(SidebarComponent, { resources: controller.resources, resourceName: controller.resourceName, sideList: controller.sideList }),
 					m.component(ResourceComponent, { resources: controller.resources, log: controller.log, resourceName: controller.resourceName })
 				])
 			])

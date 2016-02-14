@@ -6,9 +6,10 @@ var _ = require('lodash');
 var SideBarComponent = {
 	controller: function(options) {
 		this.resources = options.resources;
+		this.sideList = options.sideList;
 		this.ipcRenderer = require('electron').ipcRenderer;
 		this.changeResource = function(key) {
-			//this.resources(null);
+			this.resources(null);
 			this.ipcRenderer.send('update-resource', { primary: key })
 		};
 		this.resourceName = options.resourceName;
@@ -22,7 +23,7 @@ var SideBarComponent = {
 						m('span', 'Bellerophon')
 					])
 				]),
-				_.map(controller.resources(), function(resource, key) {
+				_.map(controller.sideList(), function(resource, key) {
 					return m('li', {
 						onclick: function () {
 							controller.changeResource(key)
@@ -30,10 +31,10 @@ var SideBarComponent = {
 					}, [
 						m('a[href="#' + key + '"]', key),
 						m('ul.nav.nav-stacked', [
-							_.map(controller.resources()[key].types, function (subResource, subKey) {
+							_.map(controller.sideList()[key].types, function (subResource, subKey) {
 								if(key === controller.resourceName()) {
 
-									if (Object.keys(controller.resources()[key].types[subKey]).length > 0) {
+									if (Object.keys(controller.sideList()[key].types[subKey]).length > 0) {
 										return m('li', [m('a[href="#' + key + subKey + '"]', subKey)])
 									}
 								}

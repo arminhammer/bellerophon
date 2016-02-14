@@ -151,3 +151,7 @@
 #logoHeader > span {
 	padding-left: 5px;
 }
+
+#spinnerDiv {
+	padding-top: 50%;
+}
