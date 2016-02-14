@@ -28,7 +28,7 @@ var ResourceComponent = {
 		this.log = options.log;
 	},
 	view: function (controller) {
-		/*if (!controller.resources) {
+		if (!controller.resources) {
 			return m('.col-xs-9 .col-md-10 .col-lg-10', [
 				m('.group', [
 					m('.row', [
@@ -40,17 +40,19 @@ var ResourceComponent = {
 					])
 				])
 			])
-		}
-		else {*/
+		} else {
 			return m('.col-xs-9 .col-md-10 .col-lg-10', [
 				_.map(controller.resources(), function (group, key) {
 					//console.log('KEY');
 					//console.log(key);
-					if(key === controller.resourceName()) {
+					if (key === controller.resourceName()) {
 						return m('.row', [
 							m('.group[id="' + key + '"]', [
 								m('h3', [
-									m('img', { src: '../icons/' + controller.resources()[key].icon + '.svg', height: 40 }),
+									m('img', {
+										src: '../icons/' + controller.resources()[key].icon + '.svg',
+										height: 40
+									}),
 									key
 								]),
 								_.map(controller.resources()[key].types, function (subResource, subKey) {
@@ -80,8 +82,8 @@ var ResourceComponent = {
 					}
 				})
 			])
-		//}
+		}
 	}
-};
+}
 
 module.exports = ResourceComponent;

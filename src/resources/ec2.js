@@ -1,5 +1,4 @@
 'use strict';
-var _ = require('lodash');
 var P = require('bluebird');
 
 var Util = require('./util');
@@ -75,26 +74,19 @@ var EC2 = function(AWS) {
 					.describeInstancesAsync({})
 					.then(function (data) {
 						var returnInstances = [];
-						console.log(data);
 						return P
 							.map(data.Reservations, function(reservation) {
-								console.log(reservation);
 								return P
 									.map(reservation.Instances, function (instance) {
-										console.log('ID:' + instance.InstanceId);
 										return ec2
 											.describeInstanceAttributeAsync({ Attribute: 'userData', InstanceId: instance.InstanceId})
 											.then(function(userData) {
-												console.log('ud');
-												console.log(userData);
 												instance.UserData = userData.UserData.Value;
 											})
 											.then(function() {
 												return ec2.describeInstanceAttributeAsync({ Attribute: 'kernel', InstanceId: instance.InstanceId})
 											})
 											.then(function(kernel) {
-												console.log('kernel');
-												console.log(kernel);
 												instance.UserData = kernel.KernelId.Value;
 											})
 											//"ramdisk"

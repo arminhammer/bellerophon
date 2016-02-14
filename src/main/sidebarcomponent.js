@@ -8,6 +8,7 @@ var SideBarComponent = {
 		this.resources = options.resources;
 		this.ipcRenderer = require('electron').ipcRenderer;
 		this.changeResource = function(key) {
+			//this.resources(null);
 			this.ipcRenderer.send('update-resource', { primary: key })
 		};
 		this.resourceName = options.resourceName;
