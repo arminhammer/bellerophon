@@ -81,14 +81,18 @@ var EC2 = function(AWS) {
 										return ec2
 											.describeInstanceAttributeAsync({ Attribute: 'userData', InstanceId: instance.InstanceId})
 											.then(function(userData) {
-												instance.UserData = userData.UserData.Value;
+												console.log('userData');
+												console.log(userData);
+												if(userData.UserData.Value) {
+													instance.UserData = new Buffer(userData.UserData.Value, 'base64').toString("ascii");
+												}
 											})
-											.then(function() {
+											/*.then(function() {
 												return ec2.describeInstanceAttributeAsync({ Attribute: 'kernel', InstanceId: instance.InstanceId})
 											})
 											.then(function(kernel) {
 												instance.UserData = kernel.KernelId.Value;
-											})
+											})*/
 											//"ramdisk"
 											//"disableApiTermination"
 											//"instanceInitiatedShutdownBehavior"
