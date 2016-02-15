@@ -59,6 +59,12 @@ var ResourceComponent = {
 		this.spinner = new Spinner();
 	},
 	view: function (controller) {
+		var count = 0;
+		if(controller.resources()) {
+			_.each(controller.resources()[controller.resourceName()].types, function (group, key) {
+				count = count + _.size(group);
+			});
+		}
 		if (!controller.resources()) {
 			return m('.col-xs-9 .col-md-10 .col-lg-10', [
 				m('.group', [
@@ -71,6 +77,31 @@ var ResourceComponent = {
 					])
 				])
 			])
+		} else if(controller.resources() && count == 0) {
+
+			return m('.col-xs-9 .col-md-10 .col-lg-10', [
+				_.map(controller.resources(), function (group, key) {
+					if (key === controller.resourceName()) {
+						return m('.row', [
+							m('.group[id="' + key + '"]', [
+								m('h3', [
+									m('img', {
+										src: '../icons/' + controller.resources()[key].icon + '.svg',
+										height: 40
+									}),
+									key
+								]),
+								m('.row', [
+									m('.col-xs-12', [
+										m('h5', 'No ' + key + ' resources found.')
+									])
+								])
+							])
+						])
+					}
+				})
+			])
+
 		} else {
 			return m('.col-xs-9 .col-md-10 .col-lg-10', [
 				_.map(controller.resources(), function (group, key) {
@@ -102,7 +133,16 @@ var ResourceComponent = {
 												])
 											])
 										])
-									}
+									} /*else {
+									 return m('.row', [
+									 m('.col-xs-12', [
+									 m('.subgroup[id="' + key + subKey + '"]', [
+									 m('h4', formatTitle(subKey)),
+									 m('div', 'No ' + formatTitle(subKey) + ' found.')
+									 ])
+									 ])
+									 ])
+									 }*/
 								})
 							])
 						])
