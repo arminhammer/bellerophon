@@ -42,7 +42,14 @@ var AutoScaling = function(AWS) {
 		},
 		LaunchConfiguration: {
 			call: function () {
-				return ASG.describeLaunchConfigurationsAsync({})
+				return ASG
+					.describeLaunchConfigurationsAsync({})
+					.then(function(launchConfigurations) {
+						_.each(launchConfigurations.LaunchConfigurations, function(config) {
+							config.UserData = new Buffer(config.UserData, 'base64').toString("ascii");
+						});
+						return launchConfigurations;
+					});
 			},
 			resBlock: 'LaunchConfigurations',
 			rName: 'LaunchConfigurationName',
@@ -78,7 +85,7 @@ var AutoScaling = function(AWS) {
 					.describeAutoScalingGroupsAsync({})
 					.then(function (data) {
 						return P.map(data.AutoScalingGroups, function (group) {
-							return ASG.describeLifecycleHooksAsync({AutoScalingGroupName: group.AutoScalingGroupName});
+							return ASG.describeLifecycleHooksAsync({AutoScalingGroupName: group.AutoScalingGroupName})
 						});
 					})
 			},
