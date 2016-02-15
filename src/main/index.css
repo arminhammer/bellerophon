@@ -56,6 +56,7 @@
 }
 
 /* all links */
+.bs-docs-sidebar .nav>li>span>a,
 .bs-docs-sidebar .nav>li>a {
 	color: #999;
 	border-left: 2px solid transparent;
@@ -68,6 +69,10 @@
 	padding-bottom: 0px;
 }
 
+/*#sidebar > li.active > ul > li.active > a
+#sidebar > li.active > ul > li > a
+#sidebar > li > span > a
+*/
 /* nested links */
 .bs-docs-sidebar .nav .nav>li>a {
 	padding-left: 25px;

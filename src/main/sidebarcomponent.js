@@ -9,6 +9,7 @@ var SideBarComponent = {
 		this.sideList = options.sideList;
 		this.ipcRenderer = require('electron').ipcRenderer;
 		this.changeResource = function(key) {
+			console.log('Changing resource');
 			this.resources(null);
 			this.ipcRenderer.send('update-resource', { primary: key })
 		};
@@ -24,12 +25,14 @@ var SideBarComponent = {
 					])
 				]),
 				_.map(controller.sideList(), function(resource, key) {
-					return m('li', {
-						onclick: function () {
-							controller.changeResource(key)
-						}
-					}, [
-						m('a[href="#' + key + '"]', key),
+					return m('li', [
+						m('span', {
+							onclick: function () {
+								controller.changeResource(key)
+							}
+						}, [
+							m('a[href="#' + key + '"]', key)
+						]),
 						m('ul.nav.nav-stacked', [
 							_.map(controller.sideList()[key].types, function (subResource, subKey) {
 								if(key === controller.resourceName()) {

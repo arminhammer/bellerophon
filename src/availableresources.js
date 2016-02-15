@@ -192,7 +192,7 @@ var AvailableResources = {
 			types: {
 				Key: {}
 			}
-		},*/
+		},
 		Lambda: {
 			icon: 'Compute_Lambda',
 			types: {
@@ -210,7 +210,7 @@ var AvailableResources = {
 				MetricFilter: {},
 				SubscriptionFilter: {}
 			}
-		},
+		},*/
 		/*OpsWorks: {
 			icon: 'ManagementTools_OpsWorks',
 			types: {
@@ -220,7 +220,7 @@ var AvailableResources = {
 				Layer: {},
 				Stack: {}
 			}
-		},*/
+		},
 		RDS: {
 			icon: 'Database_AmazonRDS',
 			types: {
@@ -234,7 +234,7 @@ var AvailableResources = {
 				EventSubscription: {},
 				OptionGroup: {}
 			}
-		},
+		},*/
 		/*Redshift: {
 			icon: 'Database_AmazonRedShift',
 			types: {
