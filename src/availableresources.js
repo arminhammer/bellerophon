@@ -273,15 +273,15 @@ var AvailableResources = {
 				Topic: {},
 				TopicPolicy: {}
 			}
-		}
-		/*SQS: {
+		},
+		SQS: {
 			icon: 'ApplicationServices_AmazonSQS',
 			types: {
 				Queue: {},
 				QueuePolicy: {}
 			}
-		},
-		SSM: {
+		}
+		/*SSM: {
 			icon: '',
 			types: {
 				Document: {}

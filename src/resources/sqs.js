@@ -13,14 +13,14 @@ var SQS = function(AWS) {
 			call: function() { return sqs
 				.listQueuesAsync({})
 				.then(function(data) {
-					var finalQueueList = { QueueUrls: [] }
+					var finalQueueList = { QueueUrls: [] };
 					_.each(data.QueueUrls, function(queue) {
 						finalQueueList.QueueUrls.push({ QueueName: queue });
 					});
 					return finalQueueList;
 				})},
 			resBlock: 'QueueUrls',
-			rName: 'Queue',
+			rName: 'QueueName',
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {

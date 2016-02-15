@@ -81,8 +81,6 @@ var EC2 = function(AWS) {
 										return ec2
 											.describeInstanceAttributeAsync({ Attribute: 'userData', InstanceId: instance.InstanceId})
 											.then(function(userData) {
-												console.log('userData');
-												console.log(userData);
 												if(userData.UserData.Value) {
 													instance.UserData = new Buffer(userData.UserData.Value, 'base64').toString("ascii");
 												}
