@@ -17,7 +17,7 @@ var CloudFront = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type' : 'Distribution',
+					'Type': 'AWS::CloudFront::Distribution',
 					'Properties' : {
 						'DistributionConfig' : {
 							'Aliases' : [],

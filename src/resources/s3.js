@@ -98,7 +98,7 @@ var S3 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'Bucket',
+					'Type': 'AWS::S3::Bucket',
 					'Properties': {
 						'AccessControl': 'String',
 						'BucketName': 'String',
@@ -142,7 +142,7 @@ var S3 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'BucketPolicy',
+					'Type': 'AWS::S3::BucketPolicy',
 					'Properties': {
 						'Bucket': 'String',
 						'PolicyDocument': 'JSON'

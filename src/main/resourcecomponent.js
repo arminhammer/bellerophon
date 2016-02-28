@@ -61,7 +61,7 @@ var ResourceComponent = {
 	view: function (controller) {
 		var count = 0;
 		if(controller.resources()) {
-			_.each(controller.resources()[controller.resourceName()].types, function (group, key) {
+			_.each(controller.resources()[controller.resourceName()].types, function (group) {
 				count = count + _.size(group);
 			});
 		}

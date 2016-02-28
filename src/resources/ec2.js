@@ -15,7 +15,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'CustomerGateway',
+					'Type': 'AWS::EC2::CustomerGateway',
 					'Properties': {
 						'BgpAsn': 'Number',
 						'IpAddress': 'String',
@@ -32,7 +32,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'DHCPOptions',
+					'Type': 'AWS::EC2::DHCPOptions',
 					'Properties': {
 						'DomainName': 'String',
 						'DomainNameServers': [],
@@ -51,7 +51,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'EIP',
+					'Type': 'AWS::EC2::EIP',
 					'Properties': {
 						'InstanceId': 'String',
 						'Domain': 'String'
@@ -82,7 +82,7 @@ var EC2 = function(AWS) {
 											.describeInstanceAttributeAsync({ Attribute: 'userData', InstanceId: instance.InstanceId})
 											.then(function(userData) {
 												if(userData.UserData.Value) {
-													instance.UserData = new Buffer(userData.UserData.Value, 'base64').toString("ascii");
+													instance.UserData = new Buffer(userData.UserData.Value, 'base64').toString('ascii');
 												}
 											})
 											/*.then(function() {
@@ -120,7 +120,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'Instance',
+					'Type': 'AWS::EC2::Instance',
 					'Properties': {
 						'AvailabilityZone': 'String',
 						'BlockDeviceMappings': [],
@@ -158,7 +158,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'InternetGateway',
+					'Type': 'AWS::EC2::InternetGateway',
 					'Properties': {
 						'Tags': []
 					}
@@ -172,7 +172,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'NetworkAcl',
+					'Type': 'AWS::EC2::NetworkAcl',
 					'Properties': {
 						'Tags': [],
 						'VpcId': 'String'
@@ -196,7 +196,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'NetworkInterface',
+					'Type': 'AWS::EC2::NetworkInterface',
 					'Properties': {
 						'Description': 'String',
 						'GroupSet': ['String'],
@@ -227,7 +227,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'PlacementGroup',
+					'Type': 'AWS::EC2::PlacementGroup',
 					'Properties': {
 						'Strategy': 'String'
 					}
@@ -250,7 +250,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'RouteTable',
+					'Type': 'AWS::EC2::RouteTable',
 					'Properties': {
 						'VpcId': 'String',
 						'Tags': []
@@ -265,7 +265,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'SecurityGroup',
+					'Type': 'AWS::EC2::SecurityGroup',
 					'Properties': {
 						'GroupDescription': 'String',
 						'SecurityGroupEgress': [],
@@ -301,7 +301,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'SpotFleet',
+					'Type': 'AWS::EC2::SpotFleet',
 					'Properties': {
 						'SpotFleetRequestConfigData': 'SpotFleetRequestConfigData'
 					}
@@ -315,7 +315,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'Subnet',
+					'Type': 'AWS::EC2::Subnet',
 					'Properties': {
 						'AvailabilityZone': 'String',
 						'CidrBlock': 'String',
@@ -352,7 +352,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'Volume',
+					'Type': 'AWS::EC2::Volume',
 					'Properties': {
 						'AutoEnableIO': 'Boolean',
 						'AvailabilityZone': 'String',
@@ -383,7 +383,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'VPC',
+					'Type': 'AWS::EC2::VPC',
 					'Properties': {
 						'CidrBlock': 'String',
 						'EnableDnsSupport': 'Boolean',
@@ -410,7 +410,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'VPCEndpoint',
+					'Type': 'AWS::EC2::VPCEndpoint',
 					'Properties': {
 						'PolicyDocument': {},
 						'RouteTableIds': [],
@@ -436,7 +436,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'VPCPeeringConnection',
+					'Type': 'AWS::EC2::VPCPeeringConnection',
 					'Properties': {
 						'PeerVpcId': 'String',
 						'Tags': [],
@@ -452,7 +452,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'VPNConnection',
+					'Type': 'AWS::EC2::VPNConnection',
 					'Properties': {
 						'Type': 'String',
 						'CustomerGatewayId': 'GatewayID',
@@ -479,7 +479,7 @@ var EC2 = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'VPNGateway',
+					'Type': 'AWS::EC2::VPNGateway',
 					'Properties': {
 						'Type': 'String',
 						'Tags': []

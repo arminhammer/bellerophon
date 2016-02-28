@@ -18,7 +18,7 @@ var AutoScaling = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'AutoScalingGroup',
+					'Type': 'AWS::AutoScaling::AutoScalingGroup',
 					'Properties': {
 						'AvailabilityZones': [],
 						'Cooldown': 'String',
@@ -46,7 +46,7 @@ var AutoScaling = function(AWS) {
 					.describeLaunchConfigurationsAsync({})
 					.then(function(launchConfigurations) {
 						_.each(launchConfigurations.LaunchConfigurations, function(config) {
-							config.UserData = new Buffer(config.UserData, 'base64').toString("ascii");
+							config.UserData = new Buffer(config.UserData, 'base64').toString('ascii');
 						});
 						return launchConfigurations;
 					});
@@ -56,7 +56,7 @@ var AutoScaling = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'LaunchConfiguration',
+					'Type': 'AWS::AutoScaling::LaunchConfiguration',
 					'Properties': {
 						'AssociatePublicIpAddress': 'Boolean',
 						'BlockDeviceMappings': [],
@@ -101,7 +101,7 @@ var AutoScaling = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'LifecycleHook',
+					'Type': 'AWS::AutoScaling::LifecycleHook',
 					'Properties': {
 						'AutoScalingGroupName': 'String',
 						'DefaultResult': 'String',
@@ -123,7 +123,7 @@ var AutoScaling = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'ScalingPolicy',
+					'Type': 'AWS::AutoScaling::ScalingPolicy',
 					'Properties': {
 						'AdjustmentType': 'String',
 						'AutoScalingGroupName': 'String',
@@ -147,7 +147,7 @@ var AutoScaling = function(AWS) {
 			construct: function (name, body) {
 				Util.baseConstruct(this, name, body);
 				this.block = {
-					'Type': 'ScheduledAction',
+					'Type': 'AWS::AutoScaling::ScheduledAction',
 					'Properties': {
 						'AutoScalingGroupName': 'String',
 						'DesiredCapacity': 'Integer',

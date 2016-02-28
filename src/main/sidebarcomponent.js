@@ -9,7 +9,6 @@ var SideBarComponent = {
 		this.sideList = options.sideList;
 		this.ipcRenderer = require('electron').ipcRenderer;
 		this.changeResource = function(key) {
-			console.log('Changing resource');
 			this.resources(null);
 			this.ipcRenderer.send('update-resource', { primary: key })
 		};
