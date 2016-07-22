@@ -1,2 +1,10 @@
+.DS_Store
+app/dist/*
+!app/dist/imgs
+!app/dist/fonts
+builds/*
 node_modules
-/dist
+npm-debug.log
+npm-debug.log.*
+thumbs.db
+!.gitkeep

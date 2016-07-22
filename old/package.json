@@ -1,0 +1,51 @@
+{
+  "name": "bellerophon",
+  "productName": "Bellerophon",
+  "version": "0.2.2",
+  "description": "AWS CloudFormation generator based off of existing account resources.",
+  "license": "MIT",
+  "repository": "arminhammer/bellerophon",
+  "author": {
+    "name": "arminhammer",
+    "email": "arminhammer@gmail.com",
+    "url": "github.com/arminhammer/bellerophon"
+  },
+  "electronVersion": "0.36.0",
+  "scripts": {
+    "test": "xo",
+    "start": "electron --debug src",
+    "build": "electron-packager . $npm_package_productName --out=dist --ignore='^/dist$' --prune --asar --all --version=$npm_package_electronVersion"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "bellerophon-app",
+    "bellerophon"
+  ],
+  "devDependencies": {
+    "electron-packager": "^5.2.1",
+    "electron-prebuilt": "0.36.9",
+    "eslint-config-devenv": "^1.1.0",
+    "gulp": "^3.9.1",
+    "gulp-electron": "0.0.10",
+    "gulp-eslint": "^1.0.0",
+    "gulp-exclude-gitignore": "^1.0.0",
+    "gulp-istanbul": "^0.10.3",
+    "gulp-mocha": "^2.0.0",
+    "gulp-nsp": "^2.3.0",
+    "gulp-plumber": "^1.0.0",
+    "rewire": "^2.5.1",
+    "xo": "^0.12.1"
+  },
+  "xo": {
+    "esnext": true,
+    "envs": [
+      "node",
+      "browser"
+    ]
+  },
+  "dependencies": {
+    "node-notifier": "^4.4.0"
+  }
+}

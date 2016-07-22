@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="499 2179 100 100" style="enable-background:new 499 2179 100 100;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#19486F;}
+	.st1{fill:#1F5B98;}
+	.st2{fill:#99BBE1;}
+	.st3{fill:#5193CE;}
+	.st4{fill:#17476F;}
+	.st5{fill:#FFFFFF;}
+	.st6{fill:none;stroke:#5193CE;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st7{fill:none;stroke:#FFFFFF;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st8{fill:none;stroke:#FFFFFF;stroke-width:3;stroke-miterlimit:10;}
+	.st9{fill:#5193CE;stroke:#FFFFFF;stroke-width:3;stroke-miterlimit:10;}
+	.st10{fill:none;stroke:#FFFFFF;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10;}
+	.st11{fill:#5193CE;stroke:#FFFFFF;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st12{fill:#FFFFFF;stroke:#5193CE;stroke-width:2;stroke-miterlimit:10;}
+	.st13{fill:none;stroke:#5193CE;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st14{fill:none;stroke:#5193CE;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10;}
+	.st15{fill:none;stroke:#5193CE;stroke-linecap:round;stroke-miterlimit:10;}
+	.st16{fill:none;stroke:#5193CE;stroke-width:3;stroke-miterlimit:10;}
+	.st17{fill:none;}
+	.st18{font-family:'HelveticaNeueLTStd-MdCn';}
+	.st19{font-size:15px;}
+	.st20{fill:none;stroke:#5193CE;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+</style>
+<rect x="526.2" y="2215.4" class="st4" width="48.1" height="25.1"/>
+<path class="st4" d="M525.9,2253.4c-2.6,0-4.8-2.1-4.8-4.7h0v3c0,2.6,2.1,4.7,4.8,4.7h0.8v-3H525.9z"/>
+<path class="st3" d="M569.5,2199.6h-43.6c-2.6,0-4.8,2.1-4.8,4.7v44.3l0,0c0,2.6,2.1,4.7,4.8,4.7h0.8v-4.7V2237h47.5v-32.6
+	C574.3,2201.7,572.2,2199.6,569.5,2199.6z"/>
+<rect x="528.8" y="2255.4" class="st4" width="48" height="3"/>
+<rect x="528.8" y="2239.5" class="st3" width="48" height="15.9"/>
+<text transform="matrix(1 0 0 1 530.4796 2252.7664)" class="st5 st18 st19">HTTP/2</text>
+</svg>

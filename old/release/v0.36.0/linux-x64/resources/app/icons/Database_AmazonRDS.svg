@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#1A476F;}
+	.st1{fill:#205B98;}
+	.st2{fill:#2D72B8;}
+	.st3{fill:#5294CF;}
+	.st4{display:none;}
+	.st5{display:inline;}
+	.st6{font-family:'MyriadPro-Regular';}
+	.st7{font-size:12px;}
+</style>
+<g id="Layer_1_1_">
+	<g>
+		<polygon class="st0" points="18.1,69.1 25.5,77.9 25.5,20.1 18.1,28.9 		"/>
+		<polygon class="st1" points="25.5,78.9 39.8,86 39.8,14 25.5,21.1 		"/>
+		<polygon class="st2" points="81.9,29.9 74.5,21.1 74.5,78.9 81.9,70.1 		"/>
+		<polygon class="st3" points="60.2,86 74.5,78.9 74.5,21.1 60.2,14 		"/>
+		<rect x="39.8" y="14" class="st2" width="20.3" height="72"/>
+	</g>
+</g>
+<g id="nyt_x5F_exporter_x5F_info" class="st4">
+	<text transform="matrix(1 0 0 1 -255 0)" class="st5 st6 st7">&lt;nyt_prefs&gt;</text>
+	<text transform="matrix(1 0 0 1 -255 14.4)" class="st5 st6 st7">  &lt;nyt_prefix&gt;&lt;/nyt_prefix&gt;</text>
+	<text transform="matrix(1 0 0 1 -255 28.8)" class="st5 st6 st7">  &lt;nyt_suffix&gt;&lt;/nyt_suffix&gt;</text>
+	<text transform="matrix(1 0 0 1 -255 43.2)" class="st5 st6 st7">  &lt;nyt_base_path&gt;~/Desktop/wip/Architecture%20Icons%20-%20Update%20all%20customer-facing%20files%20/AWS-Simple-Icons%202/Database/EPS&lt;/nyt_base_path&gt;</text>
+	<text transform="matrix(1 0 0 1 -255 57.6)" class="st5 st6 st7">  &lt;nyt_scaling&gt;100&lt;/nyt_scaling&gt;</text>
+	<text transform="matrix(1 0 0 1 -255 72)" class="st5 st6 st7">  &lt;nyt_transparency&gt;true&lt;/nyt_transparency&gt;</text>
+	<text transform="matrix(1 0 0 1 -255 86.4)" class="st5 st6 st7">  &lt;nyt_format&gt;EPS&lt;/nyt_format&gt;</text>
+	<text transform="matrix(1 0 0 1 -255 100.8)" class="st5 st6 st7">  &lt;nyt_export_code&gt;artboards&lt;/nyt_export_code&gt;</text>
+	<text transform="matrix(1 0 0 1 -255 115.2)" class="st5 st6 st7">&lt;/nyt_prefs&gt;</text>
+</g>
+</svg>

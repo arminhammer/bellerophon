@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Bellerophon</title>
+	<!--<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">-->
+	<link rel="stylesheet" href="../node_modules/bootswatch/paper/bootstrap.css">
+	<link rel="stylesheet" href="./index.css">
+</head>
+<body>
+<script src="../node_modules/jquery/dist/jquery.js"></script>
+<script type="application/javascript">
+	if (typeof module === 'object' && typeof module.exports !== 'undefined') {
+		window.$ = window.jQuery = module.exports;
+	}
+</script>
+<script src='../node_modules/bootstrap/dist/js/bootstrap.js'></script>
+<script src='../node_modules/bootstrap/js/tooltip.js'></script>
+<script src='../node_modules/bootstrap/js/affix.js'></script>
+<script src='../node_modules/bootstrap/js/scrollspy.js'></script>
+<script type="application/javascript">
+	$('body').scrollspy({
+		target: '.bs-docs-sidebar',
+		offset: 40
+	});
+	$("#sidebar").affix({
+		offset: {
+			top: 60
+		}
+	});
+	$(function () {
+		console.log('INITIALIZING TOOLTIPS');
+		$('[data-toggle="tooltip"]').tooltip()
+	})
+</script>
+<script>require('./mainView.js')</script>
+</body>
+</html>
+
