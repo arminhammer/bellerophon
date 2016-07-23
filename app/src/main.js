@@ -6,10 +6,17 @@ import Router from 'vue-router'
 import App from './App'
 import routes from './routes'
 
+import '../node_modules/animate.css/animate.css'
+
 Vue.use(Electron)
 Vue.use(Resource)
 Vue.use(Router)
 Vue.config.debug = true
+
+Vue.transition('bounce', {
+  enterClass: 'bounceIn',
+  leaveClass: 'bounceOut'
+})
 
 const router = new Router()
 

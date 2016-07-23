@@ -4,11 +4,14 @@
   "description": "",
   "main": "electron.js",
   "dependencies": {
+    "animate.css": "^3.5.1",
+    "samsarajs": "*",
     "vue": "^1.0.24",
     "vue-electron": "^1.0.0",
     "vue-resource": "^0.7.0",
     "vue-router": "^0.7.13",
-    "vuex": "^0.6.3"
+    "vuex": "^0.6.3",
+    "wolkenkratzer": "*"
   },
   "devDependencies": {},
   "author": "Armin Graf <arminhammer@gmail.com>",
