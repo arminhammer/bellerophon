@@ -24,6 +24,10 @@
     padding-top: 40px;
   }
 
+  .pad50-top {
+    padding-top: 50px;
+  }
+
   .pad80-top {
     padding-top: 80px;
   }
@@ -31,6 +35,10 @@
   .scrollable {
     height: 100%;
     overflow: auto;
+  }
+
+  .scrollable::-webkit-scrollbar {
+    display: none;
   }
 
   .container-fluid {

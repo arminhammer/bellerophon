@@ -13,7 +13,7 @@
 </style>
 
 <template>
-  <div id='templateArea' class='pad40-top'></div>
+  <div id='templateArea' class='pad50-top'></div>
 </template>
 
 <script>
