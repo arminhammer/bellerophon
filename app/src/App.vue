@@ -24,14 +24,18 @@
     padding-top: 40px;
   }
 
+  .pad80-top {
+    padding-top: 80px;
+  }
+
   .scrollable {
     height: 100%;
     overflow: auto;
   }
 
-  .container {
-    /*padding-left: 0px;
-    padding-right: 0px;*/
+  .container-fluid {
+    padding-left: 0px;
+    padding-right: 0px;
   }
 
   @font-face {
@@ -52,6 +56,10 @@
 
   .navbar-inner {
     height: 40px;
+  }
+
+  .col-sm-1, .col-sm-6, .col-sm-11 {
+    padding: 0px;
   }
 </style>
 

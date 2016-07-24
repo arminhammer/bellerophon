@@ -11,7 +11,10 @@
       <div class='col-sm-1 scrollable'>
         <side-bar></side-bar>
       </div>
-      <div class='col-sm-11 scrollable'>
+      <div class='col-sm-5 scrollable'>
+        <resource-view></resource-view>
+      </div>
+      <div class='col-sm-6 scrollable'>
         <code-mirror :model.sync='templateText'></code-mirror>
       </div>
     </div>
@@ -23,6 +26,7 @@
   import SideBar from './MainPageView/SideBar'
   import CodeMirror from './MainPageView/CodeMirror'
   import HeaderView from './HeaderView'
+  import ResourceView from './MainPageView/ResourceView'
 
   import { getTemplate } from '../vuex/getters'
 
@@ -31,7 +35,8 @@
       TestView,
       SideBar,
       CodeMirror,
-      HeaderView
+      HeaderView,
+      ResourceView
     },
     data () {
       return {

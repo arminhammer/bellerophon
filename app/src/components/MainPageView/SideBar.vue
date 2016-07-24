@@ -3,10 +3,6 @@
     height: 100%;
   }*/
 
-  #logo {
-    height: 100px;
-  }
-
   .resourceBlock {
     border: 2px;
     border-color: #0a001f;
@@ -15,12 +11,12 @@
 
 <template>
   <div id='sideBar' class='pad40-top' >
-    <div>
-      <img id='logo' v-bind:src=logo />
-    </div>
-    <div v-for='block in blocks'>
+    <!--class="animated"-->
+    <div v-if=showToggle v-for='(index, block) in blocks' transition='bounceUp' stagger='1000'>
       <div class='resourceBlock'>
-        <img v-bind:src=block.image v-bind:alt=block.title />
+        <a v-link="{ name: 'resource-page', params: { resource: index }}">
+          <img v-bind:src=block.image v-bind:alt=block.title />
+        </a>
         <div>{{ block.title }}</div>
       </div>
     </div>
@@ -40,8 +36,19 @@
     methods: {
       toggle: toggle
     },
+    ready () {
+      console.log('Loaded sidebar!')
+      console.log(this.showToggle)
+      // this.showToggle = false
+      this.$nextTick(function () {
+        console.log('Updated!') // => 'updated'
+        this.showToggle = true
+        console.log(this.showToggle)
+      })
+    },
     data () {
       return {
+        showToggle: true,
         logo: require('./assets/logo.svg'),
         blocks: {
           apigateway: {
@@ -173,8 +180,7 @@
           workSpaces: {
             image: require(imagePrefix + 'Compute/Compute_AmazonEC2_AutoScaling.svg'),
             title: 'AutoScaling' }
-        },
-        visible: true
+        }
       }
     }
   }

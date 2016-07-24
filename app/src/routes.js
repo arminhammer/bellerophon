@@ -5,8 +5,8 @@ export default {
     component: Vue.component('main-page', require('./components/MainPageView')),
     name: 'main-page'
   },
-  '/landing': {
-    component: Vue.component('landing-page', require('./components/LandingPageView')),
-    name: 'landing-page'
+  '/resource/:resourceName': {
+    component: Vue.component('resource-page', require('./components/ResourcePageView')),
+    name: 'resource-page'
   }
 }

@@ -21,6 +21,11 @@ Vue.transition('bounce', {
   leaveClass: 'bounceOut'
 })
 
+Vue.transition('bounceUp', {
+  enterClass: 'bounceInUp',
+  leaveClass: 'bounceOutDown'
+})
+
 const router = new Router()
 
 router.map(routes)
