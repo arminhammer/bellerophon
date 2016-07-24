@@ -1,5 +1,5 @@
 <style scoped>
-  code {
+  /* code {
     background-color: rgba(40, 56, 76, .5);
     border-radius: 3px;
     color: #fff;
@@ -7,13 +7,13 @@
     padding: 3px 6px;
     margin: 0 3px;
     vertical-align: bottom;
-  }
+  }*/
 
   p { line-height: 24px; }
 </style>
 
 <template>
-  <div id="templateArea"></div>
+  <div id='templateArea' class='pad40-top'></div>
 </template>
 
 <script>
@@ -27,7 +27,9 @@
 
     var cm = CodeMirror(vm.$el, {
       mode: 'javascript',
-      lineNumbers: true
+      lineNumbers: true,
+      lineWrapping: true,
+      readOnly: true
     })
 
     cm.on('change', function () {

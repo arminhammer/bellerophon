@@ -1,27 +1,37 @@
 <style>
-  @import url(https://fonts.googleapis.com/css?family=Lato:300);
+  /* @import url(https://fonts.googleapis.com/css?family=Lato:300);*/
 
-  * {
+  /* * {
     margin: 0;
     padding: 0;
-  }
+  }*/
 
   html,
-  body { height: 100%; }
-
   body {
-    align-items: center;
-    background:
-      radial-gradient(
-        ellipse at center,
-        rgba(255, 255, 255, 1) 0%,
-        rgba(229, 229, 229, .85) 100%
-      );
-    background-position: center;
-    display: flex;
-    font-family: Lato, Helvetica, sans-serif;
-    justify-content: center;
-    text-align: center;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .max-height {
+    height: 100%;
+  }
+
+  .no-overflow {
+    overflow: hidden;
+  }
+
+  .pad40-top {
+    padding-top: 40px;
+  }
+
+  .scrollable {
+    height: 100%;
+    overflow: auto;
+  }
+
+  .container {
+    /*padding-left: 0px;
+    padding-right: 0px;*/
   }
 
   @font-face {
@@ -35,12 +45,18 @@
   .monofur {
     font-family: "Monofur";
   }
+
+  .CodeMirror {
+    height: auto;
+  }
+
+  .navbar-inner {
+    height: 40px;
+  }
 </style>
 
 <template>
-  <div>
-    <router-view></router-view>
-  </div>
+  <router-view></router-view>
 </template>
 
 <script>

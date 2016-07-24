@@ -5,6 +5,9 @@
   "main": "electron.js",
   "dependencies": {
     "animate.css": "^3.5.1",
+    "bootstrap": "^3.3.6",
+    "jquery": "^2.2.4",
+    "normalize.css": "^4.2.0",
     "samsarajs": "*",
     "vue": "^1.0.24",
     "vue-electron": "^1.0.0",

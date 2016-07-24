@@ -7,6 +7,9 @@ import App from './App'
 import routes from './routes'
 
 import '../node_modules/animate.css/animate.css'
+import '../node_modules/bootstrap/dist/css/bootstrap.css'
+import '../node_modules/normalize.css/normalize.css'
+import '../node_modules/bootstrap/dist/js/bootstrap'
 
 Vue.use(Electron)
 Vue.use(Resource)

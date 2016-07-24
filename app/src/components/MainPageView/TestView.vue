@@ -18,7 +18,7 @@
   </p>
   <div><p>Show: {{showToggle}}</p></div>
   <button v-on:click='toggle'>Toggle</button>
-  <div v-if='showToggle' class='animated monofur' transition='bounce'><p>Hello!</p></div>
+  <div v-show='showToggle' class='animated monofur' transition='bounce'><p>Hello!</p></div>
 </template>
 
 <script>
