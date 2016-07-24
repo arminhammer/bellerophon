@@ -1,6 +1,6 @@
 {
   "name": "bellerophon",
-  "version": "0.0.0",
+  "version": "0.3.0",
   "description": "An electron-vue project",
   "scripts": {
     "build": "node tasks/release.js",

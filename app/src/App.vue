@@ -50,7 +50,7 @@
     font-family: Monofur;
     src: local("Monofur"),
     local("Monofur"),
-    url(components/MainPageView/assets/fonts/Monofur.ttf);
+    url(assets/fonts/Monofur.ttf);
     font-weight: bold;
   }
 

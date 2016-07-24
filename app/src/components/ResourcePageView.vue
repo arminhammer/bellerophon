@@ -40,7 +40,7 @@
     },
     data () {
       return {
-        logo: require('./MainPageView/assets/logo.svg')
+        logo: require('../assets/logo.svg')
       }
     },
     vuex: {

@@ -14,7 +14,9 @@ import '../node_modules/bootstrap/dist/js/bootstrap'
 Vue.use(Electron)
 Vue.use(Resource)
 Vue.use(Router)
-Vue.config.debug = true
+if (process.env.NODE_ENV !== 'production') {
+  Vue.config.debug = true
+}
 
 Vue.transition('bounce', {
   enterClass: 'bounceIn',

@@ -34,9 +34,7 @@
       HeaderView
     },
     data () {
-      return {
-        logo: require('./MainPageView/assets/logo.svg')
-      }
+      return {}
     },
     vuex: {
       getters: {

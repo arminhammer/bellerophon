@@ -1,12 +1,5 @@
 <style scoped>
-  /* #sideBar {
-    height: 100%;
-  }*/
 
-  .resourceBlock {
-    border: 2px;
-    border-color: #0a001f;
-  }
 </style>
 
 <template>
@@ -481,23 +474,12 @@
     else this.showToggle = true
   }
 
-  let imagePrefix = './assets/aws/'
-
   export default {
     methods: {
       toggle: toggle
     },
     data () {
-      return {
-        logo: require('./assets/logo.svg'),
-        blocks: {
-          apigateway: {
-            image: require(imagePrefix + 'Compute/Compute_AmazonEC2_AutoScaling.svg'),
-            title: 'Apigateway'
-          }
-        },
-        visible: true
-      }
+      return {}
     }
   }
 </script>
