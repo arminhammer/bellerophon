@@ -1,6 +1,11 @@
 import {} from '../mutation-types'
+// import wk from '../../../node_modules/wolkenkratzer/dist/wk.browser.js'
+import wk from 'wolkenkratzer'
 
-const state = {
+// const state = {}
+const state = new wk.Template()
+
+/* {
   'AWSTemplateFormatVersion': '2010-09-09',
   'Description': 'AWS CloudFormation Sample Template S3_Website_With_CloudFront_Distribution: Sample template showing how to create a website with a custom DNS name, hosted on Amazon S3 and served via Amazone CloudFront. It assumes you already have a Hosted Zone registered with Amazon Route 53. **WARNING** This template creates an Amazon Route 53 DNS record, an S3 bucket and a CloudFront distribution. You will be billed for the AWS resources used if you create a stack from this template.',
   'Parameters': {
@@ -91,7 +96,7 @@ const state = {
       'Description': 'Name of S3 bucket to hold website content'
     }
   }
-}
+}*/
 
 const mutations = {
 

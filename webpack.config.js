@@ -18,7 +18,10 @@ let config = {
   },
   module: {
     preLoaders: [],
+    // noParse: /node_modules\/wolkenkratzer\/dist\/wk.browser.js/,
     loaders: [
+      { test: /\.md$/, loader: 'null' },
+      { test: /LICENSE$/, loader: 'null' },
       {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader')

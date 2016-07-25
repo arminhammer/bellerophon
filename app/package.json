@@ -6,15 +6,15 @@
   "dependencies": {
     "animate.css": "^3.5.1",
     "bootstrap": "^3.3.6",
+    "codemirror": "^5.17.0",
     "jquery": "^2.2.4",
     "normalize.css": "^4.2.0",
-    "samsarajs": "*",
     "vue": "^1.0.24",
     "vue-electron": "^1.0.0",
     "vue-resource": "^0.7.0",
     "vue-router": "^0.7.13",
     "vuex": "^0.6.3",
-    "wolkenkratzer": "*"
+    "wolkenkratzer": "0.2.5"
   },
   "devDependencies": {},
   "author": "Armin Graf <arminhammer@gmail.com>",

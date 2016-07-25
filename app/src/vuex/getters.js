@@ -3,7 +3,7 @@
 }*/
 
 export function getTemplate (state) {
-  return JSON.stringify(state.template, null, 2)
+  return state.template.toJson()
 }
 
 export function getResourceMenuItems (state) {
