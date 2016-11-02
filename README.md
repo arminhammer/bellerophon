@@ -1,6 +1,6 @@
 # bellerophon
 
-> An electron-vue project
+> CloudFormation Generator
 
 ## Build Setup
 

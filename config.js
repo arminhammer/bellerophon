@@ -1,8 +1,6 @@
 'use strict'
 
 const path = require('path')
-const pkg = require('./app/package.json')
-const platform = process.env.PLATFORM_TARGET || 'all'
 
 let config = {
   // Name of electron app
@@ -19,15 +17,14 @@ let config = {
   // electron-packager options
   // Docs: https://simulatedgreg.gitbooks.io/electron-vue/content/docs/building_your_app.html
   building: {
-    'app-version': pkg.version,
     arch: 'x64',
     asar: true,
     dir: path.join(__dirname, 'app'),
     icon: path.join(__dirname, 'app/icons/icon'),
-    ignore: /node_modules|src|main.ejs|icons/,
+    ignore: /\b(node_modules|src|index\.ejs|icons)\b/,
     out: path.join(__dirname, 'builds'),
     overwrite: true,
-    platform
+    platform: process.env.PLATFORM_TARGET || 'all'
   }
 }
 

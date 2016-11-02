@@ -18,10 +18,7 @@ let config = {
   },
   module: {
     preLoaders: [],
-    // noParse: /node_modules\/wolkenkratzer\/dist\/wk.browser.js/,
     loaders: [
-      { test: /\.md$/, loader: 'null' },
-      { test: /LICENSE$/, loader: 'null' },
       {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
@@ -62,14 +59,10 @@ let config = {
     ]
   },
   plugins: [
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
-    }),
     new ExtractTextPlugin('styles.css'),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: './app/main.ejs',
+      template: './app/index.ejs',
       title: settings.name
     }),
     new webpack.NoErrorsPlugin()
@@ -91,9 +84,6 @@ let config = {
   },
   target: 'electron-renderer',
   vue: {
-    autoprefixer: {
-      browsers: ['last 2 Chrome versions']
-    },
     loaders: {
       sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
       scss: 'vue-style-loader!css-loader!sass-loader'

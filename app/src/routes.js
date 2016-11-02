@@ -1,12 +1,11 @@
-import Vue from 'vue'
-
-export default {
-  '/': {
-    component: Vue.component('main-page', require('./components/MainPageView')),
-    name: 'main-page'
+export default [
+  {
+    path: '/',
+    name: 'landing-page',
+    component: require('components/LandingPageView')
   },
-  '/resource/:resourceName': {
-    component: Vue.component('resource-page', require('./components/ResourcePageView')),
-    name: 'resource-page'
+  {
+    path: '*',
+    redirect: '/'
   }
-}
+]

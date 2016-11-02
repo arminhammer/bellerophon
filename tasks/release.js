@@ -3,7 +3,10 @@
 const exec = require('child_process').exec
 const packager = require('electron-packager')
 
-pack()
+if (process.env.PLATFORM_TARGET === 'clean') {
+  require('del').sync(['builds/*', '!.gitkeep'])
+  console.log('\x1b[33m`builds` directory cleaned.\n\x1b[0m')
+} else pack()
 
 /**
  * Build webpack in production
@@ -26,11 +29,14 @@ function build () {
 
   console.log('\x1b[34mBuilding electron app(s)...\n\x1b[0m')
   packager(options, (err, appPaths) => {
-    if(err) console.error(err)
+    if(err) {
+      console.error('\x1b[31mError from `electron-packager` when building app...\x1b[0m')
+      console.error(err)
+    } else {
+      console.log('Build(s) successful!')
+      console.log(appPaths)
 
-    console.log('Build(s) successful!')
-    console.log(appPaths)
-
-    console.log('\n\x1b[34mDONE\n\x1b[0m')
+      console.log('\n\x1b[34mDONE\n\x1b[0m')
+    }
   })
 }
