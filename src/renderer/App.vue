@@ -116,9 +116,9 @@ export default {
   name: 'bellerophon',
   data() {
     return {
-      activeService: 'S3',
-      activeResource: 'Bucket',
-      template: Template(),
+      activeService: this.$store.state.Resource.activeService,
+      activeResource: this.$store.state.Resource.activeResource,
+      // template: Template(),
       showTemplate: false,
       format: 'json',
       drawer: true,
@@ -156,10 +156,13 @@ export default {
         });
     },
     formattedTemplate: function() {
+      console.log('formatter');
+      //console.log(store);
+      console.log(this.$store.state.Template.template);
       if (this.format === 'json') {
-        return JSON.stringify(this.template.build(), null, 2);
+        return JSON.stringify(this.$store.state.Template.build(), null, 2);
       } else {
-        return this.template.yaml();
+        return this.$store.state.Template.yaml();
         // return JSON.stringify(this.template.build(), null, 2)
       }
     }
@@ -171,8 +174,9 @@ export default {
     },
     selectService(selection) {
       console.log(selection);
-      this.activeService = selection;
-      this.activeResource = this.secondaryServiceList[0];
+      this.$store.dispatch('setActiveService', selection);
+      //this.activeService = selection;
+      //this.activeResource = this.secondaryServiceList[0];
     },
     selectResource(selection) {
       console.log(selection);

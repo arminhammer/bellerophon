@@ -6,15 +6,15 @@
 					{{ serviceName }}
 				</span>
 				<div v-for="(resource, r) in resourceTypes">
-					<div class="activeResourceMenu" v-if="r === activeResourceType" :key="r">{{ r }}</div>
-					<div class="resourceMenu" v-else @click="updateActiveResourceType(r)" :key="r">{{ r }}</div>
+					<div class="activeResourceMenu" v-if="r === activeResource" :key="r">{{ r }}</div>
+					<div class="resourceMenu" v-else @click="updateActiveResource(r)" :key="r">{{ r }}</div>
 				</div>
 
 			</div>
 
 			<div class="right-side">
 				<div class="doc">
-					<div class="title">{{ activeResourceType }}</div>
+					<div class="title">{{ activeResource }}</div>
 					<p>
 						electron-vue comes packed with detailed documentation that covers everything from internal configurations, using the project structure, building your application, and so much more.
 					</p>
@@ -26,6 +26,54 @@
 					<button class="alt" @click="open('https://vuejs.org/v2/guide/')">Vue.js</button>
 				</div>
 			</div>
+			<v-layout column>
+				<v-flex xs12 sm6 offset-sm3>
+					<v-toolbar color="indigo" dark>
+						<v-toolbar-side-icon></v-toolbar-side-icon>
+						<v-toolbar-title>Discover</v-toolbar-title>
+						<v-spacer></v-spacer>
+						<v-btn icon>
+							<v-icon>search</v-icon>
+						</v-btn>
+					</v-toolbar>
+					<v-container fluid grid-list-md class="grey lighten-4">
+						<v-layout row wrap>
+							<v-flex
+								v-bind="{ [`xs${card.flex}`]: true }"
+								v-for="card in resources"
+								:key="card.title"
+							>
+								<v-card>
+									<v-card-media
+										:src="card.src"
+										height="200px"
+									>
+										<v-container fill-height fluid>
+											<v-layout fill-height>
+												<v-flex xs12 align-end flexbox>
+													<span class="headline white--text" v-text="card.title"></span>
+												</v-flex>
+											</v-layout>
+										</v-container>
+									</v-card-media>
+									<v-card-actions class="white">
+										<v-spacer></v-spacer>
+										<v-btn icon>
+											<v-icon>favorite</v-icon>
+										</v-btn>
+										<v-btn icon>
+											<v-icon>bookmark</v-icon>
+										</v-btn>
+										<v-btn icon>
+											<v-icon>share</v-icon>
+										</v-btn>
+									</v-card-actions>
+								</v-card>
+							</v-flex>
+						</v-layout>
+					</v-container>
+				</v-flex>
+			</v-layout>
 		</main>
 	</div>
 </template>
@@ -37,33 +85,48 @@ export default {
   name: 'aws-service',
   // components: { SystemInformation },
   methods: {
-    open(link) {
-      this.$electron.shell.openExternal(link);
-    },
-    updateActiveResourceType(r) {
-      console.log('click');
-      this.activeResourceType = r;
+    updateActiveResource(r) {
+      console.log('click ', r);
+      console.log(this.$store);
+      this.$store.dispatch('setActiveResource', r);
+      //this. = r;
     }
   },
   data() {
-    return {
-      activeResourceType: Object.keys(
-        spec[this.$route.params.name].Resources
-      )[0]
-    };
+    return {};
   },
   watch: {
     '$route.params.name': function(name) {
       console.log('name changed: ', name);
-      this.activeResourceType = Object.keys(spec[name].Resources)[0];
+      this.$store.dispatch('setActiveService', name);
+      this.$store.dispatch(
+        'setActiveResource',
+        Object.keys(spec[name].Resources)[0]
+      );
+      // this.activeResourceType = Object.keys(spec[name].Resources)[0];
     }
   },
   computed: {
+    activeResource: function() {
+      return this.$store.state.Resource.activeResource;
+    },
     resourceTypes: function() {
-      return spec[this.$route.params.name].Resources;
+      return spec[this.$store.state.Resource.activeService].Resources;
     },
     serviceName: function() {
-      return this.$route.params.name;
+      return this.$store.state.Resource.activeService;
+    },
+    resources: function() {
+      console.log('resources');
+      //console.log(store);
+      console.log(this.$store.state.Resource);
+      /*if (this.format === 'json') {
+        return JSON.stringify(this.$store.state.Template.build(), null, 2);
+      } else {
+        return this.$store.state.Template.yaml();
+        // return JSON.stringify(this.template.build(), null, 2)
+			}*/
+      return [];
     }
   }
 };
