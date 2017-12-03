@@ -1,15 +1,192 @@
 <template>
-  <div id="app">
-    <router-view></router-view>
-  </div>
+  <v-app dark>
+      <v-navigation-drawer
+        fixed
+		:mini-variant.sync="miniVariant"
+        :clipped="clipped"
+        v-model="drawer"
+        app
+      >
+		<v-list>
+          <v-list-tile
+            router
+            :to="item.to"
+            :key="i"
+            v-for="(item, i) in items"
+						v-bind:itemid="i"
+            exact
+          >
+            <v-list-tile-action>
+              <v-icon v-html="item.icon"></v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title v-text="item.title"></v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+		<v-list>
+          <v-list-tile
+						router
+            :to="item.to"
+            :key="i"
+            v-for="(item, i) in serviceMenuList"
+						:params="item"
+            exact
+          >
+            <v-list-tile-action>
+              <v-icon v-html="item.icon"></v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title v-text="item.title"></v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-navigation-drawer>
+      <v-toolbar fixed app :clipped-left="clipped">
+        <v-toolbar-side-icon @click.native.stop="drawer = !drawer"></v-toolbar-side-icon>
+        <v-btn
+          icon
+          @click.native.stop="miniVariant = !miniVariant"
+        >
+          <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"></v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          @click.native.stop="clipped = !clipped"
+        >
+          <v-icon>web</v-icon>
+        </v-btn>
+        <v-btn
+          icon
+          @click.native.stop="fixed = !fixed"
+        >
+          <v-icon>remove</v-icon>
+        </v-btn>
+        <v-toolbar-title v-text="title"></v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn
+          icon
+          @click.native.stop="rightDrawer = !rightDrawer"
+        >
+          <v-icon>menu</v-icon>
+        </v-btn>
+      </v-toolbar>
+      <v-content>
+        <v-container fluid fill-height>
+          <v-slide-y-transition mode="out-in">
+            <router-view></router-view>
+          </v-slide-y-transition>
+        </v-container>
+      </v-content>
+      <v-navigation-drawer
+        temporary
+        fixed
+        :right="right"
+        v-model="rightDrawer"
+        app
+		width=600
+      >
+		<v-content>
+        <v-container fluid fill-height>
+          <v-slide-y-transition mode="out-in">
+            <div><pre v-highlightjs="formattedTemplate"><code class="format"></code></pre></div>
+          </v-slide-y-transition>
+        </v-container>
+      </v-content>
+      </v-navigation-drawer>
+      <v-footer :fixed="fixed" app>
+        <v-spacer></v-spacer>
+        <span>&copy; 2017</span>
+      </v-footer>
+    </v-app>
 </template>
 
 <script>
-  export default {
-    name: 'bellerophon'
+//import SystemInformation from './LandingPage/SystemInformation'
+import Vue from 'vue';
+
+//import 'buefy/lib/buefy.css';
+//import * as cfnstubs from 'cfn-doc-json-stubs';
+import { spec, Template } from 'wolkenkratzer';
+import * as AWS from 'aws-sdk';
+import { ipcRenderer } from 'electron';
+import { approvedServices } from './aws_utils';
+
+export default {
+  name: 'bellerophon',
+  data() {
+    return {
+      activeService: 'S3',
+      activeResource: 'Bucket',
+      template: Template(),
+      showTemplate: false,
+      format: 'json',
+      drawer: true,
+      clipped: false,
+      drawer: true,
+      fixed: false,
+      items: [
+        {
+          to: '/',
+          router: true,
+          title: 'Main',
+          icon: 'home'
+        },
+        { icon: 'settings', title: 'Settings', to: '/settings' }
+      ],
+      miniVariant: false,
+      right: true,
+      rightDrawer: false,
+      title: 'Bellerophon'
+    };
+  },
+  computed: {
+    secondaryServiceList: function() {
+      return []; // Object.keys(cfnstubs[this.activeService].Resources);
+    },
+    serviceMenuList: function() {
+      return spec.resourceList
+        .filter(r => approvedServices.includes(r))
+        .map(r => {
+          return {
+            icon: 'apps',
+            title: r,
+            to: `/service/${r}` //?name=${this.activeService}`
+          };
+        });
+    },
+    formattedTemplate: function() {
+      if (this.format === 'json') {
+        return JSON.stringify(this.template.build(), null, 2);
+      } else {
+        return this.template.yaml();
+        // return JSON.stringify(this.template.build(), null, 2)
+      }
+    }
+  },
+  // components: { SystemInformation },
+  methods: {
+    open(link) {
+      this.$electron.shell.openExternal(link);
+    },
+    selectService(selection) {
+      console.log(selection);
+      this.activeService = selection;
+      this.activeResource = this.secondaryServiceList[0];
+    },
+    selectResource(selection) {
+      console.log(selection);
+      this.activeResource = selection;
+    },
+    toggleShowTemplate() {
+      this.showTemplate = !this.showTemplate;
+      ipcRenderer.send('open-template-window');
+    }
   }
+};
 </script>
 
 <style>
-  /* CSS */
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons');
+/* Global CSS */
 </style>

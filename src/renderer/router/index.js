@@ -7,8 +7,19 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'main-page',
+      name: 'main',
       component: require('@/components/Main')
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: require('@/components/Settings')
+    },
+    {
+      path: '/service/:name',
+      name: 'service',
+      component: require('@/components/Service') //,
+      // props: route => ({ query: route.query.name })
     },
     {
       path: '*',

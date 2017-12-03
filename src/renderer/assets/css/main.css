@@ -1,0 +1,13 @@
+.intro {
+  display: flex;
+  justify-content: center;
+  margin: 4rem 0;
+}
+
+a {
+  color: inherit;
+}
+
+.text-center {
+  text-align: center;
+}
