@@ -1,24 +1,6 @@
 <template>
-	<div id="wrapper" light>
-		<main>
-			<div class="left-side">
-				<span class="listTitle">
-					{{ serviceName }}
-				</span>
-				<div v-for="(resource, r) in resourceTypes" :key="r">
-					<div class="activeResourceMenu" v-if="r === activeResource">{{ r }}</div>
-					<div class="resourceMenu" v-else @click="updateActiveResource(serviceName, r)">{{ r }}</div>
-				</div>
-
-			</div>
-
-			<div class="right-side">
-				<v-layout column>
-					<v-flex xs12 sm6 offset-sm3>
-						<v-toolbar color="indigo" dark>
-							<v-toolbar-side-icon></v-toolbar-side-icon>
-							<v-toolbar-title>{{ activeResource}}</v-toolbar-title>
-						</v-toolbar>
+				<v-layout>
+					<v-flex xs12>
 						<v-container fluid grid-list-md class="grey lighten-4">
 							<v-layout row wrap>
 								<v-flex
@@ -30,19 +12,22 @@
 										<v-card-title primary-title>
 											<div>
 												<div class="headline">{{ card.title}}</div>
-												<span class="grey--text">1,000 miles of wonder</span>
 											</div>
 										</v-card-title>
+										<v-card-text
+										v-for="(prop, p) in card.properties"
+										:key="p"
+										>
+											<div>{{ p }}: {{ prop }}
+											</div>
+										</v-card-text>
 										<v-card-actions class="white">
 											<v-spacer></v-spacer>
 											<v-btn icon>
-												<v-icon>favorite</v-icon>
+												<v-icon>add_circle_outline</v-icon>
 											</v-btn>
 											<v-btn icon>
-												<v-icon>bookmark</v-icon>
-											</v-btn>
-											<v-btn icon>
-												<v-icon>share</v-icon>
+												<v-icon>low_priority</v-icon>
 											</v-btn>
 										</v-card-actions>
 									</v-card>
@@ -51,9 +36,6 @@
 						</v-container>
 					</v-flex>
 				</v-layout>
-			</div>
-		</main>
-	</div>
 </template>
 
 <script>
@@ -131,7 +113,7 @@ export default {
 			}*/
       return this.$store.state.Resource.resources[
         this.$store.state.Resource.activeService
-      ][this.$store.state.Resource.activeResource];
+      ][this.$store.state.Resource.activeResource].items;
     }
   }
 };

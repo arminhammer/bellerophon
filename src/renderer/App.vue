@@ -155,11 +155,16 @@ export default {
       ],
       miniVariant: false,
       right: true,
-      rightDrawer: false,
-      title: 'Bellerophon'
+      rightDrawer: false
+      //title: `${this.$store.state.Resource.activeService} ${this.$store.state
+      //  .Resource.activeResource}`
     };
   },
   computed: {
+    title: function() {
+      return `${this.$store.state.Resource.activeService} ${this.$store.state
+        .Resource.activeResource}`;
+    },
     secondaryServiceList: function() {
       return []; // Object.keys(cfnstubs[this.activeService].Resources);
     },
