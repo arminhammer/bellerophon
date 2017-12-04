@@ -7,73 +7,51 @@
 				</span>
 				<div v-for="(resource, r) in resourceTypes">
 					<div class="activeResourceMenu" v-if="r === activeResource" :key="r">{{ r }}</div>
-					<div class="resourceMenu" v-else @click="updateActiveResource(r)" :key="r">{{ r }}</div>
+					<div class="resourceMenu" v-else @click="updateActiveResource(serviceName, r)" :key="r">{{ r }}</div>
 				</div>
 
 			</div>
 
 			<div class="right-side">
-				<div class="doc">
-					<div class="title">{{ activeResource }}</div>
-					<p>
-						electron-vue comes packed with detailed documentation that covers everything from internal configurations, using the project structure, building your application, and so much more.
-					</p>
-					<button @click="open('https://simulatedgreg.gitbooks.io/electron-vue/content/')">Read the Docs</button><br><br>
-				</div>
-				<div class="doc">
-					<div class="title alt">Other Documentation</div>
-					<button class="alt" @click="open('https://electron.atom.io/docs/')">Electron</button>
-					<button class="alt" @click="open('https://vuejs.org/v2/guide/')">Vue.js</button>
-				</div>
+				<v-layout column>
+					<v-flex xs12 sm6 offset-sm3>
+						<v-toolbar color="indigo" dark>
+							<v-toolbar-side-icon></v-toolbar-side-icon>
+							<v-toolbar-title>{{ activeResource}}</v-toolbar-title>
+						</v-toolbar>
+						<v-container fluid grid-list-md class="grey lighten-4">
+							<v-layout row wrap>
+								<v-flex
+									v-bind="{ [`xs${card.flex}`]: true }"
+									v-for="card in resources"
+									:key="card.title"
+								>
+									<v-card>
+										<v-card-title primary-title>
+											<div>
+												<div class="headline">{{ card.title}}</div>
+												<span class="grey--text">1,000 miles of wonder</span>
+											</div>
+										</v-card-title>
+										<v-card-actions class="white">
+											<v-spacer></v-spacer>
+											<v-btn icon>
+												<v-icon>favorite</v-icon>
+											</v-btn>
+											<v-btn icon>
+												<v-icon>bookmark</v-icon>
+											</v-btn>
+											<v-btn icon>
+												<v-icon>share</v-icon>
+											</v-btn>
+										</v-card-actions>
+									</v-card>
+								</v-flex>
+							</v-layout>
+						</v-container>
+					</v-flex>
+				</v-layout>
 			</div>
-			<v-layout column>
-				<v-flex xs12 sm6 offset-sm3>
-					<v-toolbar color="indigo" dark>
-						<v-toolbar-side-icon></v-toolbar-side-icon>
-						<v-toolbar-title>Discover</v-toolbar-title>
-						<v-spacer></v-spacer>
-						<v-btn icon>
-							<v-icon>search</v-icon>
-						</v-btn>
-					</v-toolbar>
-					<v-container fluid grid-list-md class="grey lighten-4">
-						<v-layout row wrap>
-							<v-flex
-								v-bind="{ [`xs${card.flex}`]: true }"
-								v-for="card in resources"
-								:key="card.title"
-							>
-								<v-card>
-									<v-card-media
-										:src="card.src"
-										height="200px"
-									>
-										<v-container fill-height fluid>
-											<v-layout fill-height>
-												<v-flex xs12 align-end flexbox>
-													<span class="headline white--text" v-text="card.title"></span>
-												</v-flex>
-											</v-layout>
-										</v-container>
-									</v-card-media>
-									<v-card-actions class="white">
-										<v-spacer></v-spacer>
-										<v-btn icon>
-											<v-icon>favorite</v-icon>
-										</v-btn>
-										<v-btn icon>
-											<v-icon>bookmark</v-icon>
-										</v-btn>
-										<v-btn icon>
-											<v-icon>share</v-icon>
-										</v-btn>
-									</v-card-actions>
-								</v-card>
-							</v-flex>
-						</v-layout>
-					</v-container>
-				</v-flex>
-			</v-layout>
 		</main>
 	</div>
 </template>
@@ -85,10 +63,14 @@ export default {
   name: 'aws-service',
   // components: { SystemInformation },
   methods: {
-    updateActiveResource(r) {
-      console.log('click ', r);
+    updateActiveResource(s, r) {
+      console.log('updating resource ', s, ' ', r);
       console.log(this.$store);
       this.$store.dispatch('setActiveResource', r);
+      this.$store.dispatch('updateAWSResource', {
+        Service: s,
+        Resource: r
+      });
       //this. = r;
     }
   },
@@ -99,12 +81,20 @@ export default {
     '$route.params.name': function(name) {
       console.log('name changed: ', name);
       this.$store.dispatch('setActiveService', name);
-      this.$store.dispatch(
-        'setActiveResource',
-        Object.keys(spec[name].Resources)[0]
-      );
+      const resource = Object.keys(spec[name].Resources)[0];
+      this.$store.dispatch('setActiveResource', resource);
+      this.updateActiveResource(name, resource);
       // this.activeResourceType = Object.keys(spec[name].Resources)[0];
     }
+  },
+  beforeMount: function() {
+    console.log('Mounting!');
+    const name = this.$route.params.name;
+    this.$store.dispatch('setActiveService', name);
+    const resource = Object.keys(spec[name].Resources)[0];
+    this.$store.dispatch('setActiveResource', resource);
+    console.log('this: ', this);
+    this.updateActiveResource(this.$route.params.name, resource);
   },
   computed: {
     activeResource: function() {
@@ -119,26 +109,26 @@ export default {
     resources: function() {
       console.log('resources');
       //console.log(store);
-      console.log(this.$store.state.Resource);
+      console.log(
+        this.$store.state.Resource.resources[
+          this.$store.state.Resource.activeService
+        ][this.$store.state.Resource.activeResource]
+      );
       /*if (this.format === 'json') {
         return JSON.stringify(this.$store.state.Template.build(), null, 2);
       } else {
         return this.$store.state.Template.yaml();
         // return JSON.stringify(this.template.build(), null, 2)
 			}*/
-      return [];
+      return this.$store.state.Resource.resources[
+        this.$store.state.Resource.activeService
+      ][this.$store.state.Resource.activeResource];
     }
   }
 };
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
-@font-face {
-  font-family: MonoFur;
-  src: url('/static/fonts/monofur.ttf');
-}
-
 .resourceMenu {
   font-family: MonoFur;
   color: black;

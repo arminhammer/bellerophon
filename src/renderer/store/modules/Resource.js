@@ -1,5 +1,5 @@
 import { spec, Template } from 'wolkenkratzer';
-import { approvedServices } from '../../aws_utils';
+import { approvedServices, listResources } from '../../aws_utils';
 
 const state = {
   activeService: 'S3',
@@ -26,6 +26,11 @@ const mutations = {
     console.log('mutating');
     state.activeService = payload;
   },
+  SET_RESOURCES_FROM_AWS(state, { Service, Resource, Result }) {
+    console.log('mutating AWS', Result);
+    state.resources[Service][Resource] = Result;
+    //state.activeService = payload;
+  },
   DECREMENT_MAIN_COUNTER(state) {
     state.template--;
   },
@@ -46,6 +51,18 @@ const actions = {
   someAsyncTask({ commit }) {
     // do something async
     commit('INCREMENT_MAIN_COUNTER');
+  },
+  async updateAWSResource({ commit }, { Service, Resource }) {
+    console.log('payload: ', Service, ' ', Resource);
+    let Result;
+    if (listResources[Service] && listResources[Service][Resource]) {
+      Result = await listResources[Service][Resource]();
+    } else {
+      Result = await new Promise(res => res([]));
+    }
+    console.log('update result:');
+    console.log(Result);
+    commit('SET_RESOURCES_FROM_AWS', { Service, Resource, Result });
   }
 };
 

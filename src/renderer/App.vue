@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
       <v-navigation-drawer
         fixed
 		:mini-variant.sync="miniVariant"
@@ -84,15 +84,12 @@
         :right="right"
         v-model="rightDrawer"
         app
-		width=600
-      >
-		<v-content>
-        <v-container fluid fill-height>
+				width=600>
+        <v-container>
           <v-slide-y-transition mode="out-in">
-            <div><pre v-highlightjs="formattedTemplate"><code class="format"></code></pre></div>
+            <pre v-highlightjs="formattedTemplate" id="templatePreBlock"><code class="format" id="templateBlock"></code></pre>
           </v-slide-y-transition>
         </v-container>
-      </v-content>
       </v-navigation-drawer>
       <v-footer :fixed="fixed" app>
         <v-spacer></v-spacer>
@@ -192,5 +189,19 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+@font-face {
+  font-family: MonoFur;
+  src: url('/static/fonts/monofur.ttf');
+}
 /* Global CSS */
+#templatePreBlock {
+  width: 100%;
+}
+#templateBlock {
+  font-family: MonoFur;
+  width: 100%;
+  height: 100%;
+  font-size: 1em;
+}
 </style>
