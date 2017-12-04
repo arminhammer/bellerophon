@@ -18,10 +18,13 @@ export const listResources = {
   S3: {
     Bucket: async () => {
       const { Buckets } = await new AWS.S3().listBuckets().promise();
-      return Buckets.map(r => ({
-        title: r.Name,
-        properties: { CreationDate: r.CreationDate, Name: r.Name }
-      }));
+      return {
+        to: '/service/S3/Bucket',
+        items: Buckets.map(r => ({
+          title: r.Name,
+          properties: { CreationDate: r.CreationDate, Name: r.Name }
+        }))
+      };
     }
   }
 };

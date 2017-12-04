@@ -16,7 +16,7 @@ export default new Router({
       component: require('@/components/Settings')
     },
     {
-      path: '/service/:name',
+      path: '/service/:serviceName/:resourceName',
       name: 'service',
       component: require('@/components/Service') //,
       // props: route => ({ query: route.query.name })

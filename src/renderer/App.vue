@@ -7,6 +7,26 @@
         v-model="drawer"
         app
       >
+			<v-expansion-panel expand>
+    <v-expansion-panel-content v-for="(service, s) in services" :key="s">
+
+      <div slot="header"><div class="menuSpan"><v-icon>apps</v-icon></div>{{ s }}</div>
+			<v-list>
+          <v-list-tile
+						router
+            :to="resource.to"
+            :key="r"
+            v-for="(resource, r) in services[s]"
+						:params="resource"
+            exact
+          >
+            <v-list-tile-content>
+              <v-list-tile-title v-text="r"></v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+    </v-expansion-panel-content>
+  </v-expansion-panel>
 		<v-list>
           <v-list-tile
             router
@@ -84,7 +104,8 @@
         :right="right"
         v-model="rightDrawer"
         app
-				width=600>
+				id="templateDrawer"
+				width="50vw">
         <v-container>
           <v-slide-y-transition mode="out-in">
             <pre v-highlightjs="formattedTemplate" id="templatePreBlock"><code class="format" id="templateBlock"></code></pre>
@@ -115,6 +136,7 @@ export default {
     return {
       activeService: this.$store.state.Resource.activeService,
       activeResource: this.$store.state.Resource.activeResource,
+      services: this.$store.state.Resource.resources,
       // template: Template(),
       showTemplate: false,
       format: 'json',
@@ -142,7 +164,7 @@ export default {
       return []; // Object.keys(cfnstubs[this.activeService].Resources);
     },
     serviceMenuList: function() {
-      return spec.resourceList
+      return Object.keys(this.$store.state.Resource.resources)
         .filter(r => approvedServices.includes(r))
         .map(r => {
           return {
@@ -203,5 +225,12 @@ export default {
   width: 100%;
   height: 100%;
   font-size: 1em;
+}
+.menuSpan {
+  width: 56px;
+  display: inline-block;
+}
+#templateDrawer {
+  width: 50vw;
 }
 </style>

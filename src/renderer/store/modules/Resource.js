@@ -6,11 +6,14 @@ const state = {
   activeResource: 'Bucket',
   resources: approvedServices.reduce((acc, curr) => {
     acc[curr] = Object.keys(spec[curr].Resources).reduce((acc0, curr0) => {
-      acc0[curr0] = [
-        { title: `${curr0}0` },
-        { title: `${curr0}1` },
-        { title: `${curr0}2` }
-      ];
+      acc0[curr0] = {
+        to: `/service/${curr}/${curr0}`,
+        items: [
+          { title: `${curr0}0` },
+          { title: `${curr0}1` },
+          { title: `${curr0}2` }
+        ]
+      };
       return acc0;
     }, {});
     return acc;
@@ -58,7 +61,9 @@ const actions = {
     if (listResources[Service] && listResources[Service][Resource]) {
       Result = await listResources[Service][Resource]();
     } else {
-      Result = await new Promise(res => res([]));
+      Result = await new Promise(res =>
+        res({ to: `/service/${Service}/${Resource}`, items: [] })
+      );
     }
     console.log('update result:');
     console.log(Result);

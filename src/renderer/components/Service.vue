@@ -5,9 +5,9 @@
 				<span class="listTitle">
 					{{ serviceName }}
 				</span>
-				<div v-for="(resource, r) in resourceTypes">
-					<div class="activeResourceMenu" v-if="r === activeResource" :key="r">{{ r }}</div>
-					<div class="resourceMenu" v-else @click="updateActiveResource(serviceName, r)" :key="r">{{ r }}</div>
+				<div v-for="(resource, r) in resourceTypes" :key="r">
+					<div class="activeResourceMenu" v-if="r === activeResource">{{ r }}</div>
+					<div class="resourceMenu" v-else @click="updateActiveResource(serviceName, r)">{{ r }}</div>
 				</div>
 
 			</div>
@@ -57,8 +57,6 @@
 </template>
 
 <script>
-import { spec } from 'wolkenkratzer';
-console.log(spec);
 export default {
   name: 'aws-service',
   // components: { SystemInformation },
@@ -78,30 +76,41 @@ export default {
     return {};
   },
   watch: {
-    '$route.params.name': function(name) {
-      console.log('name changed: ', name);
-      this.$store.dispatch('setActiveService', name);
-      const resource = Object.keys(spec[name].Resources)[0];
+    '$route.params.serviceName': function(serviceName) {
+      console.log('serviceName changed: ', serviceName);
+      this.$store.dispatch('setActiveService', serviceName);
+      const resource = Object.keys(
+        this.$store.state.Resource.resources[serviceName]
+      )[0];
       this.$store.dispatch('setActiveResource', resource);
-      this.updateActiveResource(name, resource);
-      // this.activeResourceType = Object.keys(spec[name].Resources)[0];
+      this.updateActiveResource(serviceName, resource);
+    },
+    '$route.params.resourceName': function(resourceName) {
+      const serviceName = this.$route.params.serviceName;
+      console.log('resourceName changed: ', resourceName);
+      this.$store.dispatch('setActiveResource', resourceName);
+      this.updateActiveResource(serviceName, resourceName);
     }
   },
   beforeMount: function() {
     console.log('Mounting!');
-    const name = this.$route.params.name;
-    this.$store.dispatch('setActiveService', name);
-    const resource = Object.keys(spec[name].Resources)[0];
+    const serviceName = this.$route.params.serviceName;
+    this.$store.dispatch('setActiveService', serviceName);
+    const resource = Object.keys(
+      this.$store.state.Resource.resources[serviceName]
+    )[0];
     this.$store.dispatch('setActiveResource', resource);
     console.log('this: ', this);
-    this.updateActiveResource(this.$route.params.name, resource);
+    this.updateActiveResource(serviceName, resource);
   },
   computed: {
     activeResource: function() {
       return this.$store.state.Resource.activeResource;
     },
     resourceTypes: function() {
-      return spec[this.$store.state.Resource.activeService].Resources;
+      return this.$store.state.Resource.resources[
+        this.$store.state.Resource.activeService
+      ];
     },
     serviceName: function() {
       return this.$store.state.Resource.activeService;
