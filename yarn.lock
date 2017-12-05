@@ -7790,9 +7790,9 @@ window-size@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.3.0.tgz#b8f0b66e325d22160751e496337e44b45b727546"
 
-wolkenkratzer@^0.10.6:
-  version "0.10.6"
-  resolved "https://registry.yarnpkg.com/wolkenkratzer/-/wolkenkratzer-0.10.6.tgz#76798a8c7bf3c18cec35803ad24bd2ede75db891"
+wolkenkratzer@^0.10.7:
+  version "0.10.7"
+  resolved "https://registry.yarnpkg.com/wolkenkratzer/-/wolkenkratzer-0.10.7.tgz#2259fad89acf83f5e64604ac6dac21796df1158c"
   dependencies:
     bluebird "^3.5.0"
     cloudformation-schema-js-yaml "^1.0.1"

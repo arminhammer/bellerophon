@@ -188,9 +188,13 @@ export default {
       //console.log(store);
       console.log(this.$store.state.Template.template);
       if (this.format === 'json') {
-        return JSON.stringify(this.$store.state.Template.build(), null, 2);
+        return JSON.stringify(
+          this.$store.state.Template.template.build(),
+          null,
+          2
+        );
       } else {
-        return this.$store.state.Template.yaml();
+        return this.$store.state.Template.template.yaml();
         // return JSON.stringify(this.template.build(), null, 2)
       }
     }

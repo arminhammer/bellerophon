@@ -4,7 +4,7 @@ import { approvedServices, listResources } from '../../aws_utils';
 const state = {
   activeService: 'S3',
   activeResource: 'Bucket',
-  loading: true,
+  loading: false,
   resources: approvedServices.reduce((acc, curr) => {
     acc[curr] = Object.keys(spec[curr].Resources).reduce((acc0, curr0) => {
       acc0[curr0] = {

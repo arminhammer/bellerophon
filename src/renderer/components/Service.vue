@@ -7,11 +7,11 @@
 
 									v-bind="{ [`xs${card.flex}`]: true }"
 									v-for="card in resources"
-									:key="card.title"
+									:key="card.Name"
 								>
 									<v-card>
 										<v-toolbar color="red" dark>
-											<v-btn icon>
+											<v-btn icon @click="toggleResource(card)">
 												<v-icon>add_circle_outline</v-icon>
 												</v-btn>
 												<v-toolbar-title>{{ card.Name}}</v-toolbar-title>
@@ -41,6 +41,14 @@ export default {
   name: 'aws-service',
   // components: { SystemInformation },
   methods: {
+    toggleResource(resource) {
+      console.log('toggling resource: ', resource);
+      if (this.$store.state.Template.template.Resources[resource.Name]) {
+        this.$store.dispatch('removeResourceFromTemplate', resource);
+      } else {
+        this.$store.dispatch('addResourceToTemplate', resource);
+      }
+    },
     updateActiveResource(s, r) {
       console.log('updating resource ', s, ' ', r);
       this.$store.dispatch('setActiveResource', r);
