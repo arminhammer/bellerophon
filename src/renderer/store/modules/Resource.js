@@ -4,6 +4,7 @@ import { approvedServices, listResources } from '../../aws_utils';
 const state = {
   activeService: 'S3',
   activeResource: 'Bucket',
+  loading: true,
   resources: approvedServices.reduce((acc, curr) => {
     acc[curr] = Object.keys(spec[curr].Resources).reduce((acc0, curr0) => {
       acc0[curr0] = {
@@ -29,10 +30,14 @@ const mutations = {
     console.log('mutating');
     state.activeService = payload;
   },
+  SET_LOADING(state) {
+    console.log('set loading to true');
+    state.loading = true;
+  },
   SET_RESOURCES_FROM_AWS(state, { Service, Resource, Result }) {
     console.log('mutating AWS', Result);
     state.resources[Service][Resource] = Result;
-    //state.activeService = payload;
+    state.loading = false;
   },
   DECREMENT_MAIN_COUNTER(state) {
     state.template--;
@@ -57,6 +62,7 @@ const actions = {
   },
   async updateAWSResource({ commit }, { Service, Resource }) {
     console.log('payload: ', Service, ' ', Resource);
+    commit('SET_LOADING');
     let Result;
     if (listResources[Service] && listResources[Service][Resource]) {
       Result = await listResources[Service][Resource]();

@@ -1,35 +1,33 @@
 <template>
-				<v-layout>
+				<v-layout v-if="resourceFetched">
 					<v-flex xs12>
 						<v-container fluid grid-list-md class="grey lighten-4">
 							<v-layout row wrap>
 								<v-flex
+
 									v-bind="{ [`xs${card.flex}`]: true }"
 									v-for="card in resources"
 									:key="card.title"
 								>
 									<v-card>
-										<v-card-title primary-title>
-											<div>
-												<div class="headline">{{ card.title}}</div>
-											</div>
-										</v-card-title>
+										<v-toolbar color="red" dark>
+											<v-btn icon>
+												<v-icon>add_circle_outline</v-icon>
+												</v-btn>
+												<v-toolbar-title>{{ card.Name}}</v-toolbar-title>
+												<v-spacer></v-spacer>
+
+												<v-btn icon>
+													<v-icon>low_priority</v-icon>
+												</v-btn>
+											</v-toolbar>
 										<v-card-text
-										v-for="(prop, p) in card.properties"
+										v-for="(prop, p) in card.Properties"
 										:key="p"
 										>
 											<div>{{ p }}: {{ prop }}
 											</div>
 										</v-card-text>
-										<v-card-actions class="white">
-											<v-spacer></v-spacer>
-											<v-btn icon>
-												<v-icon>add_circle_outline</v-icon>
-											</v-btn>
-											<v-btn icon>
-												<v-icon>low_priority</v-icon>
-											</v-btn>
-										</v-card-actions>
 									</v-card>
 								</v-flex>
 							</v-layout>
@@ -45,7 +43,6 @@ export default {
   methods: {
     updateActiveResource(s, r) {
       console.log('updating resource ', s, ' ', r);
-      console.log(this.$store);
       this.$store.dispatch('setActiveResource', r);
       this.$store.dispatch('updateAWSResource', {
         Service: s,
@@ -86,6 +83,9 @@ export default {
     this.updateActiveResource(serviceName, resource);
   },
   computed: {
+    resourceFetched: function() {
+      return !this.$store.state.Resource.loading;
+    },
     activeResource: function() {
       return this.$store.state.Resource.activeResource;
     },

@@ -84,6 +84,7 @@
         </v-btn>
         <v-toolbar-title v-text="title"></v-toolbar-title>
         <v-spacer></v-spacer>
+				<v-progress-circular v-if="resourceFetching" indeterminate v-bind:width="3" color="red"></v-progress-circular>
         <v-btn
           icon
           @click.native.stop="rightDrawer = !rightDrawer"
@@ -161,6 +162,9 @@ export default {
     };
   },
   computed: {
+    resourceFetching: function() {
+      return this.$store.state.Resource.loading;
+    },
     title: function() {
       return `${this.$store.state.Resource.activeService} ${this.$store.state
         .Resource.activeResource}`;

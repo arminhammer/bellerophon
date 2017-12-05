@@ -68,7 +68,7 @@
     "vue-router": "^2.5.3",
     "vuetify": "^0.17.3",
     "vuex": "^3.0.1",
-    "wolkenkratzer": "^0.10.4"
+    "wolkenkratzer": "^0.10.6"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
