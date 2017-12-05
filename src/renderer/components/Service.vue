@@ -1,5 +1,5 @@
 <template>
-				<v-layout v-if="resourceFetched">
+				<v-layout>
 					<v-flex xs12>
 						<v-container fluid grid-list-md class="grey lighten-4">
 							<v-layout row wrap>
@@ -70,13 +70,18 @@ export default {
         this.$store.state.Resource.resources[serviceName]
       )[0];
       this.$store.dispatch('setActiveResource', resource);
-      this.updateActiveResource(serviceName, resource);
     },
     '$route.params.resourceName': function(resourceName) {
       const serviceName = this.$route.params.serviceName;
       console.log('resourceName changed: ', resourceName);
       this.$store.dispatch('setActiveResource', resourceName);
-      this.updateActiveResource(serviceName, resourceName);
+      if (
+        !this.$store.state.Resource.resources[serviceName][resourceName]
+          .lastUpdated &&
+        !this.$store.state.Resource.loading
+      ) {
+        this.updateActiveResource(serviceName, resourceName);
+      }
     }
   },
   beforeMount: function() {

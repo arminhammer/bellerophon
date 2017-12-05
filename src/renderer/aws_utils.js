@@ -25,7 +25,8 @@ export const listResources = {
       console.log('resourceBlock: ', resourceBlocks);
       return {
         to: '/service/S3/Bucket',
-        items: resourceBlocks
+        items: resourceBlocks,
+        lastUpdated: new Date()
       };
     }
   }

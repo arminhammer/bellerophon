@@ -44,23 +44,6 @@
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
-		<v-list>
-          <v-list-tile
-						router
-            :to="item.to"
-            :key="i"
-            v-for="(item, i) in serviceMenuList"
-						:params="item"
-            exact
-          >
-            <v-list-tile-action>
-              <v-icon v-html="item.icon"></v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title v-text="item.title"></v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
       </v-navigation-drawer>
       <v-toolbar fixed app :clipped-left="clipped">
         <v-toolbar-side-icon @click.native.stop="drawer = !drawer"></v-toolbar-side-icon>
@@ -86,6 +69,13 @@
         <v-spacer></v-spacer>
 				<v-progress-circular v-if="resourceFetching" indeterminate v-bind:width="3" color="red"></v-progress-circular>
         <v-btn
+					v-else
+          icon
+          @click="refreshResources"
+        >
+				<v-icon>refresh</v-icon>
+				</v-btn>
+				<v-btn
           icon
           @click.native.stop="rightDrawer = !rightDrawer"
         >
@@ -135,8 +125,6 @@ export default {
   name: 'bellerophon',
   data() {
     return {
-      activeService: this.$store.state.Resource.activeService,
-      activeResource: this.$store.state.Resource.activeResource,
       services: this.$store.state.Resource.resources,
       // template: Template(),
       showTemplate: false,
@@ -145,15 +133,7 @@ export default {
       clipped: false,
       drawer: true,
       fixed: false,
-      items: [
-        {
-          to: '/',
-          router: true,
-          title: 'Main',
-          icon: 'home'
-        },
-        { icon: 'settings', title: 'Settings', to: '/settings' }
-      ],
+      items: [{ icon: 'settings', title: 'Settings', to: '/settings' }],
       miniVariant: false,
       right: true,
       rightDrawer: false
@@ -162,6 +142,12 @@ export default {
     };
   },
   computed: {
+    activeService: function() {
+      return this.$store.state.Resource.activeService;
+    },
+    activeResource: function() {
+      return this.$store.state.Resource.activeResource;
+    },
     resourceFetching: function() {
       return this.$store.state.Resource.loading;
     },
@@ -203,6 +189,18 @@ export default {
   methods: {
     open(link) {
       this.$electron.shell.openExternal(link);
+    },
+    refreshResources() {
+      console.log(
+        'Refreshing service resources: ',
+        this.activeService,
+        ' ',
+        this.activeResource
+      );
+      this.$store.dispatch('updateAWSResource', {
+        Service: this.activeService,
+        Resource: this.activeResource
+      });
     },
     selectService(selection) {
       console.log(selection);

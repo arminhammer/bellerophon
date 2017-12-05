@@ -9,11 +9,8 @@ const state = {
     acc[curr] = Object.keys(spec[curr].Resources).reduce((acc0, curr0) => {
       acc0[curr0] = {
         to: `/service/${curr}/${curr0}`,
-        items: [
-          { title: `${curr0}0` },
-          { title: `${curr0}1` },
-          { title: `${curr0}2` }
-        ]
+        lastUpdated: null,
+        items: []
       };
       return acc0;
     }, {});
@@ -68,7 +65,11 @@ const actions = {
       Result = await listResources[Service][Resource]();
     } else {
       Result = await new Promise(res =>
-        res({ to: `/service/${Service}/${Resource}`, items: [] })
+        res({
+          to: `/service/${Service}/${Resource}`,
+          items: [],
+          lastUpdated: new Date()
+        })
       );
     }
     console.log('update result:');
