@@ -7,8 +7,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'main',
-      component: require('@/components/Main')
+      name: 'template',
+      component: require('@/components/Template')
     },
     {
       path: '/settings',

@@ -11,13 +11,14 @@
 								>
 									<v-card>
 										<v-toolbar color="red" dark>
-											<v-btn icon @click="toggleResource(card)">
-												<v-icon>add_circle_outline</v-icon>
+												<v-btn icon @click="toggleResource(card)">
+												<v-icon v-if="presentInTemplate[serviceName][activeResource][card.Name].present">add_circle</v-icon>
+												<v-icon v-else>add_circle_outline</v-icon>
 												</v-btn>
 												<v-toolbar-title>{{ card.Name}}</v-toolbar-title>
 												<v-spacer></v-spacer>
 
-												<v-btn icon>
+												<v-btn icon @click="toggleResourceOutput(card.Name)">
 													<v-icon>low_priority</v-icon>
 												</v-btn>
 											</v-toolbar>
@@ -36,6 +37,9 @@
 														<v-spacer></v-spacer>
 
 														<v-btn icon>
+															<v-icon>assignment</v-icon>
+														</v-btn>
+														<v-btn icon>
 															<v-icon>low_priority</v-icon>
 														</v-btn>
 													</v-toolbar>
@@ -46,71 +50,6 @@
 													</v-card-text>
 											</v-card>
 										</v-flex>
-										<!--
-											<div v-if="hasStuff(prop)">{{ p }}: {{ prop }}
-											</div>
-
-											<v-list two-line subheader>
-												<v-list-tile v-if="hasStuff(prop)" @click="">
-													<v-list-tile-action>
-														<v-checkbox v-model="notifications"></v-checkbox>
-													</v-list-tile-action>
-													<v-list-tile-content>
-														<v-list-tile-title>{{ p }}</v-list-tile-title>
-														<v-list-tile-sub-title>{{ prop }}</v-list-tile-sub-title>
-														<v-divider></v-divider>
-														<div>
-															<v-card>
-																<v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
-															</v-card>
-														</div>
-													</v-list-tile-content>
-													<v-list-tile-action>
-														<v-icon>chat</v-icon>
-													</v-list-tile-action>
-												</v-list-tile>
-
-												<v-subheader>Hangout notifications</v-subheader>
-												<v-list-tile avatar>
-													<v-list-tile-action>
-														<v-checkbox v-model="notifications"></v-checkbox>
-														<v-checkbox v-model="parameter"></v-checkbox>
-													</v-list-tile-action>
-													<v-list-tile-content>
-														<v-list-tile-title>Notifications</v-list-tile-title>
-														<v-list-tile-sub-title>Allow notifications</v-list-tile-sub-title>
-													</v-list-tile-content>
-												</v-list-tile>
-												<v-list-tile avatar>
-													<v-list-tile-action>
-														<v-checkbox v-model="sound"></v-checkbox>
-													</v-list-tile-action>
-													<v-list-tile-content>
-														<v-list-tile-title>Sound</v-list-tile-title>
-														<v-list-tile-sub-title>Hangouts message</v-list-tile-sub-title>
-													</v-list-tile-content>
-												</v-list-tile>
-												<v-list-tile avatar>
-													<v-list-tile-action>
-														<v-checkbox v-model="video"></v-checkbox>
-													</v-list-tile-action>
-													<v-list-tile-content>
-														<v-list-tile-title>Video sounds</v-list-tile-title>
-														<v-list-tile-sub-title>Hangouts video call</v-list-tile-sub-title>
-													</v-list-tile-content>
-												</v-list-tile>
-												<v-list-tile avatar>
-													<v-list-tile-action>
-														<v-checkbox v-model="invites"></v-checkbox>
-													</v-list-tile-action>
-													<v-list-tile-content>
-														<v-list-tile-title>Invites</v-list-tile-title>
-														<v-list-tile-sub-title>Notify when receiving invites</v-list-tile-sub-title>
-													</v-list-tile-content>
-												</v-list-tile>
-
-											</v-list>
-												-->
 										</v-card-text>
 
 									</v-card>
@@ -133,6 +72,17 @@ export default {
         this.$store.dispatch('removeResourceFromTemplate', resource);
       } else {
         this.$store.dispatch('addResourceToTemplate', resource);
+      }
+    },
+    toggleResourceOutput(resourceName) {
+      console.log('toggling resource output status: ', resourceName);
+      //this.$store.dispatch('addOutputResourceToTemplate', resourceName);
+      if (
+        this.$store.state.Template.template.Outputs[`${resourceName}Output`]
+      ) {
+        this.$store.dispatch('removeOutputResourceFromTemplate', resourceName);
+      } else {
+        this.$store.dispatch('addOutputResourceToTemplate', resourceName);
       }
     },
     updateActiveResource(s, r) {
@@ -225,6 +175,35 @@ export default {
       return this.$store.state.Resource.resources[
         this.$store.state.Resource.activeService
       ][this.$store.state.Resource.activeResource].items;
+    },
+    presentInTemplate: function() {
+      const result = { [this.serviceName]: { [this.activeResource]: {} } };
+      console.log('present result: ', result);
+      console.log('present resources: ', this.resources);
+      Object.keys(this.resources).forEach(r => {
+        const present = this.$store.state.Template.template.Resources[
+          this.resources[r].Name
+        ]
+          ? true
+          : false;
+        result[this.serviceName][this.activeResource][
+          this.resources[r].Name
+        ] = { present: present };
+      });
+      console.log('present result: ', result);
+      return result;
+      /*return {
+        S3: {
+          Bucket: {
+            'arming-us-west-2S3Bucket': {
+              present: true
+            },
+            'arminhammer-cloudtrailS3Bucket': {
+              present: false
+            }
+          }
+        }
+			};*/
     }
   }
 };
