@@ -20,7 +20,9 @@ export const listResources = {
     Bucket: async () => {
       const { Buckets } = await new AWS.S3().listBuckets().promise();
       const resourceBlocks = await Promise.all(
-        Buckets.map(b => Transform.S3.Bucket(b.Name, AWS, `${b.Name}S3Bucket`))
+        Buckets.slice(0, 2).map(b =>
+          Transform.S3.Bucket(b.Name, AWS, `${b.Name}S3Bucket`)
+        )
       );
       console.log('resourceBlock: ', resourceBlocks);
       return {

@@ -1,6 +1,6 @@
 import { Template } from 'wolkenkratzer';
 
-let state = { template: Template() };
+let state = { template: Template(), internal: {} };
 
 const mutations = {
   ADD_RESOURCE_TO_TEMPLATE(state, resource) {

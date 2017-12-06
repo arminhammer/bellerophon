@@ -24,10 +24,95 @@
 										<v-card-text
 										v-for="(prop, p) in card.Properties"
 										:key="p"
+										class="cardList"
 										>
-											<div>{{ p }}: {{ prop }}
+										<v-flex xs12 v-if="hasStuff(prop)">
+											<v-card>
+												<v-toolbar color="white" light dense>
+													<v-btn icon @click="toggleResource(card)">
+														<v-icon>add_circle_outline</v-icon>
+														</v-btn>
+														<v-toolbar-title>{{ p }}</v-toolbar-title>
+														<v-spacer></v-spacer>
+
+														<v-btn icon>
+															<v-icon>low_priority</v-icon>
+														</v-btn>
+													</v-toolbar>
+													<v-card-text class="codeBlockText">
+														<v-slide-y-transition mode="out-in">
+															<pre v-highlightjs="JSON.stringify(prop,null,2)" id="templatePreBlock"><code class="format" id="templateBlock"></code></pre>
+														</v-slide-y-transition>
+													</v-card-text>
+											</v-card>
+										</v-flex>
+										<!--
+											<div v-if="hasStuff(prop)">{{ p }}: {{ prop }}
 											</div>
+
+											<v-list two-line subheader>
+												<v-list-tile v-if="hasStuff(prop)" @click="">
+													<v-list-tile-action>
+														<v-checkbox v-model="notifications"></v-checkbox>
+													</v-list-tile-action>
+													<v-list-tile-content>
+														<v-list-tile-title>{{ p }}</v-list-tile-title>
+														<v-list-tile-sub-title>{{ prop }}</v-list-tile-sub-title>
+														<v-divider></v-divider>
+														<div>
+															<v-card>
+																<v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
+															</v-card>
+														</div>
+													</v-list-tile-content>
+													<v-list-tile-action>
+														<v-icon>chat</v-icon>
+													</v-list-tile-action>
+												</v-list-tile>
+
+												<v-subheader>Hangout notifications</v-subheader>
+												<v-list-tile avatar>
+													<v-list-tile-action>
+														<v-checkbox v-model="notifications"></v-checkbox>
+														<v-checkbox v-model="parameter"></v-checkbox>
+													</v-list-tile-action>
+													<v-list-tile-content>
+														<v-list-tile-title>Notifications</v-list-tile-title>
+														<v-list-tile-sub-title>Allow notifications</v-list-tile-sub-title>
+													</v-list-tile-content>
+												</v-list-tile>
+												<v-list-tile avatar>
+													<v-list-tile-action>
+														<v-checkbox v-model="sound"></v-checkbox>
+													</v-list-tile-action>
+													<v-list-tile-content>
+														<v-list-tile-title>Sound</v-list-tile-title>
+														<v-list-tile-sub-title>Hangouts message</v-list-tile-sub-title>
+													</v-list-tile-content>
+												</v-list-tile>
+												<v-list-tile avatar>
+													<v-list-tile-action>
+														<v-checkbox v-model="video"></v-checkbox>
+													</v-list-tile-action>
+													<v-list-tile-content>
+														<v-list-tile-title>Video sounds</v-list-tile-title>
+														<v-list-tile-sub-title>Hangouts video call</v-list-tile-sub-title>
+													</v-list-tile-content>
+												</v-list-tile>
+												<v-list-tile avatar>
+													<v-list-tile-action>
+														<v-checkbox v-model="invites"></v-checkbox>
+													</v-list-tile-action>
+													<v-list-tile-content>
+														<v-list-tile-title>Invites</v-list-tile-title>
+														<v-list-tile-sub-title>Notify when receiving invites</v-list-tile-sub-title>
+													</v-list-tile-content>
+												</v-list-tile>
+
+											</v-list>
+												-->
 										</v-card-text>
+
 									</v-card>
 								</v-flex>
 							</v-layout>
@@ -37,6 +122,7 @@
 </template>
 
 <script>
+import { isEmpty } from 'lodash';
 export default {
   name: 'aws-service',
   // components: { SystemInformation },
@@ -57,6 +143,9 @@ export default {
         Resource: r
       });
       //this. = r;
+    },
+    hasStuff(item) {
+      return !isEmpty(item);
     }
   },
   data() {
@@ -80,6 +169,7 @@ export default {
           .lastUpdated &&
         !this.$store.state.Resource.loading
       ) {
+        console.log('Condition triggered!');
         this.updateActiveResource(serviceName, resourceName);
       }
     }
@@ -88,12 +178,20 @@ export default {
     console.log('Mounting!');
     const serviceName = this.$route.params.serviceName;
     this.$store.dispatch('setActiveService', serviceName);
-    const resource = Object.keys(
+    const resourceName = Object.keys(
       this.$store.state.Resource.resources[serviceName]
     )[0];
-    this.$store.dispatch('setActiveResource', resource);
+    this.$store.dispatch('setActiveResource', resourceName);
     console.log('this: ', this);
-    this.updateActiveResource(serviceName, resource);
+    console.log('Mounting...');
+    if (
+      !this.$store.state.Resource.resources[serviceName][resourceName]
+        .lastUpdated &&
+      !this.$store.state.Resource.loading
+    ) {
+      console.log('Mounting Condition triggered!');
+      this.updateActiveResource(serviceName, resourceName);
+    }
   },
   computed: {
     resourceFetched: function() {
@@ -230,5 +328,14 @@ main > div {
 .doc button.alt {
   color: #42b983;
   background-color: transparent;
+}
+
+.codeBlockText {
+  padding: 0;
+}
+
+.cardList {
+  padding-bottom: 0px;
+  padding-top: 16px;
 }
 </style>

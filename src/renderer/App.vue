@@ -133,7 +133,15 @@ export default {
       clipped: false,
       drawer: true,
       fixed: false,
-      items: [{ icon: 'settings', title: 'Settings', to: '/settings' }],
+      items: [
+        {
+          to: '/',
+          router: true,
+          title: 'Template',
+          icon: 'home'
+        },
+        { icon: 'settings', title: 'Settings', to: '/settings' }
+      ],
       miniVariant: false,
       right: true,
       rightDrawer: false
