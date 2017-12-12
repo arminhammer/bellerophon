@@ -12,13 +12,16 @@
 									<v-card>
 										<v-toolbar color="red" dark>
 												<v-btn icon @click="toggleResource(card)">
-												<v-icon v-if="presentInTemplate[serviceName][activeResource][card.Name].present">add_circle</v-icon>
+												<v-icon v-if="templateInternal[`${serviceName}.${resourceName}.${card.Name}`]">add_circle</v-icon>
 												<v-icon v-else>add_circle_outline</v-icon>
 												</v-btn>
-												<v-toolbar-title>{{ card.Name}}</v-toolbar-title>
+												<v-toolbar-title>{{ card.Name }}</v-toolbar-title>
 												<v-spacer></v-spacer>
 
-												<v-btn icon @click="toggleResourceOutput(card.Name)">
+												<v-btn v-if="templateInternal[`${serviceName}.${resourceName}.${card.Name}.output`]" dark color="indigo" icon @click="toggleResourceOutput(card)">
+													<v-icon>low_priority</v-icon>
+												</v-btn>
+												<v-btn v-else icon @click="toggleResourceOutput(card)">
 													<v-icon>low_priority</v-icon>
 												</v-btn>
 											</v-toolbar>
@@ -30,16 +33,23 @@
 										<v-flex xs12 v-if="hasStuff(prop)">
 											<v-card>
 												<v-toolbar color="white" light dense>
-													<v-btn icon @click="toggleResource(card)">
-														<v-icon>add_circle_outline</v-icon>
+													<v-btn icon @click="toggleResourceAttribute(p, card)">
+														<v-icon v-if="templateInternal[`${serviceName}.${resourceName}.${card.Name}.property.${p}`]">add_circle</v-icon>
+														<v-icon v-else>add_circle_outline</v-icon>
 														</v-btn>
 														<v-toolbar-title>{{ p }}</v-toolbar-title>
 														<v-spacer></v-spacer>
 
-														<v-btn icon>
+														<v-btn v-if="templateInternal[`${serviceName}.${resourceName}.${card.Name}.property.${p}.param`]" icon dark color="indigo" @click="toggleResourceAttributeParameter(p, card)">
 															<v-icon>assignment</v-icon>
 														</v-btn>
-														<v-btn icon>
+														<v-btn v-else icon @click="toggleResourceAttributeParameter(p, card)">
+															<v-icon>assignment</v-icon>
+														</v-btn>
+														<v-btn v-if="templateInternal[`${serviceName}.${resourceName}.${card.Name}.property.${p}.output`]" dark color="indigo" icon @click="toggleResourceAttributeOutput(p, card)">
+															<v-icon>low_priority</v-icon>
+														</v-btn>
+														<v-btn v-else icon @click="toggleResourceAttributeOutput(p, card)">
 															<v-icon>low_priority</v-icon>
 														</v-btn>
 													</v-toolbar>
@@ -61,7 +71,7 @@
 </template>
 
 <script>
-import { isEmpty } from 'lodash';
+import { isEmpty, get } from 'lodash';
 export default {
   name: 'aws-service',
   // components: { SystemInformation },
@@ -74,15 +84,87 @@ export default {
         this.$store.dispatch('addResourceToTemplate', resource);
       }
     },
-    toggleResourceOutput(resourceName) {
-      console.log('toggling resource output status: ', resourceName);
+    toggleResourceOutput(resource) {
+      console.log('toggling resource output status: ', resource.Name);
+      if (
+        this.$store.state.Template.template.Outputs[`${resource.Name}Output`]
+      ) {
+        this.$store.dispatch('removeOutputResourceFromTemplate', resource);
+      } else {
+        this.$store.dispatch('addOutputResourceToTemplate', resource);
+      }
+    },
+    toggleResourceAttribute(paramName, resource) {
+      console.log('toggling resource attribute status: ', paramName);
+      console.log(
+        'state: ',
+        `S3.Bucket.${resource.Name}.property.${paramName}`,
+        ' ',
+        this.$store.state.Template.internal[
+          `S3.Bucket.${resource.Name}.property.${paramName}`
+        ]
+      );
+      if (
+        this.$store.state.Template.internal[
+          `S3.Bucket.${resource.Name}.property.${paramName}`
+        ]
+      ) {
+        this.$store.commit('REMOVE_RESOURCE_ATTRIBUTE', {
+          paramName,
+          resource
+        });
+      } else {
+        this.$store.commit('ADD_RESOURCE_ATTRIBUTE', {
+          paramName,
+          resource
+        });
+      }
+    },
+    toggleResourceAttributeOutput(paramName, resource) {
+      console.log(
+        'toggling resource attribute output status: ',
+        paramName,
+        ' ',
+        resource.Name
+      );
       //this.$store.dispatch('addOutputResourceToTemplate', resourceName);
       if (
-        this.$store.state.Template.template.Outputs[`${resourceName}Output`]
+        this.$store.state.Template.template.Outputs[
+          `${resource.Name}${paramName}Output`
+        ]
       ) {
-        this.$store.dispatch('removeOutputResourceFromTemplate', resourceName);
+        this.$store.dispatch('removeOutputResourceAttributeFromTemplate', {
+          paramName,
+          resource
+        });
       } else {
-        this.$store.dispatch('addOutputResourceToTemplate', resourceName);
+        this.$store.dispatch('addOutputResourceAttributeToTemplate', {
+          paramName,
+          resource
+        });
+      }
+    },
+    toggleResourceAttributeParameter(paramName, resource) {
+      console.log('toggling resource attribute parameter status: ', paramName);
+      //this.$store.dispatch('addOutputResourceToTemplate', resourceName);
+      if (
+        this.$store.state.Template.template.Parameters[
+          `${resource.Name}${paramName}Param`
+        ]
+      ) {
+        this.$store.commit('REMOVE_PARAMETER_RESOURCE_ATTRIBUTE', {
+          paramName,
+          resource
+        });
+      } else {
+        this.$store.commit('ADD_PARAMETER_RESOURCE_ATTRIBUTE', {
+          paramName,
+          resource
+        });
+        /*this.$store.dispatch(
+          'addParameterResourceAttributeToTemplate',
+          resource
+        );*/
       }
     },
     updateActiveResource(s, r) {
@@ -96,6 +178,13 @@ export default {
     },
     hasStuff(item) {
       return !isEmpty(item);
+    },
+    _get(obj, path) {
+      console.log('getting....');
+      console.log('obj: ', obj, ' path ', path);
+      const result = get(obj, path, false);
+      console.log('result: ', result);
+      return get(obj, path, false);
     }
   },
   data() {
@@ -147,7 +236,7 @@ export default {
     resourceFetched: function() {
       return !this.$store.state.Resource.loading;
     },
-    activeResource: function() {
+    resourceName: function() {
       return this.$store.state.Resource.activeResource;
     },
     resourceTypes: function() {
@@ -162,9 +251,9 @@ export default {
       console.log('resources');
       //console.log(store);
       console.log(
-        this.$store.state.Resource.resources[
-          this.$store.state.Resource.activeService
-        ][this.$store.state.Resource.activeResource]
+        this.$store.state.Resource.resources[this.serviceName][
+          this.resourceName
+        ]
       );
       /*if (this.format === 'json') {
         return JSON.stringify(this.$store.state.Template.build(), null, 2);
@@ -172,12 +261,15 @@ export default {
         return this.$store.state.Template.yaml();
         // return JSON.stringify(this.template.build(), null, 2)
 			}*/
-      return this.$store.state.Resource.resources[
-        this.$store.state.Resource.activeService
-      ][this.$store.state.Resource.activeResource].items;
+      return this.$store.state.Resource.resources[this.serviceName][
+        this.resourceName
+      ].items;
+    },
+    templateInternal: function() {
+      return this.$store.state.Template.internal;
     },
     presentInTemplate: function() {
-      const result = { [this.serviceName]: { [this.activeResource]: {} } };
+      const result = { [this.serviceName]: { [this.resourceName]: {} } };
       console.log('present result: ', result);
       console.log('present resources: ', this.resources);
       Object.keys(this.resources).forEach(r => {
@@ -186,9 +278,36 @@ export default {
         ]
           ? true
           : false;
-        result[this.serviceName][this.activeResource][
-          this.resources[r].Name
-        ] = { present: present };
+        result[this.serviceName][this.resourceName][this.resources[r].Name] = {
+          present: present,
+          properties: {}
+        };
+        if (present) {
+          Object.keys(
+            this.$store.state.Template.template.Resources[
+              this.resources[r].Name
+            ].Properties
+          ).forEach(prop => {
+            console.log('prop: ', prop);
+            /*result[this.serviceName][this.resourceName][
+              this.resources[r].Name
+						].properties[prop] = { present: true };
+						*/
+            result[
+              `${this.serviceName}.${this.resourceName}.${this.resources[r]
+                .Name}.${prop}`
+            ] = true;
+          });
+          if (
+            this.$store.state.Template.template.Outputs[
+              `${this.resources[r].Name}Output`
+            ]
+          ) {
+            result[this.serviceName][this.resourceName][
+              this.resources[r].Name
+            ].output = true;
+          }
+        }
       });
       console.log('present result: ', result);
       return result;

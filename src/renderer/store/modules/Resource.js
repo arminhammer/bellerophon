@@ -35,12 +35,6 @@ const mutations = {
     console.log('mutating AWS', Result);
     state.resources[Service][Resource] = Result;
     state.loading = false;
-  },
-  DECREMENT_MAIN_COUNTER(state) {
-    state.template--;
-  },
-  INCREMENT_MAIN_COUNTER(state) {
-    state.template++;
   }
 };
 
