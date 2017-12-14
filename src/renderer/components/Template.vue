@@ -1,9 +1,7 @@
 <template>
-<v-container id="templateContainer">
-  <pre v-highlightjs="formattedTemplate" id="templatePreBlock0">
-		<code class="format" id="templateBlock"></code>
+  <pre v-highlightjs="formattedTemplate" id="templatePagePreBlock">
+		<code class="format" id="templatePageBlock"></code>
 	</pre>
-	</v-container>
 </template>
 
 <script>
@@ -42,11 +40,14 @@ export default {
 /*@import 'static/fonts/monofur.ttf';*/
 @import '../assets/css/main.css';
 
-#templateContainer {
-  align-items: flex-start;
-}
-#templatePreBlock0 {
+#templatePagePreBlock {
+  max-width: 100%;
   height: 100%;
+  width: 100%;
+}
+
+#templatePageBlock {
+  width: 100%;
 }
 </style>
 

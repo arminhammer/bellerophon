@@ -77,6 +77,12 @@
 				</v-btn>
 				<v-btn
           icon
+          @click="saveTemplate"
+        >
+          <v-icon>save</v-icon>
+        </v-btn>
+				<v-btn
+          icon
           @click.native.stop="rightDrawer = !rightDrawer"
         >
           <v-icon>menu</v-icon>
@@ -120,6 +126,14 @@ import { spec, Template } from 'wolkenkratzer';
 import * as AWS from 'aws-sdk';
 import { ipcRenderer } from 'electron';
 import { approvedServices } from './aws_utils';
+import { writeFile } from 'fs-extra';
+
+ipcRenderer.on('select-file', (event, result) => {
+  console.log('Selected ', result.fileName);
+  writeFile(result.fileName, result.body).then(() =>
+    console.log('Wrote file...')
+  );
+});
 
 export default {
   name: 'bellerophon',
@@ -160,8 +174,13 @@ export default {
       return this.$store.state.Resource.loading;
     },
     title: function() {
-      return `${this.$store.state.Resource.activeService} ${this.$store.state
-        .Resource.activeResource}`;
+      console.log('this: ', this.$route);
+      if (this.$route.name === 'Service') {
+        return `${this.$store.state.Resource.activeService} ${this.$store.state
+          .Resource.activeResource}`;
+      } else {
+        return this.$route.name;
+      }
     },
     secondaryServiceList: function() {
       return []; // Object.keys(cfnstubs[this.activeService].Resources);
@@ -210,6 +229,15 @@ export default {
         Resource: this.activeResource
       });
     },
+    saveTemplate() {
+      console.log('Saving template');
+
+      console.log('open dialog');
+      ipcRenderer.send('save', {
+        format: 'json',
+        body: this.formattedTemplate
+      });
+    },
     selectService(selection) {
       console.log(selection);
       this.$store.dispatch('setActiveService', selection);
@@ -222,7 +250,6 @@ export default {
     },
     toggleShowTemplate() {
       this.showTemplate = !this.showTemplate;
-      ipcRenderer.send('open-template-window');
     }
   }
 };

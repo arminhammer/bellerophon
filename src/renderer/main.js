@@ -18,8 +18,8 @@ Vue.use(VueHighlightJS);
 
 /* eslint-disable no-new */
 new Vue({
-  components: { App },
-  router,
-  store,
-  template: '<App/>'
+	components: { App },
+	router,
+	store,
+	template: '<App/>'
 }).$mount('#app');
