@@ -94,23 +94,37 @@ const mutations = {
 		//set(state.internal, `S3.Bucket.${resource.Name}.output`, false);
 	},
 	ADD_PARAMETER_RESOURCE_ATTRIBUTE(state, { paramName, resource }) {
-		console.log('NAME: ', `${resource.Name}${paramName}Param`);
-		state.template = state.template.add(
-			Parameter(`${resource.Name}${paramName}Param`, {
-				Type: String,
-				Default: resource.Properties[paramName]
-			})
-		);
+		const newParamName = `${resource.Name}${paramName}Param`;
+		console.log('NAME: ', newParamName);
 		state.internal = {
 			...state.internal,
-			[`S3.Bucket.${resource.Name}.property.${paramName}.param`]: true
+			[`S3.Bucket.${resource.Name}.property.${paramName}.param`]: true,
+			[`S3.Bucket.${resource.Name}.property.${paramName}.original`]: state
+				.template.Resources[resource.Name].Properties[paramName],
+			[`S3.Bucket.${resource.Name}.property.${paramName}.link`]: newParamName
 		};
+		state.template = state.template
+			.add(
+				Parameter(newParamName, {
+					Type: String,
+					Default: resource.Properties[paramName]
+				})
+			)
+			.set(`${resource.Name}.${paramName}`, Ref(newParamName));
 	},
 	REMOVE_PARAMETER_RESOURCE_ATTRIBUTE(state, { paramName, resource }) {
-		state.template = state.template.remove(`${resource.Name}${paramName}Param`);
+		state.template = state.template
+			.remove(`${resource.Name}${paramName}Param`)
+			.set(
+				`${resource.Name}.${paramName}`,
+				state.internal[
+					`S3.Bucket.${resource.Name}.property.${paramName}.original`
+				]
+			);
 		state.internal = {
 			...state.internal,
-			[`S3.Bucket.${resource.Name}.property.${paramName}.param`]: false
+			[`S3.Bucket.${resource.Name}.property.${paramName}.param`]: false,
+			[`S3.Bucket.${resource.Name}.property.${paramName}.link`]: undefined
 		};
 	},
 	ADD_RESOURCE_ATTRIBUTE(state, { paramName, resource }) {
