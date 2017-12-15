@@ -39,7 +39,45 @@
 														</v-btn>
 														<v-toolbar-title>{{ p }}</v-toolbar-title>
 														<v-spacer></v-spacer>
-
+														<v-select
+															label="Link to..."
+															v-bind:items="linkOptions"
+															item-text="name"
+															item-value="name"
+															max-height="auto"
+															autocomplete
+															:value="templateInternal[`${serviceName}.${resourceName}.${card.Name}.property.${p}.link`]"
+															@input="onResourceAttributeLink({ resource: card.Name, attribute: p, event: $event })"
+														>
+															<!--<template slot="selection" slot-scope="data">
+																<v-chip
+																	close
+																	@input="data.parent.selectItem(data.item)"
+																	:selected="data.selected"
+																	class="chip--select-multi"
+																	:key="JSON.stringify(data.item)"
+																>
+																	<v-avatar>
+																		<img :src="data.item.avatar">
+																	</v-avatar>
+																	{{ data.item.name }}
+																</v-chip>
+															</template>
+															<template slot="item" slot-scope="data">
+																<template v-if="typeof data.item !== 'object'">
+																	<v-list-tile-content v-text="data.item"></v-list-tile-content>
+																</template>
+																<template v-else>
+																	<v-list-tile-avatar>
+																		<img v-bind:src="data.item.avatar"/>
+																	</v-list-tile-avatar>
+																	<v-list-tile-content>
+																		<v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+																		<v-list-tile-sub-title v-html="data.item.group"></v-list-tile-sub-title>
+																	</v-list-tile-content>
+																</template>
+															</template>-->
+														</v-select>
 														<v-btn v-if="templateInternal[`${serviceName}.${resourceName}.${card.Name}.property.${p}.param`]" icon dark color="indigo" @click="toggleResourceAttributeParameter(p, card)">
 															<v-icon>assignment</v-icon>
 														</v-btn>
@@ -185,6 +223,14 @@ export default {
       const result = get(obj, path, false);
       console.log('result: ', result);
       return get(obj, path, false);
+    },
+    onResourceAttributeLink({ resource, attribute, event }) {
+      console.log('Selected! ', resource, ' ', attribute, ' ', event);
+      this.$store.commit('LINK_RESOURCE_ATTRIBUTE', {
+        resource,
+        attribute,
+        linkTarget: event
+      });
     }
   },
   data() {
@@ -323,6 +369,14 @@ export default {
           }
         }
 			};*/
+    },
+    linkOptions: function() {
+      const list = [{ name: 'N/A' }];
+      const parameters = Object.keys(
+        this.$store.state.Template.template.Parameters
+      ).map(x => ({ name: x, type: 'Parameter' }));
+      return list.concat(parameters);
+      //return ['N/A', 'Option 1', 'Option 2'];
     }
   }
 };
