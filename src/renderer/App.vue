@@ -9,8 +9,7 @@
       >
 			<v-expansion-panel expand>
     <v-expansion-panel-content v-for="(service, s) in services" :key="s">
-
-      <div slot="header"><div class="menuSpan"><v-icon>apps</v-icon></div>{{ s }}</div>
+      <div slot="header"><div class="awsIconContainer"><img :src="`/static/svg/${s}.svg`" :alt="`${s}`" class="awsIcon"></div>{{ s }}</div>
 			<v-list>
           <v-list-tile
 						router
@@ -39,7 +38,7 @@
             <v-list-tile-action>
               <v-icon v-html="item.icon"></v-icon>
             </v-list-tile-action>
-            <v-list-tile-content>
+            <v-list-tile-content class="resourceTileText">
               <v-list-tile-title v-text="item.title"></v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
@@ -49,21 +48,9 @@
         <v-toolbar-side-icon @click.native.stop="drawer = !drawer"></v-toolbar-side-icon>
         <v-btn
           icon
-          @click.native.stop="miniVariant = !miniVariant"
-        >
-          <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"></v-icon>
-        </v-btn>
-        <v-btn
-          icon
           @click.native.stop="clipped = !clipped"
         >
           <v-icon>web</v-icon>
-        </v-btn>
-        <v-btn
-          icon
-          @click.native.stop="fixed = !fixed"
-        >
-          <v-icon>remove</v-icon>
         </v-btn>
         <v-toolbar-title v-text="title"></v-toolbar-title>
         <v-spacer></v-spacer>
@@ -190,7 +177,7 @@ export default {
         .filter(r => approvedServices.includes(r))
         .map(r => {
           return {
-            icon: 'apps',
+            icon: `/static/svg/${r}.svg`,
             title: r,
             to: `/service/${r}` //?name=${this.activeService}`
           };
@@ -276,5 +263,35 @@ export default {
 }
 #templateDrawer {
   width: 50vw;
+}
+
+.awsIconContainer {
+  min-width: 56px;
+  align-items: center;
+  display: inline-block;
+  height: 48px;
+}
+
+.awsIcon {
+  height: 24px;
+  width: 24px;
+  vertical-align: middle;
+  margin-top: 10px;
+}
+
+.expansion-panel__header {
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.expansion-panel__header div {
+  align-items: flex-start;
+  vertical-align: middle;
+}
+
+.list__tile__content {
+  padding-left: 24px;
 }
 </style>
