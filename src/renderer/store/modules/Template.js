@@ -165,48 +165,7 @@ const mutations = {
 	}
 };
 
-const actions = {
-	addResourceToTemplate({ commit }, payload) {
-		console.log('dispatched add. ', payload);
-		commit('ADD_RESOURCE', payload);
-	},
-	removeResourceFromTemplate({ commit }, payload) {
-		console.log('dispatched remove.');
-		commit('REMOVE_RESOURCE', payload);
-	},
-	addOutputResourceToTemplate({ commit }, payload) {
-		console.log('dispatched add. ', payload);
-		commit('ADD_OUTPUT_RESOURCE', payload);
-	},
-	removeOutputResourceFromTemplate({ commit }, payload) {
-		console.log('dispatched remove.');
-		commit('REMOVE_OUTPUT_RESOURCE', payload);
-	},
-	addResourceAttributeToTemplate({ commit }, payload) {
-		console.log('dispatched add. ', payload);
-		commit('ADD_RESOURCE_ATTRIBUTE', payload);
-	},
-	removeResourceAttributeFromTemplate({ commit }, payload) {
-		console.log('dispatched remove.');
-		commit('REMOVE_RESOURCE_ATTRIBUTE', payload);
-	},
-	addOutputResourceAttributeToTemplate({ commit }, payload) {
-		console.log('dispatched add. ', payload);
-		commit('ADD_OUTPUT_RESOURCE_ATTRIBUTE', payload);
-	},
-	removeOutputResourceAttributeFromTemplate({ commit }, payload) {
-		console.log('dispatched remove.');
-		commit('REMOVE_OUTPUT_RESOURCE_ATTRIBUTE', payload);
-	},
-	addParameterResourceAttributeToTemplate({ commit }, payload) {
-		console.log('dispatched add. ', payload);
-		commit('ADD_PARAMETER_RESOURCE_ATTRIBUTE', payload);
-	},
-	removeParameterResourceAttributeFromTemplate({ commit }, payload) {
-		console.log('dispatched remove.');
-		commit('REMOVE_PARAMETER_RESOURCE_ATTRIBUTE', payload);
-	}
-};
+const actions = {};
 
 export default {
 	state,

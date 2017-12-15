@@ -239,10 +239,8 @@ export default {
       });
     },
     selectService(selection) {
-      console.log(selection);
-      this.$store.dispatch('setActiveService', selection);
-      //this.activeService = selection;
-      //this.activeResource = this.secondaryServiceList[0];
+      console.log('selecting service: ', selection);
+      this.$store.commit('SET_ACTIVE_SERVICE', selection);
     },
     selectResource(selection) {
       console.log(selection);

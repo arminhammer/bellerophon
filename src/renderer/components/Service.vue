@@ -117,9 +117,9 @@ export default {
     toggleResource(resource) {
       console.log('toggling resource: ', resource);
       if (this.$store.state.Template.template.Resources[resource.Name]) {
-        this.$store.dispatch('removeResourceFromTemplate', resource);
+        this.$store.commit('REMOVE_RESOURCE', resource);
       } else {
-        this.$store.dispatch('addResourceToTemplate', resource);
+        this.$store.commit('ADD_RESOURCE', resource);
       }
     },
     toggleResourceOutput(resource) {
@@ -127,9 +127,9 @@ export default {
       if (
         this.$store.state.Template.template.Outputs[`${resource.Name}Output`]
       ) {
-        this.$store.dispatch('removeOutputResourceFromTemplate', resource);
+        this.$store.commit('REMOVE_OUTPUT_RESOURCE', resource);
       } else {
-        this.$store.dispatch('addOutputResourceToTemplate', resource);
+        this.$store.commit('ADD_OUTPUT_RESOURCE', resource);
       }
     },
     toggleResourceAttribute(paramName, resource) {
@@ -165,18 +165,17 @@ export default {
         ' ',
         resource.Name
       );
-      //this.$store.dispatch('addOutputResourceToTemplate', resourceName);
       if (
         this.$store.state.Template.template.Outputs[
           `${resource.Name}${paramName}Output`
         ]
       ) {
-        this.$store.dispatch('removeOutputResourceAttributeFromTemplate', {
+        this.$store.commit('REMOVE_OUTPUT_RESOURCE_ATTRIBUTE', {
           paramName,
           resource
         });
       } else {
-        this.$store.dispatch('addOutputResourceAttributeToTemplate', {
+        this.$store.commit('ADD_OUTPUT_RESOURCE_ATTRIBUTE', {
           paramName,
           resource
         });
@@ -184,7 +183,6 @@ export default {
     },
     toggleResourceAttributeParameter(paramName, resource) {
       console.log('toggling resource attribute parameter status: ', paramName);
-      //this.$store.dispatch('addOutputResourceToTemplate', resourceName);
       if (
         this.$store.state.Template.template.Parameters[
           `${resource.Name}${paramName}Param`
@@ -199,15 +197,11 @@ export default {
           paramName,
           resource
         });
-        /*this.$store.dispatch(
-          'addParameterResourceAttributeToTemplate',
-          resource
-        );*/
       }
     },
     updateActiveResource(s, r) {
       console.log('updating resource ', s, ' ', r);
-      this.$store.dispatch('setActiveResource', r);
+      this.$store.commit('SET_ACTIVE_RESOURCE', r);
       this.$store.dispatch('updateAWSResource', {
         Service: s,
         Resource: r
@@ -239,16 +233,16 @@ export default {
   watch: {
     '$route.params.serviceName': function(serviceName) {
       console.log('serviceName changed: ', serviceName);
-      this.$store.dispatch('setActiveService', serviceName);
+      this.$store.commit('SET_ACTIVE_SERVICE', serviceName);
       const resource = Object.keys(
         this.$store.state.Resource.resources[serviceName]
       )[0];
-      this.$store.dispatch('setActiveResource', resource);
+      this.$store.commit('SET_ACTIVE_RESOURCE', resource);
     },
     '$route.params.resourceName': function(resourceName) {
       const serviceName = this.$route.params.serviceName;
       console.log('resourceName changed: ', resourceName);
-      this.$store.dispatch('setActiveResource', resourceName);
+      this.$store.commit('SET_ACTIVE_RESOURCE', resourceName);
       if (
         !this.$store.state.Resource.resources[serviceName][resourceName]
           .lastUpdated &&
@@ -262,11 +256,11 @@ export default {
   beforeMount: function() {
     console.log('Mounting!');
     const serviceName = this.$route.params.serviceName;
-    this.$store.dispatch('setActiveService', serviceName);
+    this.$store.commit('SET_ACTIVE_SERVICE', serviceName);
     const resourceName = Object.keys(
       this.$store.state.Resource.resources[serviceName]
     )[0];
-    this.$store.dispatch('setActiveResource', resourceName);
+    this.$store.commit('SET_ACTIVE_RESOURCE', resourceName);
     console.log('this: ', this);
     console.log('Mounting...');
     if (
