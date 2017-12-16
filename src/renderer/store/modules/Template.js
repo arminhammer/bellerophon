@@ -15,140 +15,180 @@ let state = {
 };
 
 const mutations = {
-	ADD_RESOURCE(state, resource) {
-		/*set(state.internal, `S3.Bucket.${resource.Name}`, {
-      present: true,
-      output: false
-		});*/
+	ADD_RESOURCE(state, { resource, resourceName, serviceName }) {
 		const changeSet = {
-			[`S3.Bucket.${resource.Name}`]: true
+			[`${serviceName}.${resourceName}.${resource.Name}`]: true
 		};
-		//Vue.set(state.internal, `S3.Bucket.${resource.Name}`, true);
-		//state.internal[`S3.Bucket.${resource.Name}`] = true;
 		Object.keys(resource.Properties).forEach(p => {
 			if (!isEmpty(resource.Properties[p])) {
-				changeSet[`S3.Bucket.${resource.Name}.property.${p}`] = true;
+				changeSet[
+					`${serviceName}.${resourceName}.${resource.Name}.property.${p}`
+				] = true;
 			} else {
-				changeSet[`S3.Bucket.${resource.Name}.property.${p}`] = false;
+				changeSet[
+					`${serviceName}.${resourceName}.${resource.Name}.property.${p}`
+				] = false;
 			}
 		});
 		state.internal = { ...state.internal, ...changeSet };
 		state.template = state.template.add(resource);
 	},
-	REMOVE_RESOURCE(state, resource) {
-		if (state.internal[`S3.Bucket.${resource.Name}.output`]) {
+	REMOVE_RESOURCE(state, { resource, resourceName, serviceName }) {
+		if (
+			state.internal[`${serviceName}.${resourceName}.${resource.Name}.output`]
+		) {
 			state.template = state.template.remove(`${resource.Name}Output`);
 		}
 		state.template = state.template.remove(resource.Name);
-		state.internal[`S3.Bucket.${resource.Name}`] = false;
-		state.internal[`S3.Bucket.${resource.Name}.output`] = false;
+		state.internal[`${serviceName}.${resourceName}.${resource.Name}`] = false;
+		state.internal[
+			`${serviceName}.${resourceName}.${resource.Name}.output`
+		] = false;
 		Object.keys(resource.Properties).forEach(p => {
-			state.internal[`S3.Bucket.${resource.Name}.property.${p}`] = false;
+			state.internal[
+				`${serviceName}.${resourceName}.${resource.Name}.property.${p}`
+			] = false;
 		});
-		/*
-    set(state.internal, `S3.Bucket.${resource.Name}`, {
-      present: false,
-      output: false
-    });*/
 	},
-	ADD_OUTPUT_RESOURCE(state, resource) {
+	ADD_OUTPUT_RESOURCE(state, { resource, resourceName, serviceName }) {
 		state.template = state.template.add(
 			Output(`${resource.Name}Output`, { Value: Ref(resource.Name) })
 		);
 		state.internal = {
 			...state.internal,
-			[`S3.Bucket.${resource.Name}.output`]: true
+			[`${serviceName}.${resourceName}.${resource.Name}.output`]: true
 		};
-		//set(state.internal, `S3.Bucket.${resource.Name}.output`, true);
 	},
-	REMOVE_OUTPUT_RESOURCE(state, resource) {
+	REMOVE_OUTPUT_RESOURCE(state, { resource, resourceName, serviceName }) {
 		state.template = state.template.remove(`${resource.Name}Output`);
 		state.internal = {
 			...state.internal,
-			[`S3.Bucket.${resource.Name}.output`]: false
+			[`${serviceName}.${resourceName}.${resource.Name}.output`]: false
 		};
-		//set(state.internal, `S3.Bucket.${resource.Name}.output`, false);
 	},
-	ADD_OUTPUT_RESOURCE_ATTRIBUTE(state, { paramName, resource }) {
-		console.log('NAME: ', `${resource.Name}${paramName}Output`);
+	ADD_OUTPUT_RESOURCE_ATTRIBUTE(
+		state,
+		{ attributeName, resource, resourceName, serviceName }
+	) {
+		console.log('NAME: ', `${resource.Name}${attributeName}Output`);
 		state.template = state.template.add(
-			Output(`${resource.Name}${paramName}Output`, {
-				Value: FnGetAtt(resource.Name, paramName)
+			Output(`${resource.Name}${attributeName}Output`, {
+				Value: FnGetAtt(resource.Name, attributeName)
 			})
 		);
 		state.internal = {
 			...state.internal,
-			[`S3.Bucket.${resource.Name}.property.${paramName}.output`]: true
+			[`${serviceName}.${resourceName}.${
+				resource.Name
+			}.property.${attributeName}.output`]: true
 		};
-		//set(state.internal, `S3.Bucket.${resource.Name}.output`, true);
 	},
-	REMOVE_OUTPUT_RESOURCE_ATTRIBUTE(state, { paramName, resource }) {
+	REMOVE_OUTPUT_RESOURCE_ATTRIBUTE(
+		state,
+		{ attributeName, resource, resourceName, serviceName }
+	) {
 		state.template = state.template.remove(
-			`${resource.Name}${paramName}Output`
+			`${resource.Name}${attributeName}Output`
 		);
 		state.internal = {
 			...state.internal,
-			[`S3.Bucket.${resource.Name}.property.${paramName}.output`]: false
+			[`${serviceName}.${resourceName}.${
+				resource.Name
+			}.property.${attributeName}.output`]: false
 		};
-		//set(state.internal, `S3.Bucket.${resource.Name}.output`, false);
 	},
-	ADD_PARAMETER_RESOURCE_ATTRIBUTE(state, { paramName, resource }) {
-		const newParamName = `${resource.Name}${paramName}Param`;
-		console.log('NAME: ', newParamName);
+	ADD_PARAMETER_RESOURCE_ATTRIBUTE(
+		state,
+		{ attributeName, resource, resourceName, serviceName }
+	) {
+		const newAttributeName = `${resource.Name}${attributeName}Param`;
+		console.log('NAME: ', newAttributeName);
 		state.internal = {
 			...state.internal,
-			[`S3.Bucket.${resource.Name}.property.${paramName}.param`]: true,
-			[`S3.Bucket.${resource.Name}.property.${paramName}.original`]: state
-				.template.Resources[resource.Name].Properties[paramName],
-			[`S3.Bucket.${resource.Name}.property.${paramName}.link`]: newParamName
+			[`${serviceName}.${resourceName}.${
+				resource.Name
+			}.property.${attributeName}.param`]: true,
+			[`${serviceName}.${resourceName}.${
+				resource.Name
+			}.property.${attributeName}.original`]: state.template.Resources[
+				resource.Name
+			].Properties[attributeName],
+			[`${serviceName}.${resourceName}.${
+				resource.Name
+			}.property.${attributeName}.link`]: newAttributeName
 		};
 		state.template = state.template
 			.add(
-				Parameter(newParamName, {
+				Parameter(newAttributeName, {
 					Type: String,
-					Default: resource.Properties[paramName]
+					Default: resource.Properties[attributeName]
 				})
 			)
-			.set(`${resource.Name}.${paramName}`, Ref(newParamName));
+			.set(`${resource.Name}.${attributeName}`, Ref(newAttributeName));
 	},
-	REMOVE_PARAMETER_RESOURCE_ATTRIBUTE(state, { paramName, resource }) {
+	REMOVE_PARAMETER_RESOURCE_ATTRIBUTE(
+		state,
+		{ attributeName, resource, resourceName, serviceName }
+	) {
 		state.template = state.template
-			.remove(`${resource.Name}${paramName}Param`)
+			.remove(`${resource.Name}${attributeName}Param`)
 			.set(
-				`${resource.Name}.${paramName}`,
+				`${resource.Name}.${attributeName}`,
 				state.internal[
-					`S3.Bucket.${resource.Name}.property.${paramName}.original`
+					`${serviceName}.${resourceName}.${
+						resource.Name
+					}.property.${attributeName}.original`
 				]
 			);
 		state.internal = {
 			...state.internal,
-			[`S3.Bucket.${resource.Name}.property.${paramName}.param`]: false,
-			[`S3.Bucket.${resource.Name}.property.${paramName}.link`]: undefined
+			[`${serviceName}.${resourceName}.${
+				resource.Name
+			}.property.${attributeName}.param`]: false,
+			[`${serviceName}.${resourceName}.${
+				resource.Name
+			}.property.${attributeName}.link`]: undefined
 		};
 	},
-	ADD_RESOURCE_ATTRIBUTE(state, { paramName, resource }) {
-		console.log('NAME: ', `${resource.Name}${paramName}`);
+	ADD_RESOURCE_ATTRIBUTE(
+		state,
+		{ attributeName, resource, resourceName, serviceName }
+	) {
+		console.log('NAME: ', `${resource.Name}${attributeName}`);
 		state.template = state.template.set(
-			`${resource.Name}.${paramName}`,
-			resource.Properties[paramName]
+			`${resource.Name}.${attributeName}`,
+			resource.Properties[attributeName]
 		);
 		state.internal = {
 			...state.internal,
-			[`S3.Bucket.${resource.Name}.property.${paramName}`]: true
+			[`${serviceName}.${resourceName}.${
+				resource.Name
+			}.property.${attributeName}`]: true
 		};
 	},
-	REMOVE_RESOURCE_ATTRIBUTE(state, { paramName, resource }) {
-		console.log('REMOVING NAME: ', `${resource.Name}${paramName}`);
-		state.template = state.template.set(`${resource.Name}.${paramName}`, '');
+	REMOVE_RESOURCE_ATTRIBUTE(
+		state,
+		{ attributeName, resource, resourceName, serviceName }
+	) {
+		console.log('REMOVING NAME: ', `${resource.Name}${attributeName}`);
+		state.template = state.template.set(
+			`${resource.Name}.${attributeName}`,
+			''
+		);
 		state.internal = {
 			...state.internal,
-			[`S3.Bucket.${resource.Name}.property.${paramName}`]: false
+			[`${serviceName}.${resourceName}.${
+				resource.Name
+			}.property.${attributeName}`]: false
 		};
 	},
-	LINK_RESOURCE_ATTRIBUTE(state, { resource, attribute, linkTarget }) {
+	LINK_RESOURCE_ATTRIBUTE(
+		state,
+		{ resource, attributeName, linkTarget, resourceName, serviceName }
+	) {
 		console.log(
 			'Linking resource attribute: ',
-			`${resource}${attribute} to ${linkTarget}`
+			`${resource}${attributeName} to ${linkTarget}`
 		);
 		console.log('linkTarget: ', linkTarget);
 		let link = linkTarget;
@@ -156,24 +196,26 @@ const mutations = {
 			console.log('Got N/A');
 			link = undefined;
 			state.template = state.template.set(
-				`${resource}.${attribute}`,
-				state.internal[`S3.Bucket.${resource}.property.${attribute}.original`]
+				`${resource}.${attributeName}`,
+				state.internal[
+					`${serviceName}.${resourceName}.${resource}.property.${attributeName}.original`
+				]
 			);
 		} else if (state.template.Parameters[linkTarget]) {
 			console.log('Param found... ', state.template.Parameters[linkTarget]);
 			state.internal = {
 				...state.internal,
-				[`S3.Bucket.${resource}.property.${attribute}.original`]: state.template
-					.Resources[resource].Properties[attribute]
+				[`${serviceName}.${resourceName}.${resource}.property.${attributeName}.original`]: state
+					.template.Resources[resource].Properties[attributeName]
 			};
 			state.template = state.template.set(
-				`${resource}.${attribute}`,
+				`${resource}.${attributeName}`,
 				Ref(linkTarget)
 			);
 		}
 		state.internal = {
 			...state.internal,
-			[`S3.Bucket.${resource}.property.${attribute}.link`]: link
+			[`${serviceName}.${resourceName}.${resource}.property.${attributeName}.link`]: link
 		};
 	}
 };

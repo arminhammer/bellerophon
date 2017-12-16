@@ -47,7 +47,7 @@
 															max-height="auto"
 															autocomplete
 															:value="templateInternal[`${serviceName}.${resourceName}.${card.Name}.property.${p}.link`]"
-															@input="onResourceAttributeLink({ resource: card.Name, attribute: p, event: $event })"
+															@input="onResourceAttributeLink({ resource: card.Name, attributeName: p, event: $event })"
 														>
 															<!--<template slot="selection" slot-scope="data">
 																<v-chip
@@ -117,9 +117,17 @@ export default {
     toggleResource(resource) {
       console.log('toggling resource: ', resource);
       if (this.$store.state.Template.template.Resources[resource.Name]) {
-        this.$store.commit('REMOVE_RESOURCE', resource);
+        this.$store.commit('REMOVE_RESOURCE', {
+          resource,
+          resourceName: this.resourceName,
+          serviceName: this.serviceName
+        });
       } else {
-        this.$store.commit('ADD_RESOURCE', resource);
+        this.$store.commit('ADD_RESOURCE', {
+          resource,
+          resourceName: this.resourceName,
+          serviceName: this.serviceName
+        });
       }
     },
     toggleResourceOutput(resource) {
@@ -127,75 +135,98 @@ export default {
       if (
         this.$store.state.Template.template.Outputs[`${resource.Name}Output`]
       ) {
-        this.$store.commit('REMOVE_OUTPUT_RESOURCE', resource);
+        this.$store.commit('REMOVE_OUTPUT_RESOURCE', {
+          resource,
+          resourceName: this.resourceName,
+          serviceName: this.serviceName
+        });
       } else {
-        this.$store.commit('ADD_OUTPUT_RESOURCE', resource);
+        this.$store.commit('ADD_OUTPUT_RESOURCE', {
+          resource,
+          resourceName: this.resourceName,
+          serviceName: this.serviceName
+        });
       }
     },
-    toggleResourceAttribute(paramName, resource) {
-      console.log('toggling resource attribute status: ', paramName);
+    toggleResourceAttribute(attributeName, resource) {
+      console.log('toggling resource attribute status: ', attributeName);
       console.log(
         'state: ',
-        `S3.Bucket.${resource.Name}.property.${paramName}`,
+        `S3.Bucket.${resource.Name}.property.${attributeName}`,
         ' ',
         this.$store.state.Template.internal[
-          `S3.Bucket.${resource.Name}.property.${paramName}`
+          `S3.Bucket.${resource.Name}.property.${attributeName}`
         ]
       );
       if (
         this.$store.state.Template.internal[
-          `S3.Bucket.${resource.Name}.property.${paramName}`
+          `S3.Bucket.${resource.Name}.property.${attributeName}`
         ]
       ) {
         this.$store.commit('REMOVE_RESOURCE_ATTRIBUTE', {
-          paramName,
-          resource
+          attributeName,
+          resource,
+          resourceName: this.resourceName,
+          serviceName: this.serviceName
         });
       } else {
         this.$store.commit('ADD_RESOURCE_ATTRIBUTE', {
-          paramName,
-          resource
+          attributeName,
+          resource,
+          resourceName: this.resourceName,
+          serviceName: this.serviceName
         });
       }
     },
-    toggleResourceAttributeOutput(paramName, resource) {
+    toggleResourceAttributeOutput(attributeName, resource) {
       console.log(
         'toggling resource attribute output status: ',
-        paramName,
+        attributeName,
         ' ',
         resource.Name
       );
       if (
         this.$store.state.Template.template.Outputs[
-          `${resource.Name}${paramName}Output`
+          `${resource.Name}${attributeName}Output`
         ]
       ) {
         this.$store.commit('REMOVE_OUTPUT_RESOURCE_ATTRIBUTE', {
-          paramName,
-          resource
+          attributeName,
+          resource,
+          resourceName: this.resourceName,
+          serviceName: this.serviceName
         });
       } else {
         this.$store.commit('ADD_OUTPUT_RESOURCE_ATTRIBUTE', {
-          paramName,
-          resource
+          attributeName,
+          resource,
+          resourceName: this.resourceName,
+          serviceName: this.serviceName
         });
       }
     },
-    toggleResourceAttributeParameter(paramName, resource) {
-      console.log('toggling resource attribute parameter status: ', paramName);
+    toggleResourceAttributeParameter(attributeName, resource) {
+      console.log(
+        'toggling resource attribute parameter status: ',
+        attributeName
+      );
       if (
         this.$store.state.Template.template.Parameters[
-          `${resource.Name}${paramName}Param`
+          `${resource.Name}${attributeName}Param`
         ]
       ) {
         this.$store.commit('REMOVE_PARAMETER_RESOURCE_ATTRIBUTE', {
-          paramName,
-          resource
+          attributeName,
+          resource,
+          resourceName: this.resourceName,
+          serviceName: this.serviceName
         });
       } else {
         this.$store.commit('ADD_PARAMETER_RESOURCE_ATTRIBUTE', {
-          paramName,
-          resource
+          attributeName,
+          resource,
+          resourceName: this.resourceName,
+          serviceName: this.serviceName
         });
       }
     },
@@ -218,12 +249,14 @@ export default {
       console.log('result: ', result);
       return get(obj, path, false);
     },
-    onResourceAttributeLink({ resource, attribute, event }) {
-      console.log('Selected! ', resource, ' ', attribute, ' ', event);
+    onResourceAttributeLink({ resource, attributeName, event }) {
+      console.log('Selected! ', resource, ' ', attributeName, ' ', event);
       this.$store.commit('LINK_RESOURCE_ATTRIBUTE', {
         resource,
-        attribute,
-        linkTarget: event
+        attributeName,
+        linkTarget: event,
+        resourceName: this.resourceName,
+        serviceName: this.serviceName
       });
     }
   },

@@ -107,8 +107,6 @@
 //import SystemInformation from './LandingPage/SystemInformation'
 import Vue from 'vue';
 
-//import 'buefy/lib/buefy.css';
-//import * as cfnstubs from 'cfn-doc-json-stubs';
 import { spec, Template } from 'wolkenkratzer';
 import * as AWS from 'aws-sdk';
 import { ipcRenderer } from 'electron';
