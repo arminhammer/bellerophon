@@ -1,10 +1,14 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/524571d17dba6b0c5daa/maintainability)](https://codeclimate.com/github/arminhammer/bellerophon/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/524571d17dba6b0c5daa/test_coverage)](https://codeclimate.com/github/arminhammer/bellerophon/test_coverage)
+[![DeepScan Grade](https://deepscan.io/api/projects/1497/branches/4810/badge/grade.svg)](https://deepscan.io/dashboard/#view=project&pid=1497&bid=4810)
+
 # bellerophon
 
 > Desktop utility for generating AWS CloudFormation templates from existing AWS resources
 
 #### Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
 
@@ -20,7 +24,6 @@ npm test
 
 # lint all JS/Vue component files in `src/`
 npm run lint
-
 ```
 
 ---
