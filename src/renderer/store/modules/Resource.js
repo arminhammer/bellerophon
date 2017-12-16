@@ -2,7 +2,47 @@ import AWS from 'aws-sdk';
 import { Transform } from 'wolkenkratzer';
 import { spec, Template } from 'wolkenkratzer';
 
-const approvedServices = ['EC2', 'S3'];
+const approvedServices = ['CloudTrail', 'EC2', 'S3'];
+const unapprovedResources = new Set([
+	'CustomerGateway',
+	'DHCPOptions',
+	'EgressOnlyInternetGateway',
+	'EIP',
+	'EIPAssociation',
+	'FlowLog',
+	'Host',
+	'Instance',
+	'InternetGateway',
+	'NatGateway',
+	'NetworkAcl',
+	'NetworkAclEntry',
+	'NetworkInterface',
+	'NetworkInterfaceAttachment',
+	'NetworkInterfacePermission',
+	'PlacementGroup',
+	'Route',
+	'RouteTable',
+	'SecurityGroupEgress',
+	'SecurityGroupIngress',
+	'SpotFleet',
+	'Subnet',
+	'SubnetCidrBlock',
+	'SubnetNetworkAclAssociation',
+	'SubnetRouteTableAssociation',
+	'TrunkInterfaceAssociation',
+	'Volume',
+	'VolumeAttachment',
+	'VPC',
+	'VPCCidrBlock',
+	'VPCDHCPOptionsAssociation',
+	'VPCEndpoint',
+	'VPCGatewayAttachment',
+	'VPCPeeringConnection',
+	'VPNConnection',
+	'VPNConnectionRoute',
+	'VPNGateway',
+	'VPNGatewayRoutePropagation'
+]);
 
 const state = {
 	approvedServices: approvedServices,
@@ -11,11 +51,13 @@ const state = {
 	loading: false,
 	resources: approvedServices.reduce((acc, curr) => {
 		acc[curr] = Object.keys(spec[curr].Resources).reduce((acc0, curr0) => {
-			acc0[curr0] = {
-				to: `/service/${curr}/${curr0}`,
-				lastUpdated: null,
-				items: []
-			};
+			if (!unapprovedResources.has(curr0)) {
+				acc0[curr0] = {
+					to: `/service/${curr}/${curr0}`,
+					lastUpdated: null,
+					items: []
+				};
+			}
 			return acc0;
 		}, {});
 		return acc;
