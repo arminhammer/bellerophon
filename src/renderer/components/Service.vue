@@ -115,7 +115,6 @@ export default {
   // components: { SystemInformation },
   methods: {
     toggleResource(resource) {
-      console.log('toggling resource: ', resource);
       if (this.$store.state.Template.template.Resources[resource.Name]) {
         this.$store.commit('REMOVE_RESOURCE', {
           resource,
@@ -131,7 +130,6 @@ export default {
       }
     },
     toggleResourceOutput(resource) {
-      console.log('toggling resource output status: ', resource.Name);
       if (
         this.$store.state.Template.template.Outputs[`${resource.Name}Output`]
       ) {
@@ -149,15 +147,6 @@ export default {
       }
     },
     toggleResourceAttribute(attributeName, resource) {
-      console.log('toggling resource attribute status: ', attributeName);
-      console.log(
-        'state: ',
-        `S3.Bucket.${resource.Name}.property.${attributeName}`,
-        ' ',
-        this.$store.state.Template.internal[
-          `S3.Bucket.${resource.Name}.property.${attributeName}`
-        ]
-      );
       if (
         this.$store.state.Template.internal[
           `S3.Bucket.${resource.Name}.property.${attributeName}`
@@ -179,12 +168,6 @@ export default {
       }
     },
     toggleResourceAttributeOutput(attributeName, resource) {
-      console.log(
-        'toggling resource attribute output status: ',
-        attributeName,
-        ' ',
-        resource.Name
-      );
       if (
         this.$store.state.Template.template.Outputs[
           `${resource.Name}${attributeName}Output`
@@ -206,10 +189,6 @@ export default {
       }
     },
     toggleResourceAttributeParameter(attributeName, resource) {
-      console.log(
-        'toggling resource attribute parameter status: ',
-        attributeName
-      );
       if (
         this.$store.state.Template.template.Parameters[
           `${resource.Name}${attributeName}Param`
@@ -231,7 +210,6 @@ export default {
       }
     },
     updateActiveResource(s, r) {
-      console.log('updating resource ', s, ' ', r);
       this.$store.commit('SET_ACTIVE_RESOURCE', r);
       this.$store.dispatch('updateAWSResource', {
         Service: s,
@@ -242,15 +220,7 @@ export default {
     hasStuff(item) {
       return !isEmpty(item);
     },
-    _get(obj, path) {
-      console.log('getting....');
-      console.log('obj: ', obj, ' path ', path);
-      const result = get(obj, path, false);
-      console.log('result: ', result);
-      return get(obj, path, false);
-    },
     onResourceAttributeLink({ resource, attributeName, event }) {
-      console.log('Selected! ', resource, ' ', attributeName, ' ', event);
       this.$store.commit('LINK_RESOURCE_ATTRIBUTE', {
         resource,
         attributeName,
@@ -265,43 +235,40 @@ export default {
   },
   watch: {
     '$route.params.serviceName': function(serviceName) {
-      console.log('serviceName changed: ', serviceName);
       this.$store.commit('SET_ACTIVE_SERVICE', serviceName);
+      console.log('Changing service...');
       const resource = Object.keys(
         this.$store.state.Resource.resources[serviceName]
       )[0];
       this.$store.commit('SET_ACTIVE_RESOURCE', resource);
     },
     '$route.params.resourceName': function(resourceName) {
+      console.log('Changing resource...');
       const serviceName = this.$route.params.serviceName;
-      console.log('resourceName changed: ', resourceName);
       this.$store.commit('SET_ACTIVE_RESOURCE', resourceName);
       if (
         !this.$store.state.Resource.resources[serviceName][resourceName]
           .lastUpdated &&
         !this.$store.state.Resource.loading
       ) {
-        console.log('Condition triggered!');
         this.updateActiveResource(serviceName, resourceName);
       }
     }
   },
   beforeMount: function() {
-    console.log('Mounting!');
+    console.log('Before mount...');
     const serviceName = this.$route.params.serviceName;
+    const resourceName = this.$route.params.resourceName;
     this.$store.commit('SET_ACTIVE_SERVICE', serviceName);
-    const resourceName = Object.keys(
+    /*const resourceName = Object.keys(
       this.$store.state.Resource.resources[serviceName]
-    )[0];
+    )[0];*/
     this.$store.commit('SET_ACTIVE_RESOURCE', resourceName);
-    console.log('this: ', this);
-    console.log('Mounting...');
     if (
       !this.$store.state.Resource.resources[serviceName][resourceName]
         .lastUpdated &&
       !this.$store.state.Resource.loading
     ) {
-      console.log('Mounting Condition triggered!');
       this.updateActiveResource(serviceName, resourceName);
     }
   },
@@ -321,19 +288,6 @@ export default {
       return this.$store.state.Resource.activeService;
     },
     resources: function() {
-      console.log('resources');
-      //console.log(store);
-      console.log(
-        this.$store.state.Resource.resources[this.serviceName][
-          this.resourceName
-        ]
-      );
-      /*if (this.format === 'json') {
-        return JSON.stringify(this.$store.state.Template.build(), null, 2);
-      } else {
-        return this.$store.state.Template.yaml();
-        // return JSON.stringify(this.template.build(), null, 2)
-			}*/
       return this.$store.state.Resource.resources[this.serviceName][
         this.resourceName
       ].items;
@@ -343,8 +297,6 @@ export default {
     },
     presentInTemplate: function() {
       const result = { [this.serviceName]: { [this.resourceName]: {} } };
-      console.log('present result: ', result);
-      console.log('present resources: ', this.resources);
       Object.keys(this.resources).forEach(r => {
         const present = this.$store.state.Template.template.Resources[
           this.resources[r].Name
@@ -361,11 +313,6 @@ export default {
               this.resources[r].Name
             ].Properties
           ).forEach(prop => {
-            console.log('prop: ', prop);
-            /*result[this.serviceName][this.resourceName][
-              this.resources[r].Name
-						].properties[prop] = { present: true };
-						*/
             result[
               `${this.serviceName}.${this.resourceName}.${this.resources[r]
                 .Name}.${prop}`
@@ -382,20 +329,7 @@ export default {
           }
         }
       });
-      console.log('present result: ', result);
       return result;
-      /*return {
-        S3: {
-          Bucket: {
-            'arming-us-west-2S3Bucket': {
-              present: true
-            },
-            'arminhammer-cloudtrailS3Bucket': {
-              present: false
-            }
-          }
-        }
-			};*/
     },
     linkOptions: function() {
       const list = [{ name: 'N/A' }];
@@ -403,7 +337,6 @@ export default {
         this.$store.state.Template.template.Parameters
       ).map(x => ({ name: x, type: 'Parameter' }));
       return list.concat(parameters);
-      //return ['N/A', 'Option 1', 'Option 2'];
     }
   }
 };

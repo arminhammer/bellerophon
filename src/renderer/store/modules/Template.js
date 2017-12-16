@@ -70,7 +70,6 @@ const mutations = {
 		state,
 		{ attributeName, resource, resourceName, serviceName }
 	) {
-		console.log('NAME: ', `${resource.Name}${attributeName}Output`);
 		state.template = state.template.add(
 			Output(`${resource.Name}${attributeName}Output`, {
 				Value: FnGetAtt(resource.Name, attributeName)
@@ -102,7 +101,6 @@ const mutations = {
 		{ attributeName, resource, resourceName, serviceName }
 	) {
 		const newAttributeName = `${resource.Name}${attributeName}Param`;
-		console.log('NAME: ', newAttributeName);
 		state.internal = {
 			...state.internal,
 			[`${serviceName}.${resourceName}.${
@@ -154,7 +152,6 @@ const mutations = {
 		state,
 		{ attributeName, resource, resourceName, serviceName }
 	) {
-		console.log('NAME: ', `${resource.Name}${attributeName}`);
 		state.template = state.template.set(
 			`${resource.Name}.${attributeName}`,
 			resource.Properties[attributeName]
@@ -170,7 +167,6 @@ const mutations = {
 		state,
 		{ attributeName, resource, resourceName, serviceName }
 	) {
-		console.log('REMOVING NAME: ', `${resource.Name}${attributeName}`);
 		state.template = state.template.set(
 			`${resource.Name}.${attributeName}`,
 			''
@@ -186,14 +182,8 @@ const mutations = {
 		state,
 		{ resource, attributeName, linkTarget, resourceName, serviceName }
 	) {
-		console.log(
-			'Linking resource attribute: ',
-			`${resource}${attributeName} to ${linkTarget}`
-		);
-		console.log('linkTarget: ', linkTarget);
 		let link = linkTarget;
 		if (linkTarget === 'N/A') {
-			console.log('Got N/A');
 			link = undefined;
 			state.template = state.template.set(
 				`${resource}.${attributeName}`,
@@ -202,7 +192,6 @@ const mutations = {
 				]
 			);
 		} else if (state.template.Parameters[linkTarget]) {
-			console.log('Param found... ', state.template.Parameters[linkTarget]);
 			state.internal = {
 				...state.internal,
 				[`${serviceName}.${resourceName}.${resource}.property.${attributeName}.original`]: state

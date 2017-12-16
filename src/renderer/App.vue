@@ -104,7 +104,6 @@
 </template>
 
 <script>
-//import SystemInformation from './LandingPage/SystemInformation'
 import Vue from 'vue';
 
 import { spec, Template } from 'wolkenkratzer';
@@ -113,9 +112,8 @@ import { ipcRenderer } from 'electron';
 import { writeFile } from 'fs-extra';
 
 ipcRenderer.on('select-file', (event, result) => {
-  console.log('Selected ', result.fileName);
   writeFile(result.fileName, result.body).then(() =>
-    console.log('Wrote file...')
+    console.log('Wrote file ', fileName)
   );
 });
 
@@ -124,7 +122,6 @@ export default {
   data() {
     return {
       services: this.$store.state.Resource.resources,
-      // template: Template(),
       showTemplate: false,
       format: 'json',
       drawer: true,
@@ -143,8 +140,6 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false
-      //title: `${this.$store.state.Resource.activeService} ${this.$store.state
-      //  .Resource.activeResource}`
     };
   },
   computed: {
@@ -158,7 +153,6 @@ export default {
       return this.$store.state.Resource.loading;
     },
     title: function() {
-      console.log('this: ', this.$route);
       if (this.$route.name === 'Service') {
         return `${this.$store.state.Resource.activeService} ${this.$store.state
           .Resource.activeResource}`;
@@ -166,24 +160,7 @@ export default {
         return this.$route.name;
       }
     },
-    secondaryServiceList: function() {
-      return []; // Object.keys(cfnstubs[this.activeService].Resources);
-    },
-    serviceMenuList: function() {
-      return Object.keys(this.$store.state.Resource.resources)
-        .filter(r => this.$store.state.Resource.approvedServices.includes(r))
-        .map(r => {
-          return {
-            icon: `/static/svg/${r}.svg`,
-            title: r,
-            to: `/service/${r}` //?name=${this.activeService}`
-          };
-        });
-    },
     formattedTemplate: function() {
-      console.log('formatter');
-      //console.log(store);
-      console.log(this.$store.state.Template.template);
       if (this.format === 'json') {
         return JSON.stringify(
           this.$store.state.Template.template.build(),
@@ -192,42 +169,29 @@ export default {
         );
       } else {
         return this.$store.state.Template.template.yaml();
-        // return JSON.stringify(this.template.build(), null, 2)
       }
     }
   },
-  // components: { SystemInformation },
   methods: {
     open(link) {
       this.$electron.shell.openExternal(link);
     },
     refreshResources() {
-      console.log(
-        'Refreshing service resources: ',
-        this.activeService,
-        ' ',
-        this.activeResource
-      );
       this.$store.dispatch('updateAWSResource', {
         Service: this.activeService,
         Resource: this.activeResource
       });
     },
     saveTemplate() {
-      console.log('Saving template');
-
-      console.log('open dialog');
       ipcRenderer.send('save', {
         format: 'json',
         body: this.formattedTemplate
       });
     },
     selectService(selection) {
-      console.log('selecting service: ', selection);
       this.$store.commit('SET_ACTIVE_SERVICE', selection);
     },
     selectResource(selection) {
-      console.log(selection);
       this.activeResource = selection;
     },
     toggleShowTemplate() {

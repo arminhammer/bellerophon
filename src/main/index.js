@@ -17,12 +17,7 @@ if (process.env.NODE_ENV !== 'development') {
 let mainWindow;
 let templateWindow;
 
-global.vuexState = null;
-
 ipcMain.on('save', (e, payload) => {
-	//global.vuexState = state;
-	console.log('Save received: ', payload);
-
 	dialog.showSaveDialog(
 		mainWindow,
 		{
@@ -30,13 +25,9 @@ ipcMain.on('save', (e, payload) => {
 			defaultPath: resolve(homedir(), 'template.json')
 		},
 		function(result) {
-			console.log('Saving as ', result);
 			e.sender.send('select-file', { fileName: result, body: payload.body });
-			//mainWindow.webContents.send('save', result);
 		}
 	);
-	//console.log(global.vuexState);
-	// => { Counter: { main: 0 } }
 });
 
 const winURL =
@@ -62,8 +53,6 @@ function createWindow() {
 }
 
 app.on('ready', () => {
-	//const menu = Menu.buildFromTemplate(template);
-	//Menu.setApplicationMenu(menu);
 	const menu = defaultMenu(app, shell);
 
 	menu.unshift({
@@ -72,7 +61,6 @@ app.on('ready', () => {
 			{
 				label: 'Save As',
 				click: (item, focusedWindow) => {
-					console.log('Saving template as!');
 					dialog.showSaveDialog(
 						mainWindow,
 						{
