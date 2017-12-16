@@ -1,7 +1,11 @@
+import AWS from 'aws-sdk';
+import { Transform } from 'wolkenkratzer';
 import { spec, Template } from 'wolkenkratzer';
-import { approvedServices, listResources } from '../../aws_utils';
+
+const approvedServices = ['EC2', 'S3'];
 
 const state = {
+	approvedServices: approvedServices,
 	activeService: 'S3',
 	activeResource: 'Bucket',
 	loading: false,
@@ -42,18 +46,7 @@ const actions = {
 	async updateAWSResource({ commit }, { Service, Resource }) {
 		console.log('payload: ', Service, ' ', Resource);
 		commit('SET_LOADING');
-		let Result;
-		if (listResources[Service] && listResources[Service][Resource]) {
-			Result = await listResources[Service][Resource]();
-		} else {
-			Result = await new Promise(res =>
-				res({
-					to: `/service/${Service}/${Resource}`,
-					items: [],
-					lastUpdated: new Date()
-				})
-			);
-		}
+		const Result = await listResources(Service, Resource);
 		console.log('update result:');
 		console.log(Result);
 		commit('SET_RESOURCES_FROM_AWS', { Service, Resource, Result });
@@ -65,3 +58,41 @@ export default {
 	mutations,
 	actions
 };
+
+const listResources = async (service, resource) => {
+	const client = new AWS[service]();
+	const resources = await Transform[service][`${resource}List`](client);
+	console.log('resourceBlock: ', resources);
+	return {
+		to: `/service/${service}/${resource}`,
+		items: resources,
+		lastUpdated: new Date()
+	};
+};
+
+/*
+{
+	S3: {
+		Bucket: async () => {
+			const client = new AWS.S3();
+			const resourceBlocks = await Transform.S3.BucketList(client);
+			console.log('resourceBlock: ', resourceBlocks);
+			return {
+				to: '/service/S3/Bucket',
+				items: resourceBlocks,
+				lastUpdated: new Date()
+			};
+		},
+		BucketPolicy: async () => {
+			const client = new AWS.S3();
+			const resourceBlocks = await Transform.S3.BucketPolicyList(client);
+			console.log('resourceBlock: ', resourceBlocks);
+			return {
+				to: '/service/S3/BucketPolicy',
+				items: resourceBlocks,
+				lastUpdated: new Date()
+			};
+		}
+	}
+};
+*/

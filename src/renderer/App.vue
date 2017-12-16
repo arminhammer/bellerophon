@@ -112,7 +112,6 @@ import Vue from 'vue';
 import { spec, Template } from 'wolkenkratzer';
 import * as AWS from 'aws-sdk';
 import { ipcRenderer } from 'electron';
-import { approvedServices } from './aws_utils';
 import { writeFile } from 'fs-extra';
 
 ipcRenderer.on('select-file', (event, result) => {
@@ -174,7 +173,7 @@ export default {
     },
     serviceMenuList: function() {
       return Object.keys(this.$store.state.Resource.resources)
-        .filter(r => approvedServices.includes(r))
+        .filter(r => this.$store.state.Resource.approvedServices.includes(r))
         .map(r => {
           return {
             icon: `/static/svg/${r}.svg`,

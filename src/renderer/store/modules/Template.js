@@ -7,7 +7,6 @@ import {
 	Template
 } from 'wolkenkratzer';
 import { set, isEmpty } from 'lodash';
-import { approvedServices, listResources } from '../../aws_utils';
 import Vue from 'vue';
 
 let state = {

@@ -380,6 +380,21 @@ aws-sdk@^2.122.0:
     xml2js "0.4.17"
     xmlbuilder "4.2.1"
 
+aws-sdk@^2.171.0:
+  version "2.171.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.171.0.tgz#69c2565e98e353d437402477cc3064a13caedc9c"
+  dependencies:
+    buffer "4.9.1"
+    crypto-browserify "1.0.9"
+    events "^1.1.1"
+    jmespath "0.15.0"
+    querystring "0.2.0"
+    sax "1.2.1"
+    url "0.10.3"
+    uuid "3.1.0"
+    xml2js "0.4.17"
+    xmlbuilder "4.2.1"
+
 aws-sign2@~0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/aws-sign2/-/aws-sign2-0.6.0.tgz#14342dd38dbcc94d0e5b87d763cd63612c0e794f"
@@ -7483,13 +7498,13 @@ uuid@3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
 
+uuid@3.1.0, uuid@^3.0.0, uuid@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
+
 uuid@^2.0.2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
-
-uuid@^3.0.0, uuid@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
 
 validate-npm-package-license@^3.0.1:
   version "3.0.1"
@@ -7794,10 +7809,11 @@ window-size@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.3.0.tgz#b8f0b66e325d22160751e496337e44b45b727546"
 
-wolkenkratzer@^0.10.7:
-  version "0.10.7"
-  resolved "https://registry.yarnpkg.com/wolkenkratzer/-/wolkenkratzer-0.10.7.tgz#2259fad89acf83f5e64604ac6dac21796df1158c"
+wolkenkratzer@^0.10.8:
+  version "0.10.8"
+  resolved "https://registry.yarnpkg.com/wolkenkratzer/-/wolkenkratzer-0.10.8.tgz#d82ac88f43105d33676ab9511e0a61496eb6a241"
   dependencies:
+    aws-sdk "^2.171.0"
     bluebird "^3.5.0"
     cloudformation-schema-js-yaml "^1.0.1"
     fs-extra "^4.0.0"
