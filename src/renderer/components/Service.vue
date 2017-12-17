@@ -41,7 +41,7 @@
 														<v-spacer></v-spacer>
 														<v-select
 															label="Link to..."
-															v-bind:items="linkOptions"
+															v-bind:items="linkTargetList"
 															item-text="name"
 															item-value="name"
 															max-height="auto"
@@ -110,9 +110,9 @@
 
 <script>
 import { isEmpty, get } from 'lodash';
+import { spec } from 'wolkenkratzer';
 export default {
   name: 'aws-service',
-  // components: { SystemInformation },
   methods: {
     toggleResource(resource) {
       if (this.$store.state.Template.template.Resources[resource.Name]) {
@@ -230,9 +230,6 @@ export default {
       });
     }
   },
-  data() {
-    return {};
-  },
   watch: {
     '$route.params.serviceName': function(serviceName) {
       this.$store.commit('SET_ACTIVE_SERVICE', serviceName);
@@ -295,48 +292,8 @@ export default {
     templateInternal: function() {
       return this.$store.state.Template.internal;
     },
-    presentInTemplate: function() {
-      const result = { [this.serviceName]: { [this.resourceName]: {} } };
-      Object.keys(this.resources).forEach(r => {
-        const present = this.$store.state.Template.template.Resources[
-          this.resources[r].Name
-        ]
-          ? true
-          : false;
-        result[this.serviceName][this.resourceName][this.resources[r].Name] = {
-          present: present,
-          properties: {}
-        };
-        if (present) {
-          Object.keys(
-            this.$store.state.Template.template.Resources[
-              this.resources[r].Name
-            ].Properties
-          ).forEach(prop => {
-            result[
-              `${this.serviceName}.${this.resourceName}.${this.resources[r]
-                .Name}.${prop}`
-            ] = true;
-          });
-          if (
-            this.$store.state.Template.template.Outputs[
-              `${this.resources[r].Name}Output`
-            ]
-          ) {
-            result[this.serviceName][this.resourceName][
-              this.resources[r].Name
-            ].output = true;
-          }
-        }
-      });
-      return result;
-    },
-    linkOptions: function() {
-      const list = [{ name: 'N/A' }];
-      const parameters = Object.keys(
-        this.$store.state.Template.template.Parameters
-      ).map(x => ({ name: x, type: 'Parameter' }));
-      return list.concat(parameters);
+    linkTargetList: function() {
+      return this.$store.state.Template.linkTargetList;
     }
   }
 };
