@@ -1,7 +1,7 @@
 import { app, BrowserWindow, dialog, ipcMain, Menu, shell } from 'electron';
 const defaultMenu = require('electron-default-menu');
 import { template } from './menu';
-import { homedir } from 'os';
+import { homedir, release } from 'os';
 import { resolve } from 'path';
 
 /**

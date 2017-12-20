@@ -96,12 +96,6 @@
           </v-slide-y-transition>
         </v-container>
       </v-navigation-drawer>
-			<v-system-bar window dark>
-				<v-spacer></v-spacer>
-				<v-icon>remove</v-icon>
-				<v-icon>check_box_outline_blank</v-icon>
-				<v-icon>close</v-icon>
-			</v-system-bar>
     </v-app>
 </template>
 
@@ -112,12 +106,38 @@ import { spec, Template } from 'wolkenkratzer';
 import * as AWS from 'aws-sdk';
 import { ipcRenderer } from 'electron';
 import { writeFile } from 'fs-extra';
+import GitHub from 'github-api';
+import notifier from 'node-notifier';
+import semver from 'semver';
+const { version } = require('../../package.json');
 
 ipcRenderer.on('select-file', (event, result) => {
   writeFile(result.fileName, result.body).then(() =>
     console.log('Wrote file ', fileName)
   );
 });
+
+/** Check to see if we're on the newest version */
+const _checkRelease = async function() {
+  const gh = new GitHub();
+  const repo = gh.getRepo('arminhammer', 'bellerophon');
+  console.log('repo:');
+  console.log(repo);
+  const releaseList = await repo.listReleases();
+  console.log(Array.isArray(releaseList.data));
+  const latest_release = releaseList.data
+    .filter(r => r.draft === false && r.prerelease === false)
+    .sort((a, b) => semver.lt(a.tag_name, b.tag_name))[0].tag_name;
+  console.log(latest_release);
+  console.log(version);
+  const newer = semver.gt(latest_release, version);
+  console.log(newer);
+  if (newer) {
+    notifier.notify(`Version ${latest_release} of bellerophon is available!`);
+  } else {
+    notifier.notify('On newest version');
+  }
+};
 
 export default {
   name: 'bellerophon',
@@ -173,6 +193,10 @@ export default {
         return this.$store.state.Template.template.yaml();
       }
     }
+  },
+  beforeMount: async function() {
+    console.log('Before App mount...');
+    _checkRelease();
   },
   methods: {
     open(link) {
