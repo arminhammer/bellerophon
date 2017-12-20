@@ -213,9 +213,9 @@ export default {
       this.$store.commit('SET_ACTIVE_RESOURCE', r);
       this.$store.dispatch('updateAWSResource', {
         Service: s,
-        Resource: r
+        Resource: r,
+        Settings: this.$store.state.Settings.settings
       });
-      //this. = r;
     },
     hasStuff(item) {
       return !isEmpty(item);

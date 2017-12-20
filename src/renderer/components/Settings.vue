@@ -1,26 +1,31 @@
 <template>
 	<div id="wrapper">
 		<main>
-			<div class="left-side">
+			<div>
 				<span class="title">
 					Settings
 				</span>
-
-			</div>
-
-			<div class="right-side">
-				<div class="doc">
-					<div class="title">Getting Started</div>
-					<p>
-						electron-vue comes packed with detailed documentation that covers everything from internal configurations, using the project structure, building your application, and so much more.
-					</p>
-					<button @click="open('https://simulatedgreg.gitbooks.io/electron-vue/content/')">Read the Docs</button><br><br>
-				</div>
-				<div class="doc">
-					<div class="title alt">Other Documentation</div>
-					<button class="alt" @click="open('https://electron.atom.io/docs/')">Electron</button>
-					<button class="alt" @click="open('https://vuejs.org/v2/guide/')">Vue.js</button>
-				</div>
+				<v-switch v-bind:label="`Proxy Enabled`" v-model="proxy"></v-switch>
+				<v-text-field
+					v-model="proxyString"
+					label="Proxy String"
+				></v-text-field>
+				<v-text-field
+					v-model="profile"
+					label="AWS Profile"
+				></v-text-field>
+				<v-text-field
+					v-model="region"
+					label="AWS Region"
+				></v-text-field>
+				<v-text-field
+					type="number"
+					min=0
+					max=100
+					step=1
+					v-model="maxRetries"
+					label="Max Retries"
+				></v-text-field>
 			</div>
 		</main>
 	</div>
@@ -29,10 +34,61 @@
 <script>
 export default {
   name: 'settings',
+  computed: {
+    proxy: {
+      get() {
+        return this.$store.state.Settings.settings.proxy;
+      },
+      set(x) {
+        this.$store.commit('SET_SETTING', { key: 'proxy', value: x });
+      }
+    },
+    proxyString: {
+      get() {
+        return this.$store.state.Settings.settings.proxyString;
+      },
+      set(x) {
+        this.$store.commit('SET_SETTING', { key: 'proxyString', value: x });
+      }
+    },
+    profile: {
+      get() {
+        return this.$store.state.Settings.settings.profile;
+      },
+      set(x) {
+        this.$store.commit('SET_SETTING', { key: 'profile', value: x });
+      }
+    },
+    region: {
+      get() {
+        return this.$store.state.Settings.settings.region;
+      },
+      set(x) {
+        this.$store.commit('SET_SETTING', {
+          key: 'region',
+          value: x
+        });
+      }
+    },
+    maxRetries: {
+      get() {
+        return this.$store.state.Settings.settings.maxRetries;
+      },
+      set(x) {
+        this.$store.commit('SET_SETTING', {
+          key: 'maxRetries',
+          value: parseInt(x)
+        });
+      }
+    }
+  },
   // components: { SystemInformation },
   methods: {
-    open(link) {
-      this.$electron.shell.openExternal(link);
+    updateSetting(e, s) {
+      console.log('Update...');
+      console.log(e);
+      console.log(s);
+      // this.$store.commit('SET_SETTING', { keye.target.value)
     }
   }
 };

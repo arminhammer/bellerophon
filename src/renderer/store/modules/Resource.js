@@ -1,8 +1,8 @@
 import AWS from 'aws-sdk';
-import { Transform } from 'wolkenkratzer';
-import { spec, Template } from 'wolkenkratzer';
+import ProxyAgent from 'proxy-agent';
+import { spec, Template, Transform } from 'wolkenkratzer';
 
-const approvedServices = ['CloudTrail', 'EC2', 'S3'];
+const approvedServices = ['CloudTrail', 'EC2', 'ECR', 'S3'];
 const unapprovedResources = new Set([
 	'CustomerGateway',
 	'DHCPOptions',
@@ -81,9 +81,9 @@ const mutations = {
 };
 
 const actions = {
-	async updateAWSResource({ commit }, { Service, Resource }) {
+	async updateAWSResource({ commit }, { Service, Resource, Settings }) {
 		commit('SET_LOADING');
-		const Result = await listResources(Service, Resource);
+		const Result = await listResources(Service, Resource, Settings);
 		commit('SET_RESOURCES_FROM_AWS', { Service, Resource, Result });
 	}
 };
@@ -94,8 +94,18 @@ export default {
 	actions
 };
 
-const listResources = async (service, resource) => {
-	const client = new AWS[service]();
+const listResources = async (service, resource, settings) => {
+	const client = new AWS[service]({ region: settings.region });
+	if (settings.proxy) {
+		client.config.httpOptions.agent = new ProxyAgent(settings.proxyString);
+	}
+	if (settings.profile !== 'default') {
+		client.config.credentials = new AWS.SharedIniFileCredentials({
+			profile: settings.profile
+		});
+	}
+	client.config.maxRetries = settings.maxRetries;
+	console.log('client: ', client);
 	const resources = await Transform[service][`${resource}List`](client);
 	return {
 		to: `/service/${service}/${resource}`,

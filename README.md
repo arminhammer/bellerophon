@@ -8,12 +8,29 @@
 
 # Supported Resource Types
 
+AWS::CloudTrail::Trail
+
+AWS::ECR::Repository
+
+AWS::ECS::Cluster
+AWS::ECS::Service
+AWS::ECS::TaskDefinition
+
+AWS::Kinesis::Stream
+
+AWS::IAM::ManagedPolicy
+
 AWS::S3::Bucket
 AWS::S3::BucketPolicy
 
-# In progress resource types
+AWS::SNS::Subscription
+AWS::SNS::Topic
+AWS::SNS::TopicPolicy
 
-AWS::CloudTrail::Trail
+AWS::SQS::Queue
+AWS::SQS::QueuePolicy
+
+# In progress resource types
 
 AWS::CloudFront::Distribution
 AWS::CloudFront::CloudFrontOriginAccessIdentity
@@ -35,12 +52,6 @@ AWS::EC2::SecurityGroup
 AWS::EC2::SecurityGroupEgress
 AWS::EC2::SecurityGroupIngress
 
-AWS::ECR::Repository
-
-AWS::ECS::Cluster
-AWS::ECS::Service
-AWS::ECS::TaskDefinition
-
 AWS::ElasticLoadBalancingV2::Listener
 AWS::ElasticLoadBalancingV2::ListenerCertificate
 AWS::ElasticLoadBalancingV2::ListenerRule
@@ -50,13 +61,10 @@ AWS::ElasticLoadBalancingV2::TargetGroup
 AWS::IAM::AccessKey
 AWS::IAM::Group
 AWS::IAM::InstanceProfile
-AWS::IAM::ManagedPolicy
 AWS::IAM::Policy
 AWS::IAM::Role
 AWS::IAM::User
 AWS::IAM::UserToGroupAddition
-
-AWS::Kinesis::Stream
 
 AWS::Lambda::EventSourceMapping
 AWS::Lambda::Alias
@@ -68,13 +76,6 @@ AWS::Route53::HealthCheck
 AWS::Route53::HostedZone
 AWS::Route53::RecordSet
 AWS::Route53::RecordSetGroup
-
-AWS::SNS::Subscription
-AWS::SNS::Topic
-AWS::SNS::TopicPolicy
-
-AWS::SQS::Queue
-AWS::SQS::QueuePolicy
 
 ## Unsupported resource types
 

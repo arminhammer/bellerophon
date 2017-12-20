@@ -9,7 +9,7 @@
       >
 			<v-expansion-panel expand>
     <v-expansion-panel-content v-for="(service, s) in services" :key="s">
-      <div slot="header"><div class="awsIconContainer"><img :src="`/static/svg/${s}.svg`" :alt="`${s}`" class="awsIcon"></div>{{ s }}</div>
+      <div slot="header"><div class="awsIconContainer"><img :src="`../../static/svg/${s}.svg`" :alt="`${s}`" class="awsIcon"></div>{{ s }}</div>
 			<v-list>
           <v-list-tile
 						router
@@ -179,7 +179,8 @@ export default {
     refreshResources() {
       this.$store.dispatch('updateAWSResource', {
         Service: this.activeService,
-        Resource: this.activeResource
+        Resource: this.activeResource,
+        Settings: this.$store.state.Settings.settings
       });
     },
     saveTemplate() {
@@ -206,7 +207,7 @@ export default {
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 @font-face {
   font-family: MonoFur;
-  src: url('/static/fonts/monofur.ttf');
+  src: url('../../static/fonts/monofur.ttf');
 }
 /* Global CSS */
 #templatePreBlock {
