@@ -1,6 +1,7 @@
 import AWS from 'aws-sdk';
 import ProxyAgent from 'proxy-agent';
 import { spec, Template, Transform } from 'wolkenkratzer';
+import notifier from 'node-notifier';
 
 const approvedServices = ['CloudTrail', 'EC2', 'ECR', 'S3'];
 const unapprovedResources = new Set([
@@ -105,8 +106,12 @@ const listResources = async (service, resource, settings) => {
 		});
 	}
 	client.config.maxRetries = settings.maxRetries;
-	console.log('client: ', client);
-	const resources = await Transform[service][`${resource}List`](client);
+	let resources;
+	try {
+		resources = await Transform[service][`${resource}List`](client);
+	} catch (e) {
+		notifier.notify({ title: 'AWS SDK error', message: e });
+	}
 	return {
 		to: `/service/${service}/${resource}`,
 		items: resources,

@@ -96,10 +96,12 @@
           </v-slide-y-transition>
         </v-container>
       </v-navigation-drawer>
-      <v-footer :fixed="fixed" app>
-        <v-spacer></v-spacer>
-        <span>&copy; 2017</span>
-      </v-footer>
+			<v-system-bar window dark>
+				<v-spacer></v-spacer>
+				<v-icon>remove</v-icon>
+				<v-icon>check_box_outline_blank</v-icon>
+				<v-icon>close</v-icon>
+			</v-system-bar>
     </v-app>
 </template>
 
